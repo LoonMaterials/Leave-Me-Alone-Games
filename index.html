@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Solitaire That Leaves You Alone</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="topbar">
+        <div>
+          <h1>Solitaire That Leaves You Alone</h1>
+          <p>No ads. No accounts. No noise.</p>
+        </div>
+        <div class="actions">
+          <span id="status" class="status" aria-live="polite"></span>
+          <label class="theme-control" for="theme-select">
+            <span>Background</span>
+            <select id="theme-select" aria-label="Game background">
+              <option value="green">Green</option>
+              <option value="blue">Blue</option>
+              <option value="grey">Grey</option>
+              <option value="orange">Orange</option>
+            </select>
+          </label>
+          <label class="draw-control" for="draw-count">
+            <span>Draw 1</span>
+            <input id="draw-count" type="range" min="1" max="3" step="2" value="1" aria-label="Cards drawn from stock">
+            <span>Draw 3</span>
+          </label>
+          <button id="undo" type="button" disabled>Undo</button>
+          <button id="auto-finish" type="button" disabled>Auto Finish</button>
+          <button id="new-game" type="button">New Game</button>
+        </div>
+      </header>
+
+      <section class="board" aria-label="Klondike Solitaire board">
+        <div class="upper-row">
+          <div class="draw-area" aria-label="Stock and waste piles">
+            <button id="stock" class="pile stock" type="button" aria-label="Draw from stock"></button>
+            <div id="waste" class="pile" aria-label="Waste pile"></div>
+          </div>
+
+          <div id="foundations" class="foundations" aria-label="Foundation piles"></div>
+        </div>
+
+        <div id="tableau" class="tableau" aria-label="Tableau piles"></div>
+      </section>
+
+      <div id="win-message" class="win-message" hidden>
+        You won. Quietly magnificent.
+      </div>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
