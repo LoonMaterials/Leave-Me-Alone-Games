@@ -246,9 +246,12 @@ p {
 }
 
 .waste-card {
-  position: absolute;
+  position: absolute !important;
   top: 0;
-  left: calc(var(--waste-index, 0) * var(--waste-spread));
+  bottom: auto;
+  left: 0;
+  margin: 0;
+  transform: translateX(calc(var(--waste-index, 0) * var(--waste-spread)));
 }
 
 button.pile {
