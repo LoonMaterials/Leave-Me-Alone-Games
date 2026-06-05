@@ -245,13 +245,27 @@ p {
   overflow: visible;
 }
 
-.waste-card {
-  position: absolute !important;
-  top: 0;
-  bottom: auto;
-  left: 0;
+.waste-row {
+  position: absolute;
+  inset: 0 auto auto 0;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  width: max-content;
+  height: var(--card-h);
+}
+
+.waste-row .waste-card {
+  position: relative !important;
+  top: auto;
+  left: auto;
+  flex: 0 0 var(--card-w);
   margin: 0;
-  transform: translateX(calc(var(--waste-index, 0) * var(--waste-spread)));
+  transform: none;
+}
+
+.waste-row .waste-card + .waste-card {
+  margin-left: calc(var(--waste-spread) - var(--card-w));
 }
 
 button.pile {

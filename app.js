@@ -149,6 +149,8 @@
 
   function renderWaste() {
     clear(els.waste);
+    const row = document.createElement("div");
+    row.className = "waste-row";
     const visibleCards = state.waste.slice(-Math.min(state.drawCount, 3));
     visibleCards.forEach((card, index) => {
       const isTopCard = index === visibleCards.length - 1;
@@ -157,10 +159,10 @@
         source: isTopCard ? { area: "waste" } : null
       });
       cardEl.classList.add("waste-card");
-      cardEl.style.setProperty("--waste-index", String(index));
       cardEl.style.zIndex = String(index + 1);
-      els.waste.appendChild(cardEl);
+      row.appendChild(cardEl);
     });
+    els.waste.appendChild(row);
   }
 
   function renderFoundations() {
