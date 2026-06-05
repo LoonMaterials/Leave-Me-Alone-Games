@@ -15,6 +15,7 @@
   --group-gap: clamp(84px, 14vw, 190px);
   --face-up-stack: 28px;
   --face-down-stack: 12px;
+  --waste-spread: clamp(18px, 2.4vw, 28px);
 }
 
 body[data-theme="blue"] {
@@ -214,6 +215,10 @@ p {
   gap: var(--pile-gap);
 }
 
+.draw-area {
+  gap: calc(var(--pile-gap) + (2 * var(--waste-spread)));
+}
+
 .foundations {
   margin-left: auto;
 }
@@ -235,6 +240,18 @@ p {
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.08);
   touch-action: manipulation;
+}
+
+#waste {
+  border-color: transparent;
+  background: transparent;
+  overflow: visible;
+}
+
+.waste-card {
+  position: absolute;
+  top: 0;
+  left: calc(var(--waste-index, 0) * var(--waste-spread));
 }
 
 button.pile {
@@ -395,6 +412,7 @@ button.pile {
     --group-gap: 28px;
     --face-up-stack: 24px;
     --face-down-stack: 10px;
+    --waste-spread: 17px;
   }
 
   .topbar {
@@ -440,6 +458,7 @@ button.pile {
     --group-gap: 16px;
     --face-up-stack: 18px;
     --face-down-stack: 7px;
+    --waste-spread: 14px;
   }
 
   .game-shell {
@@ -540,6 +559,7 @@ button.pile {
     --group-gap: clamp(46px, 15vw, 180px);
     --face-up-stack: clamp(10px, 3.4vh, 14px);
     --face-down-stack: clamp(5px, 1.6vh, 7px);
+    --waste-spread: clamp(13px, 3.2vw, 22px);
   }
 
   .game-shell {

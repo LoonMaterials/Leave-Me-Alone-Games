@@ -18,6 +18,8 @@ The game is designed for mobile-first play with no ads, accounts, tracking, anal
 - Background themes: green, blue, grey, and orange
 - Session-based game persistence
 - Local settings persistence for theme and draw mode
+- Installable web app metadata
+- Offline app shell caching
 
 ## Privacy
 
@@ -37,11 +39,30 @@ Open `index.html` in a browser.
 
 For phone testing, serve the folder with any local static web server and open the local network address from the phone.
 
+## Install As An App
+
+When hosted over HTTPS, the game can be installed from supported mobile browsers.
+
+On iPhone:
+
+1. Open the hosted game in Safari.
+2. Tap Share.
+3. Tap Add to Home Screen.
+
+On Android:
+
+1. Open the hosted game in Chrome.
+2. Tap the browser menu.
+3. Tap Add to Home screen or Install app.
+
 ## Files
 
 - `index.html` - page structure
 - `styles.css` - layout, card visuals, and mobile behavior
 - `app.js` - game state, rules, movement, persistence, and controls
+- `manifest.webmanifest` - installable app metadata
+- `sw.js` - offline cache service worker
+- `icons/` - home-screen and app icons
 
 ## App Store Notes
 

@@ -149,13 +149,18 @@
 
   function renderWaste() {
     clear(els.waste);
-    const card = top(state.waste);
-    if (card) {
-      els.waste.appendChild(cardElement(card, {
-        draggable: true,
-        source: { area: "waste" }
-      }));
-    }
+    const visibleCards = state.waste.slice(-Math.min(state.drawCount, 3));
+    visibleCards.forEach((card, index) => {
+      const isTopCard = index === visibleCards.length - 1;
+      const cardEl = cardElement(card, {
+        draggable: isTopCard,
+        source: isTopCard ? { area: "waste" } : null
+      });
+      cardEl.classList.add("waste-card");
+      cardEl.style.setProperty("--waste-index", String(index));
+      cardEl.style.zIndex = String(index + 1);
+      els.waste.appendChild(cardEl);
+    });
   }
 
   function renderFoundations() {
@@ -898,6 +903,13 @@
     return Boolean(target.closest("button, input, select, option, label"));
   }
 
+  function registerServiceWorker() {
+    if (!("serviceWorker" in navigator)) return;
+    navigator.serviceWorker.register("./sw.js").catch(() => {
+      // The game still runs if offline caching is unavailable.
+    });
+  }
+
   els.stock.addEventListener("click", drawFromStock);
   els.undo.addEventListener("click", undoLastMove);
   els.autoFinish.addEventListener("click", autoFinish);
@@ -921,4 +933,5 @@
   if (!restoreSavedGame()) {
     newGame();
   }
+  registerServiceWorker();
 })();
