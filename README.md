@@ -33,6 +33,8 @@ It uses browser storage only for:
 
 There are no external requests, ads, accounts, analytics, or tracking scripts.
 
+See [PRIVACY.md](PRIVACY.md) for the full privacy statement.
+
 ## Run Locally
 
 Open `index.html` in a browser.
@@ -67,3 +69,5 @@ On Android:
 ## App Store Notes
 
 This repository is currently a web version of the game. To submit it to the iOS App Store, it needs to be bundled into a native iOS app, typically with a Swift `WKWebView` wrapper that loads these files locally from the app bundle.
+
+See [STORE_PREP.md](STORE_PREP.md) for iOS and Android packaging notes.

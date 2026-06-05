@@ -1,10 +1,10 @@
-const CACHE_NAME = "leave-you-alone-solitaire-v2";
+const CACHE_NAME = "leave-you-alone-solitaire-v3";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=20260604-1",
-  "./app.js?v=20260604-1",
-  "./manifest.webmanifest?v=20260604-1",
+  "./styles.css?v=20260604-2",
+  "./app.js?v=20260604-2",
+  "./manifest.webmanifest?v=20260604-2",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
