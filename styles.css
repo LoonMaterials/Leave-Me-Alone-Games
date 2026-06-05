@@ -215,10 +215,6 @@ p {
   gap: var(--pile-gap);
 }
 
-.draw-area {
-  gap: calc(var(--pile-gap) + (2 * var(--waste-spread)));
-}
-
 .foundations {
   margin-left: auto;
 }
@@ -243,6 +239,7 @@ p {
 }
 
 #waste {
+  width: calc(var(--card-w) + (2 * var(--waste-spread)));
   border-color: transparent;
   background: transparent;
   overflow: visible;
@@ -520,6 +517,7 @@ button.pile {
   }
 
   .upper-row {
+    justify-content: space-between;
     gap: var(--group-gap);
   }
 
@@ -628,6 +626,7 @@ button.pile {
   }
 
   .upper-row {
+    justify-content: space-between;
     gap: var(--group-gap);
     min-height: var(--card-h);
   }
