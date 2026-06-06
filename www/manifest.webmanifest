@@ -1,0 +1,33 @@
+{
+  "name": "Solitaire That Leaves You Alone",
+  "short_name": "Solitaire",
+  "id": "/Leave-You-Alone-Games-Solitaire/",
+  "description": "A quiet offline Klondike Solitaire game with no ads, accounts, tracking, or noise.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#2f6f58",
+  "theme_color": "#2f6f58",
+  "categories": ["games", "card"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

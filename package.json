@@ -1,0 +1,26 @@
+{
+  "name": "leave-you-alone-games-solitaire",
+  "version": "1.0.0",
+  "description": "A quiet, offline Klondike Solitaire game built with plain HTML, CSS, and JavaScript.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LoonMaterials/Leave-You-Alone-Games-Solitaire.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/LoonMaterials/Leave-You-Alone-Games-Solitaire/issues"
+  },
+  "homepage": "https://github.com/LoonMaterials/Leave-You-Alone-Games-Solitaire#readme",
+  "dependencies": {
+    "@capacitor/cli": "^8.4.0",
+    "@capacitor/core": "^8.4.0",
+    "@capacitor/ios": "^8.4.0"
+  }
+}
