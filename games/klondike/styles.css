@@ -242,7 +242,7 @@ p {
   grid-template-columns: repeat(7, var(--card-w));
   justify-content: space-between;
   gap: var(--pile-gap);
-  margin-top: clamp(54px, 7vw, 78px);
+  margin-top: clamp(27px, 3.5vw, 39px);
 }
 
 .pile {
@@ -560,7 +560,7 @@ button.pile {
     grid-template-columns: repeat(7, var(--card-w));
     gap: var(--pile-gap);
     justify-content: space-between;
-    margin-top: 16px;
+    margin-top: 8px;
   }
 
   .tableau .pile {
@@ -670,7 +670,7 @@ button.pile {
     grid-template-columns: repeat(7, var(--card-w));
     gap: var(--pile-gap);
     justify-content: space-between;
-    margin-top: 6px;
+    margin-top: 3px;
   }
 
   .tableau .pile {
