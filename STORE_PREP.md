@@ -19,6 +19,7 @@ Ready:
 - Separate game folders under `games/`
 - Klondike Solitaire
 - FreeCell
+- Spider Solitaire
 - Per-game controls and persistence
 - Local/session persistence
 

@@ -1,8 +1,8 @@
 {
-  "name": "leave-you-alone-games-solitaire",
+  "name": "leave-me-alone-games",
   "version": "1.0.0",
-  "description": "A quiet, offline Klondike Solitaire game built with plain HTML, CSS, and JavaScript.",
-  "main": "app.js",
+  "description": "A quiet, offline game collection built with plain HTML, CSS, and JavaScript.",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

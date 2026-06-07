@@ -8,6 +8,7 @@ The app is designed for mobile-first play with no ads, accounts, tracking, analy
 
 - Klondike Solitaire: `games/klondike/`
 - FreeCell: `games/freecell/`
+- Spider Solitaire: `games/spider/`
 
 ## Structure
 
@@ -16,6 +17,7 @@ The app is designed for mobile-first play with no ads, accounts, tracking, analy
 - `launcher.js` - app-level service worker registration
 - `games/klondike/` - Klondike HTML, CSS, and JS
 - `games/freecell/` - FreeCell HTML, CSS, and JS
+- `games/spider/` - Spider Solitaire HTML, CSS, and JS
 - `manifest.webmanifest` - installable app metadata
 - `sw.js` - offline cache service worker
 - `icons/` - home-screen and app icons
