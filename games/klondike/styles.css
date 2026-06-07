@@ -83,11 +83,25 @@ body.touch-dragging {
   touch-action: none;
 }
 
-button {
+button,
+.button-link {
   font: inherit;
   touch-action: manipulation;
   -webkit-user-select: none;
   user-select: none;
+}
+
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 6px;
+  padding: 0.46rem 0.65rem;
+  color: var(--felt-highlight);
+  background: rgba(11, 36, 28, 0.44);
+  text-decoration: none;
 }
 
 .game-shell {

@@ -1,6 +1,6 @@
 # iOS and Android Store Prep
 
-This project is currently a static web/PWA version of the game. It is ready for browser play and home-screen installation, but native store release requires platform packaging.
+This project is currently a static web/PWA version of the app. It is ready for browser play and home-screen installation, but native store release requires platform packaging.
 
 ## Current Build Status
 
@@ -16,9 +16,10 @@ Ready:
 - No tracking scripts
 - No external network calls except service worker requests for same-origin app files
 - Mobile portrait and landscape layouts
-- Draw 1 / Draw 3
-- Undo
-- Auto Finish
+- Separate game folders under `games/`
+- Klondike Solitaire
+- FreeCell
+- Per-game controls and persistence
 - Local/session persistence
 
 Needs before store submission:
@@ -40,7 +41,7 @@ Recommended wrapper:
 
 - Swift or SwiftUI iOS app
 - `WKWebView`
-- Bundle `index.html`, `styles.css`, `app.js`, `manifest.webmanifest`, `sw.js`, and `icons/`
+- Bundle `index.html`, `launcher.css`, `launcher.js`, `manifest.webmanifest`, `sw.js`, `icons/`, and `games/`
 - Load `index.html` from the app bundle
 - Disable native scrolling/bouncing in the `WKWebView` scroll view
 - Test on real iPhone and iPad in portrait and landscape

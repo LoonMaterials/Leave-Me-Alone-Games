@@ -1,10 +1,10 @@
 # Privacy Policy
 
-Solitaire That Leaves You Alone does not collect, sell, share, or transmit personal data.
+Leave Me Alone Games does not collect, sell, share, or transmit personal data.
 
 ## Data Collection
 
-The game does not use:
+The app does not use:
 
 - Accounts
 - Ads
@@ -16,17 +16,16 @@ The game does not use:
 
 ## Local Storage
 
-The game stores a small amount of data locally on the player's device:
+The app stores a small amount of data locally on the player's device:
 
-- Selected background theme
-- Draw 1 / Draw 3 preference
+- Selected game settings
 - Current in-session game state
 
 This data stays on the device. It is not sent to the developer or any third party.
 
 ## Children
 
-The game is a general card game and does not knowingly collect information from children or adults.
+The app contains general games and does not knowingly collect information from children or adults.
 
 ## Contact
 
