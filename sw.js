@@ -1,4 +1,4 @@
-const CACHE_NAME = "leave-me-alone-games-v15";
+const CACHE_NAME = "leave-me-alone-games-v16";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -17,6 +17,10 @@ const APP_SHELL = [
   "./games/spider/index.html",
   "./games/spider/styles.css?v=20260607-spider-3",
   "./games/spider/app.js?v=20260607-spider-3",
+  "./games/pyramid/",
+  "./games/pyramid/index.html",
+  "./games/pyramid/styles.css?v=20260614-pyramid-1",
+  "./games/pyramid/app.js?v=20260614-pyramid-1",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
