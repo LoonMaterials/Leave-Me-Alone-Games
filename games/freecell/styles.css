@@ -74,7 +74,8 @@ button,
   touch-action: manipulation;
 }
 
-.theme-control {
+.theme-control,
+.language-control {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -82,7 +83,8 @@ button,
   font-size: 0.9rem;
 }
 
-#theme-select {
+#theme-select,
+#language-select {
   min-height: 36px;
   border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 6px;
@@ -334,7 +336,8 @@ p {
 
   .title-block,
   .button-link,
-  .theme-control {
+  .theme-control,
+  .language-control {
     display: none;
   }
 
@@ -378,12 +381,14 @@ p {
   button,
   .button-link,
   #theme-select,
+  #language-select,
   .status {
     padding: 0.25rem 0.45rem;
     font-size: 0.8rem;
   }
 
-  .theme-control {
+  .theme-control,
+  .language-control {
     display: none;
   }
 

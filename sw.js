@@ -1,26 +1,27 @@
-const CACHE_NAME = "leave-me-alone-games-v16";
+const CACHE_NAME = "leave-me-alone-games-v17";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./launcher.css?v=20260607-app-1",
+  "./launcher.css?v=20260614-app-2",
   "./launcher.js?v=20260607-app-1",
+  "./i18n.js?v=20260614-i18n-1",
   "./manifest.webmanifest?v=20260607-app-1",
   "./games/klondike/",
   "./games/klondike/index.html",
-  "./games/klondike/styles.css?v=20260607-klondike-4",
-  "./games/klondike/app.js?v=20260607-klondike-4",
+  "./games/klondike/styles.css?v=20260614-klondike-5",
+  "./games/klondike/app.js?v=20260614-klondike-5",
   "./games/freecell/",
   "./games/freecell/index.html",
-  "./games/freecell/styles.css?v=20260607-freecell-9",
-  "./games/freecell/app.js?v=20260607-freecell-9",
+  "./games/freecell/styles.css?v=20260614-freecell-10",
+  "./games/freecell/app.js?v=20260614-freecell-10",
   "./games/spider/",
   "./games/spider/index.html",
-  "./games/spider/styles.css?v=20260607-spider-3",
-  "./games/spider/app.js?v=20260607-spider-3",
+  "./games/spider/styles.css?v=20260614-spider-4",
+  "./games/spider/app.js?v=20260614-spider-4",
   "./games/pyramid/",
   "./games/pyramid/index.html",
-  "./games/pyramid/styles.css?v=20260614-pyramid-1",
-  "./games/pyramid/app.js?v=20260614-pyramid-1",
+  "./games/pyramid/styles.css?v=20260614-pyramid-2",
+  "./games/pyramid/app.js?v=20260614-pyramid-2",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
@@ -50,6 +51,7 @@ self.addEventListener("fetch", (event) => {
     url.pathname.endsWith("/index.html") ||
     url.pathname.endsWith("/launcher.css") ||
     url.pathname.endsWith("/launcher.js") ||
+    url.pathname.endsWith("/i18n.js") ||
     url.pathname.endsWith("/styles.css") ||
     url.pathname.endsWith("/app.js") ||
     url.pathname.endsWith("/manifest.webmanifest");

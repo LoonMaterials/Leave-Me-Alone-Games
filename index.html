@@ -10,38 +10,50 @@
     <title>Leave Me Alone Games</title>
     <link rel="manifest" href="manifest.webmanifest?v=20260607-app-1">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <link rel="stylesheet" href="launcher.css?v=20260607-app-1">
+    <link rel="stylesheet" href="launcher.css?v=20260614-app-2">
   </head>
   <body>
     <main class="app-shell">
       <header class="app-header">
-        <h1>Leave Me Alone Games</h1>
-        <p>Quiet games. No ads. No accounts. No noise.</p>
+        <h1 data-i18n="appTitle">Leave Me Alone Games</h1>
+        <p data-i18n="appSubtitle">Quiet games. No ads. No accounts. No noise.</p>
+        <label class="language-control" for="language-select">
+          <span data-i18n="language">Language</span>
+          <select id="language-select" aria-label="Language" data-i18n-aria="selectLanguage">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="zh">Mandarin</option>
+          </select>
+        </label>
       </header>
 
-      <section class="game-grid" aria-label="Games">
+      <section class="game-grid" aria-label="Games" data-i18n-aria="games">
         <a class="game-card" href="games/klondike/index.html">
-          <span class="game-title">Klondike Solitaire</span>
-          <span class="game-meta">Draw 1 / Draw 3</span>
+          <span class="game-title" data-i18n="klondikeTitle">Klondike Solitaire</span>
+          <span class="game-meta" data-i18n="klondikeMeta">Draw 1 / Draw 3</span>
         </a>
 
         <a class="game-card" href="games/freecell/index.html">
-          <span class="game-title">FreeCell</span>
-          <span class="game-meta">Four free cells</span>
+          <span class="game-title" data-i18n="freecellTitle">FreeCell</span>
+          <span class="game-meta" data-i18n="freecellMeta">Four free cells</span>
         </a>
 
         <a class="game-card" href="games/spider/index.html">
-          <span class="game-title">Spider Solitaire</span>
-          <span class="game-meta">One, two, or four suits</span>
+          <span class="game-title" data-i18n="spiderTitle">Spider Solitaire</span>
+          <span class="game-meta" data-i18n="spiderMeta">One, two, or four suits</span>
         </a>
 
         <a class="game-card" href="games/pyramid/index.html">
-          <span class="game-title">Pyramid Solitaire</span>
-          <span class="game-meta">Pair cards to make 13</span>
+          <span class="game-title" data-i18n="pyramidTitle">Pyramid Solitaire</span>
+          <span class="game-meta" data-i18n="pyramidMeta">Pair cards to make 13</span>
         </a>
       </section>
     </main>
 
+    <span hidden data-i18n-title="appTitle"></span>
+    <script src="i18n.js?v=20260614-i18n-1"></script>
     <script src="launcher.js?v=20260607-app-1"></script>
   </body>
 </html>

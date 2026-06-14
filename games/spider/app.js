@@ -22,6 +22,15 @@
     win: document.getElementById("win-message")
   };
 
+  function t(key, values) {
+    return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key;
+  }
+
+  function applyLanguage() {
+    if (window.LMAG_I18N) window.LMAG_I18N.apply(document);
+    render();
+  }
+
   let state = null;
   let selected = null;
   let drag = null;
@@ -181,7 +190,7 @@
     el.dataset.sourceType = source.type;
     el.dataset.sourceIndex = String(source.index);
     if (source.cardIndex !== undefined) el.dataset.cardIndex = String(source.cardIndex);
-    el.setAttribute("aria-label", card.faceUp ? `${rankLabel(card.rank)} ${SUIT_LABELS[card.suit]}` : "Face down card");
+    el.setAttribute("aria-label", card.faceUp ? `${rankLabel(card.rank)} ${SUIT_LABELS[card.suit]}` : t("faceDownCard"));
 
     if (card.faceUp) {
       const label = `${rankLabel(card.rank)}${SUIT_LABELS[card.suit]}`;
@@ -226,7 +235,7 @@
 
     els.stock.classList.toggle("has-cards", state.stock.length > 0);
     els.stock.disabled = !state.stock.length || state.won;
-    els.stock.setAttribute("aria-label", state.stock.length ? "Deal from stock" : "Stock empty");
+    els.stock.setAttribute("aria-label", state.stock.length ? t("dealFromStock") : t("stockEmpty"));
     els.modeSelect.value = state.mode || "one";
 
     for (let index = 0; index < 8; index += 1) {
@@ -244,7 +253,7 @@
       els.tableau.appendChild(pile);
     });
 
-    els.status.textContent = state.won ? "Complete" : "";
+    els.status.textContent = state.won ? t("complete") : "";
     els.win.hidden = !state.won;
     saveState();
   }
@@ -502,6 +511,7 @@
   document.addEventListener("gesturestart", preventGestureZoom);
   document.addEventListener("gesturechange", preventGestureZoom);
   document.addEventListener("gestureend", preventGestureZoom);
+  document.addEventListener("lmag:languagechange", applyLanguage);
 
   setTheme(getStoredTheme());
   setMode(getStoredMode());

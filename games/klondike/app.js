@@ -46,6 +46,15 @@
     winMessage: document.getElementById("win-message")
   };
 
+  function t(key, values) {
+    return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key;
+  }
+
+  function applyLanguage() {
+    if (window.LMAG_I18N) window.LMAG_I18N.apply(document);
+    render();
+  }
+
   function createDeck() {
     let id = 0;
     return SUITS.flatMap((suit) =>
@@ -132,7 +141,7 @@
   }
 
   function render() {
-    els.status.textContent = `${state.moves} move${state.moves === 1 ? "" : "s"}`;
+    els.status.textContent = t(state.moves === 1 ? "moves" : "movesPlural", { count: state.moves });
     els.winMessage.hidden = !state.won;
     els.autoFinish.disabled = state.won || !canAutoFinish();
     els.undo.disabled = !state.undoSnapshot;
@@ -144,7 +153,8 @@
 
   function renderStock() {
     els.stock.className = `pile stock ${state.stock.length ? "has-cards" : "empty"}`;
-    els.stock.title = state.stock.length ? `Draw ${state.drawCount}` : "Recycle waste";
+    els.stock.dataset.label = t("reset");
+    els.stock.title = state.stock.length ? `${t("draw")} ${state.drawCount}` : t("recycleWaste");
   }
 
   function renderWaste() {
@@ -170,7 +180,7 @@
     SUITS.forEach((suit) => {
       const pile = pileElement("foundation", suit);
       pile.dataset.suit = SUIT_LABELS[suit];
-      pile.setAttribute("aria-label", `${suitName(suit)} foundation`);
+      pile.setAttribute("aria-label", t("foundation", { suit: suitName(suit) }));
       const card = top(state.foundations[suit]);
       if (card) {
         pile.appendChild(cardElement(card, {
@@ -186,7 +196,7 @@
     clear(els.tableau);
     state.tableau.forEach((cards, pileIndex) => {
       const pile = pileElement("tableau", String(pileIndex));
-      pile.setAttribute("aria-label", `Tableau pile ${pileIndex + 1}`);
+      pile.setAttribute("aria-label", t("tableauPile", { number: pileIndex + 1 }));
       let stackY = 0;
 
       cards.forEach((card, cardIndex) => {
@@ -731,7 +741,7 @@
   }
 
   function suitName(suit) {
-    return { S: "Spades", H: "Hearts", D: "Diamonds", C: "Clubs" }[suit];
+    return { S: t("spades"), H: t("hearts"), D: t("diamonds"), C: t("clubs") }[suit];
   }
 
   function top(cards) {
@@ -928,6 +938,7 @@
   document.addEventListener("gesturestart", preventGestureZoom);
   document.addEventListener("gesturechange", preventGestureZoom);
   document.addEventListener("gestureend", preventGestureZoom);
+  document.addEventListener("lmag:languagechange", applyLanguage);
   window.addEventListener("resize", rerenderForViewportChange);
   window.addEventListener("orientationchange", rerenderForViewportChange);
   applyTheme(savedTheme());

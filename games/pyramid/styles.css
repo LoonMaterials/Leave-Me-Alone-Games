@@ -82,7 +82,8 @@ button:disabled {
   opacity: 0.45;
 }
 
-.theme-control {
+.theme-control,
+.language-control {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -90,7 +91,8 @@ button:disabled {
   font-size: 0.9rem;
 }
 
-#theme-select {
+#theme-select,
+#language-select {
   min-height: 36px;
   border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 6px;
@@ -219,11 +221,11 @@ button.pile {
 }
 
 .stock::after {
-  content: "Draw";
+  content: attr(data-label);
 }
 
 .waste::after {
-  content: "Waste";
+  content: attr(data-label);
 }
 
 .removed::after {
@@ -329,7 +331,8 @@ button.pile {
 
   .title-block,
   .button-link,
-  .theme-control {
+  .theme-control,
+  .language-control {
     display: none;
   }
 
@@ -372,12 +375,14 @@ button.pile {
   button,
   .button-link,
   #theme-select,
+  #language-select,
   .status {
     padding: 0.25rem 0.45rem;
     font-size: 0.8rem;
   }
 
-  .theme-control {
+  .theme-control,
+  .language-control {
     display: none;
   }
 

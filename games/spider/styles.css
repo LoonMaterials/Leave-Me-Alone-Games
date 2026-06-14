@@ -82,6 +82,7 @@ button:disabled {
 }
 
 .theme-control,
+.language-control,
 .mode-control {
   display: inline-flex;
   align-items: center;
@@ -91,6 +92,7 @@ button:disabled {
 }
 
 #theme-select,
+#language-select,
 #mode-select {
   min-height: 36px;
   border: 1px solid rgba(255, 255, 255, 0.24);
@@ -234,7 +236,7 @@ button.pile {
 }
 
 .stock::after {
-  content: "Deal";
+  content: attr(data-label);
 }
 
 .completed-pile::after {
@@ -352,6 +354,7 @@ button.pile {
   .title-block,
   .button-link,
   .theme-control,
+  .language-control,
   .mode-control {
     display: none;
   }
@@ -391,6 +394,7 @@ button.pile {
   button,
   .button-link,
   #theme-select,
+  #language-select,
   #mode-select,
   .status {
     padding: 0.25rem 0.45rem;
@@ -398,6 +402,7 @@ button.pile {
   }
 
   .theme-control,
+  .language-control,
   .mode-control {
     display: none;
   }

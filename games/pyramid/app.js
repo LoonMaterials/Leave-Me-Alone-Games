@@ -20,6 +20,15 @@
     win: document.getElementById("win-message")
   };
 
+  function t(key, values) {
+    return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key;
+  }
+
+  function applyLanguage() {
+    if (window.LMAG_I18N) window.LMAG_I18N.apply(document);
+    render();
+  }
+
   let state = null;
   let selected = null;
   let undoSnapshot = null;
@@ -267,9 +276,9 @@
   }
 
   function stockLabel() {
-    if (state.stock.length) return "Draw from stock";
-    if (state.waste.length && !state.recycleUsed) return "Recycle waste pile";
-    return "Stock empty";
+    if (state.stock.length) return t("drawFromStock");
+    if (state.waste.length && !state.recycleUsed) return t("recycleWastePile");
+    return t("stockEmpty");
   }
 
   function render() {
@@ -277,7 +286,7 @@
     renderStock();
     renderWaste();
     renderRemoved();
-    els.status.textContent = state.won ? "Complete" : "";
+    els.status.textContent = state.won ? t("complete") : "";
     els.win.hidden = !state.won;
     saveState();
   }
@@ -381,6 +390,7 @@
   document.addEventListener("gesturestart", preventGestureZoom);
   document.addEventListener("gesturechange", preventGestureZoom);
   document.addEventListener("gestureend", preventGestureZoom);
+  document.addEventListener("lmag:languagechange", applyLanguage);
 
   setTheme(getStoredTheme());
   state = loadState() || freshState();
