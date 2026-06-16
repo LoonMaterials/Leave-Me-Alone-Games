@@ -331,8 +331,11 @@ button.pile {
 
   .title-block,
   .button-link,
-  .theme-control,
   .language-control {
+    display: none;
+  }
+
+  .theme-control span {
     display: none;
   }
 
@@ -381,8 +384,11 @@ button.pile {
     font-size: 0.8rem;
   }
 
-  .theme-control,
   .language-control {
+    display: none;
+  }
+
+  .theme-control span {
     display: none;
   }
 
