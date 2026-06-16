@@ -26,7 +26,7 @@ body {
 }
 
 .app-shell {
-  width: min(980px, calc(100% - 28px));
+  width: min(1120px, calc(100% - 28px));
   min-height: 100dvh;
   margin: 0 auto;
   padding: clamp(24px, 5vw, 54px) 0;
@@ -73,12 +73,12 @@ body {
 
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
   gap: 14px;
 }
 
 .game-card {
-  min-height: 132px;
+  min-height: 120px;
   border: 1px solid var(--panel-border);
   border-radius: 8px;
   padding: 18px;
@@ -90,6 +90,12 @@ body {
   gap: 7px;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+}
+
+.game-card-empty {
+  opacity: 0.52;
+  border-style: dashed;
+  cursor: default;
 }
 
 .game-card:focus-visible {
