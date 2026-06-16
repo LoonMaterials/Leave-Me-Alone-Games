@@ -1,10 +1,10 @@
-const CACHE_NAME = "leave-me-alone-games-v19";
+const CACHE_NAME = "leave-me-alone-games-v20";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./launcher.css?v=20260616-app-3",
+  "./launcher.css?v=20260616-app-4",
   "./launcher.js?v=20260607-app-1",
-  "./i18n.js?v=20260616-i18n-2",
+  "./i18n.js?v=20260616-i18n-3",
   "./manifest.webmanifest?v=20260607-app-1",
   "./games/klondike/",
   "./games/klondike/index.html",
@@ -26,6 +26,10 @@ const APP_SHELL = [
   "./games/tripeaks/index.html",
   "./games/tripeaks/styles.css?v=20260616-tripeaks-1",
   "./games/tripeaks/app.js?v=20260616-tripeaks-1",
+  "./games/golf/",
+  "./games/golf/index.html",
+  "./games/golf/styles.css?v=20260616-golf-1",
+  "./games/golf/app.js?v=20260616-golf-1",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
