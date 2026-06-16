@@ -9,6 +9,9 @@ The app is designed for mobile-first play with no ads, accounts, tracking, analy
 - Klondike Solitaire: `games/klondike/`
 - FreeCell: `games/freecell/`
 - Spider Solitaire: `games/spider/`
+- Pyramid Solitaire: `games/pyramid/`
+- Tri-Peaks Solitaire: `games/tripeaks/`
+- Golf Solitaire: `games/golf/`
 
 ## Structure
 
@@ -18,6 +21,9 @@ The app is designed for mobile-first play with no ads, accounts, tracking, analy
 - `games/klondike/` - Klondike HTML, CSS, and JS
 - `games/freecell/` - FreeCell HTML, CSS, and JS
 - `games/spider/` - Spider Solitaire HTML, CSS, and JS
+- `games/pyramid/` - Pyramid Solitaire HTML, CSS, and JS
+- `games/tripeaks/` - Tri-Peaks Solitaire HTML, CSS, and JS
+- `games/golf/` - Golf Solitaire HTML, CSS, and JS
 - `manifest.webmanifest` - installable app metadata
 - `sw.js` - offline cache service worker
 - `icons/` - home-screen and app icons

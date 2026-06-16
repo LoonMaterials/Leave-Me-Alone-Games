@@ -8,16 +8,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LoonMaterials/Leave-You-Alone-Games-Solitaire.git"
+    "url": "git+https://github.com/LoonMaterials/Leave-You-Alone-Games.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/LoonMaterials/Leave-You-Alone-Games-Solitaire/issues"
+    "url": "https://github.com/LoonMaterials/Leave-You-Alone-Games/issues"
   },
-  "homepage": "https://github.com/LoonMaterials/Leave-You-Alone-Games-Solitaire#readme",
+  "homepage": "https://github.com/LoonMaterials/Leave-You-Alone-Games#readme",
   "dependencies": {
     "@capacitor/cli": "^8.4.0",
     "@capacitor/core": "^8.4.0",

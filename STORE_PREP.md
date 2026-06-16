@@ -20,6 +20,9 @@ Ready:
 - Klondike Solitaire
 - FreeCell
 - Spider Solitaire
+- Pyramid Solitaire
+- Tri-Peaks Solitaire
+- Golf Solitaire
 - Per-game controls and persistence
 - Local/session persistence
 

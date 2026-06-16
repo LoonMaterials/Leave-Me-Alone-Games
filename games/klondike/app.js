@@ -229,11 +229,15 @@
 
     if (card.faceUp) {
       const label = cardLabel(card);
-      el.innerHTML = `
-        <span class="corner">${label}</span>
-        <span class="center">${SUIT_LABELS[card.suit]}</span>
-        <span class="corner bottom">${label}</span>
-      `;
+      const top = document.createElement("span");
+      top.className = "corner";
+      top.textContent = label;
+      const center = document.createElement("span");
+      center.className = "center";
+      center.textContent = SUIT_LABELS[card.suit];
+      const bottom = top.cloneNode(true);
+      bottom.className = "corner bottom";
+      el.append(top, center, bottom);
     }
 
     if (options.source && isSelectedCard(options.source)) {
