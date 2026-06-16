@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#2f6f58">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Tri-Peaks">
+    <meta name="apple-mobile-web-app-title" content="Yukon">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Tri-Peaks Solitaire</title>
+    <title>Yukon Solitaire</title>
     <link rel="manifest" href="../../manifest.webmanifest?v=20260607-app-1">
     <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
-    <link rel="stylesheet" href="styles.css?v=20260616-tripeaks-1">
+    <link rel="stylesheet" href="styles.css?v=20260616-yukon-1">
   </head>
   <body>
     <main class="game-shell">
       <header class="topbar">
         <div class="title-block">
-          <h1 data-i18n="tripeaksTitle">Tri-Peaks Solitaire</h1>
+          <h1 data-i18n="yukonTitle">Yukon Solitaire</h1>
           <p data-i18n="noNoise">No ads. No accounts. No noise.</p>
         </div>
         <div class="actions">
@@ -46,15 +46,13 @@
         </div>
       </header>
 
-      <section class="board" aria-label="Tri-Peaks Solitaire board" data-i18n-aria="boardTripeaks">
-        <div id="peaks" class="peaks" aria-label="Tri-Peaks cards" data-i18n-aria="tripeaksCards"></div>
-
-        <div class="lower-row">
-          <button id="stock" class="pile stock" type="button" aria-label="Draw from stock" data-i18n-aria="drawFromStock" data-i18n-label="draw"></button>
-          <button id="waste" class="pile waste" type="button" aria-label="Waste pile" data-i18n-aria="wastePile" data-i18n-label="waste"></button>
+      <section class="board" aria-label="Yukon Solitaire board" data-i18n-aria="boardYukon">
+        <div class="upper-row">
           <div class="spacer" aria-hidden="true"></div>
-          <div id="removed" class="pile removed" aria-label="Removed cards" data-i18n-aria="removedCards"></div>
+          <div id="foundations" class="foundations" aria-label="Foundation piles" data-i18n-aria="foundationPiles"></div>
         </div>
+
+        <div id="tableau" class="tableau" aria-label="Tableau piles" data-i18n-aria="tableauPiles"></div>
       </section>
 
       <div id="win-message" class="win-message" hidden data-i18n="youWon">
@@ -62,8 +60,8 @@
       </div>
     </main>
 
-    <span hidden data-i18n-title="tripeaksTitle"></span>
+    <span hidden data-i18n-title="yukonTitle"></span>
     <script src="../../i18n.js?v=20260616-i18n-5"></script>
-    <script src="app.js?v=20260616-tripeaks-1"></script>
+    <script src="app.js?v=20260616-yukon-1"></script>
   </body>
 </html>

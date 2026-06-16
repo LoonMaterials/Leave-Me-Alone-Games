@@ -12,6 +12,7 @@ The app is designed for mobile-first play with no ads, accounts, tracking, analy
 - Pyramid Solitaire: `games/pyramid/`
 - Tri-Peaks Solitaire: `games/tripeaks/`
 - Golf Solitaire: `games/golf/`
+- Yukon Solitaire: `games/yukon/`
 
 ## Structure
 
@@ -24,6 +25,7 @@ The app is designed for mobile-first play with no ads, accounts, tracking, analy
 - `games/pyramid/` - Pyramid Solitaire HTML, CSS, and JS
 - `games/tripeaks/` - Tri-Peaks Solitaire HTML, CSS, and JS
 - `games/golf/` - Golf Solitaire HTML, CSS, and JS
+- `games/yukon/` - Yukon Solitaire HTML, CSS, and JS
 - `manifest.webmanifest` - installable app metadata
 - `sw.js` - offline cache service worker
 - `icons/` - home-screen and app icons

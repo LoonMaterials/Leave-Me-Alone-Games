@@ -23,6 +23,7 @@ Ready:
 - Pyramid Solitaire
 - Tri-Peaks Solitaire
 - Golf Solitaire
+- Yukon Solitaire
 - Per-game controls and persistence
 - Local/session persistence
 
