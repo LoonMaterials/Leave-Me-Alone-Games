@@ -19,6 +19,7 @@ The app is designed for mobile-first play with no ads, accounts, tracking, analy
 - `index.html` - app launcher
 - `launcher.css` - launcher layout and visual style
 - `launcher.js` - app-level service worker registration
+- `i18n.js` - shared language layer
 - `games/klondike/` - Klondike HTML, CSS, and JS
 - `games/freecell/` - FreeCell HTML, CSS, and JS
 - `games/spider/` - Spider Solitaire HTML, CSS, and JS
@@ -26,9 +27,11 @@ The app is designed for mobile-first play with no ads, accounts, tracking, analy
 - `games/tripeaks/` - Tri-Peaks Solitaire HTML, CSS, and JS
 - `games/golf/` - Golf Solitaire HTML, CSS, and JS
 - `games/yukon/` - Yukon Solitaire HTML, CSS, and JS
+- `scripts/build-www.js` - builds the Capacitor app bundle
 - `manifest.webmanifest` - installable app metadata
 - `sw.js` - offline cache service worker
 - `icons/` - home-screen and app icons
+- `ios/` - Capacitor iOS wrapper for Xcode
 
 Each game folder owns its own page, styles, and game logic. New games should be added as separate folders under `games/`.
 
@@ -47,6 +50,19 @@ See [PRIVACY.md](PRIVACY.md) for the full privacy statement.
 Open `index.html` in a browser.
 
 For phone testing, serve the folder with a static web server and open the served site from the phone.
+
+## Build For Xcode
+
+The iOS wrapper loads the generated `www/` folder. That folder is not committed because it is rebuilt from the source files.
+
+On a Mac after cloning:
+
+1. Install Node.js.
+2. Run `npm install`.
+3. Run `npm run ios:sync`.
+4. Open the generated Xcode workspace with `npm run ios:open`.
+
+After changing game files, run `npm run ios:sync` again before testing in Xcode.
 
 ## Install As An App
 

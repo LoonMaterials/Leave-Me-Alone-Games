@@ -36,25 +36,34 @@ Needs before store submission:
 - Hosted privacy policy URL
 - Age rating answers
 - Real-device test pass
-- Native iOS or Android wrapper project
+- Final native iOS or Android wrapper testing/signing
 
 ## iOS Path
 
 Native iOS App Store release requires macOS and Xcode.
 
-Recommended wrapper:
+Current wrapper:
 
-- Swift or SwiftUI iOS app
-- `WKWebView`
-- Bundle `index.html`, `launcher.css`, `launcher.js`, `manifest.webmanifest`, `sw.js`, `icons/`, and `games/`
-- Load `index.html` from the app bundle
-- Disable native scrolling/bouncing in the `WKWebView` scroll view
+- Capacitor iOS project in `ios/`
+- Source files are copied into the generated `www/` folder with `npm run build`
+- Xcode receives the current app files with `npm run ios:sync`
+- Open the Xcode workspace with `npm run ios:open`
 - Test on real iPhone and iPad in portrait and landscape
 - Distribute through TestFlight before App Review
 
-Current Apple requirement to account for:
+Fresh Mac clone:
 
-- App Store uploads after April 28, 2026 require builds using the iOS/iPadOS 26 SDK or later.
+1. Install Node.js.
+2. Install Xcode from the Mac App Store.
+3. Clone the repository.
+4. Run `npm install`.
+5. Run `npm run ios:sync`.
+6. Run `npm run ios:open`.
+7. In Xcode, choose a team/signing profile and test on a simulator or real device.
+
+Apple requirement to account for:
+
+- Check the current Xcode and SDK requirement before uploading to App Store Connect.
 
 ## Android Path
 
@@ -63,7 +72,7 @@ Recommended Android route:
 - Trusted Web Activity if publishing the hosted PWA
 - Native WebView wrapper if bundling the files locally
 - Android App Bundle (`.aab`) for Google Play
-- Target Android 15 / API level 35 or higher for new Google Play submissions under the current published requirement
+- Check the current target API requirement before uploading to Google Play
 
 Trusted Web Activity needs:
 
@@ -82,12 +91,12 @@ Those last two values come from the Android project/signing key and cannot be fi
 2. Use Lighthouse or Chrome DevTools to verify PWA installability.
 3. Create final app icon artwork.
 4. Capture phone screenshots.
-5. Decide native packaging path:
-   - iOS: Mac/Xcode `WKWebView`
+5. Keep the Capacitor iOS wrapper synced with `npm run ios:sync`.
+6. Decide Android packaging path:
    - Android: TWA or WebView wrapper
-6. Create store accounts:
+7. Create store accounts:
    - Apple Developer Program
    - Google Play Console
-7. Run beta testing:
+8. Run beta testing:
    - TestFlight for iOS
    - Internal testing track for Android
