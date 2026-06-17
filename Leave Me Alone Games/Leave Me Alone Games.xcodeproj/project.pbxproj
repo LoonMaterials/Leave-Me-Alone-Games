@@ -7,53 +7,53 @@
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
-		56A492FA2FE31E580079389E /* PBXContainerItemProxy */ = {
+		56EF9C302FE3316400074DD8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 56A492D82FE31E560079389E /* Project object */;
+			containerPortal = 56EF9C0E2FE3316200074DD8 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 56A492DF2FE31E560079389E;
+			remoteGlobalIDString = 56EF9C152FE3316200074DD8;
 			remoteInfo = "Leave Me Alone Games";
 		};
-		56A493042FE31E580079389E /* PBXContainerItemProxy */ = {
+		56EF9C3A2FE3316400074DD8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 56A492D82FE31E560079389E /* Project object */;
+			containerPortal = 56EF9C0E2FE3316200074DD8 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 56A492DF2FE31E560079389E;
+			remoteGlobalIDString = 56EF9C152FE3316200074DD8;
 			remoteInfo = "Leave Me Alone Games";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		56A492E02FE31E570079389E /* Leave Me Alone Games.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Leave Me Alone Games.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		56A492F92FE31E580079389E /* Leave Me Alone GamesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Leave Me Alone GamesTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		56A493032FE31E580079389E /* Leave Me Alone GamesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Leave Me Alone GamesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		56EF9C162FE3316200074DD8 /* Leave Me Alone Games.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Leave Me Alone Games.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		56EF9C2F2FE3316400074DD8 /* Leave Me Alone GamesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Leave Me Alone GamesTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		56EF9C392FE3316400074DD8 /* Leave Me Alone GamesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Leave Me Alone GamesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		56A4930B2FE31E580079389E /* Exceptions for "Leave Me Alone Games" folder in "Leave Me Alone Games" target */ = {
+		56EF9C412FE3316400074DD8 /* Exceptions for "Leave Me Alone Games" folder in "Leave Me Alone Games" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 56A492DF2FE31E560079389E /* Leave Me Alone Games */;
+			target = 56EF9C152FE3316200074DD8 /* Leave Me Alone Games */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		56A492E22FE31E570079389E /* Leave Me Alone Games */ = {
+		56EF9C182FE3316200074DD8 /* Leave Me Alone Games */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				56A4930B2FE31E580079389E /* Exceptions for "Leave Me Alone Games" folder in "Leave Me Alone Games" target */,
+				56EF9C412FE3316400074DD8 /* Exceptions for "Leave Me Alone Games" folder in "Leave Me Alone Games" target */,
 			);
 			path = "Leave Me Alone Games";
 			sourceTree = "<group>";
 		};
-		56A492FC2FE31E580079389E /* Leave Me Alone GamesTests */ = {
+		56EF9C322FE3316400074DD8 /* Leave Me Alone GamesTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Leave Me Alone GamesTests";
 			sourceTree = "<group>";
 		};
-		56A493062FE31E580079389E /* Leave Me Alone GamesUITests */ = {
+		56EF9C3C2FE3316400074DD8 /* Leave Me Alone GamesUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Leave Me Alone GamesUITests";
 			sourceTree = "<group>";
@@ -61,21 +61,21 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		56A492DD2FE31E560079389E /* Frameworks */ = {
+		56EF9C132FE3316200074DD8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		56A492F62FE31E580079389E /* Frameworks */ = {
+		56EF9C2C2FE3316400074DD8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		56A493002FE31E580079389E /* Frameworks */ = {
+		56EF9C362FE3316400074DD8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -85,22 +85,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		56A492D72FE31E560079389E = {
+		56EF9C0D2FE3316200074DD8 = {
 			isa = PBXGroup;
 			children = (
-				56A492E22FE31E570079389E /* Leave Me Alone Games */,
-				56A492FC2FE31E580079389E /* Leave Me Alone GamesTests */,
-				56A493062FE31E580079389E /* Leave Me Alone GamesUITests */,
-				56A492E12FE31E570079389E /* Products */,
+				56EF9C182FE3316200074DD8 /* Leave Me Alone Games */,
+				56EF9C322FE3316400074DD8 /* Leave Me Alone GamesTests */,
+				56EF9C3C2FE3316400074DD8 /* Leave Me Alone GamesUITests */,
+				56EF9C172FE3316200074DD8 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		56A492E12FE31E570079389E /* Products */ = {
+		56EF9C172FE3316200074DD8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				56A492E02FE31E570079389E /* Leave Me Alone Games.app */,
-				56A492F92FE31E580079389E /* Leave Me Alone GamesTests.xctest */,
-				56A493032FE31E580079389E /* Leave Me Alone GamesUITests.xctest */,
+				56EF9C162FE3316200074DD8 /* Leave Me Alone Games.app */,
+				56EF9C2F2FE3316400074DD8 /* Leave Me Alone GamesTests.xctest */,
+				56EF9C392FE3316400074DD8 /* Leave Me Alone GamesUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,134 +108,134 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		56A492DF2FE31E560079389E /* Leave Me Alone Games */ = {
+		56EF9C152FE3316200074DD8 /* Leave Me Alone Games */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 56A4930C2FE31E580079389E /* Build configuration list for PBXNativeTarget "Leave Me Alone Games" */;
+			buildConfigurationList = 56EF9C422FE3316400074DD8 /* Build configuration list for PBXNativeTarget "Leave Me Alone Games" */;
 			buildPhases = (
-				56A492DC2FE31E560079389E /* Sources */,
-				56A492DD2FE31E560079389E /* Frameworks */,
-				56A492DE2FE31E560079389E /* Resources */,
+				56EF9C122FE3316200074DD8 /* Sources */,
+				56EF9C132FE3316200074DD8 /* Frameworks */,
+				56EF9C142FE3316200074DD8 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				56A492E22FE31E570079389E /* Leave Me Alone Games */,
+				56EF9C182FE3316200074DD8 /* Leave Me Alone Games */,
 			);
 			name = "Leave Me Alone Games";
 			packageProductDependencies = (
 			);
 			productName = "Leave Me Alone Games";
-			productReference = 56A492E02FE31E570079389E /* Leave Me Alone Games.app */;
+			productReference = 56EF9C162FE3316200074DD8 /* Leave Me Alone Games.app */;
 			productType = "com.apple.product-type.application";
 		};
-		56A492F82FE31E580079389E /* Leave Me Alone GamesTests */ = {
+		56EF9C2E2FE3316400074DD8 /* Leave Me Alone GamesTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 56A493112FE31E580079389E /* Build configuration list for PBXNativeTarget "Leave Me Alone GamesTests" */;
+			buildConfigurationList = 56EF9C472FE3316400074DD8 /* Build configuration list for PBXNativeTarget "Leave Me Alone GamesTests" */;
 			buildPhases = (
-				56A492F52FE31E580079389E /* Sources */,
-				56A492F62FE31E580079389E /* Frameworks */,
-				56A492F72FE31E580079389E /* Resources */,
+				56EF9C2B2FE3316400074DD8 /* Sources */,
+				56EF9C2C2FE3316400074DD8 /* Frameworks */,
+				56EF9C2D2FE3316400074DD8 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				56A492FB2FE31E580079389E /* PBXTargetDependency */,
+				56EF9C312FE3316400074DD8 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				56A492FC2FE31E580079389E /* Leave Me Alone GamesTests */,
+				56EF9C322FE3316400074DD8 /* Leave Me Alone GamesTests */,
 			);
 			name = "Leave Me Alone GamesTests";
 			packageProductDependencies = (
 			);
 			productName = "Leave Me Alone GamesTests";
-			productReference = 56A492F92FE31E580079389E /* Leave Me Alone GamesTests.xctest */;
+			productReference = 56EF9C2F2FE3316400074DD8 /* Leave Me Alone GamesTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		56A493022FE31E580079389E /* Leave Me Alone GamesUITests */ = {
+		56EF9C382FE3316400074DD8 /* Leave Me Alone GamesUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 56A493142FE31E580079389E /* Build configuration list for PBXNativeTarget "Leave Me Alone GamesUITests" */;
+			buildConfigurationList = 56EF9C4A2FE3316400074DD8 /* Build configuration list for PBXNativeTarget "Leave Me Alone GamesUITests" */;
 			buildPhases = (
-				56A492FF2FE31E580079389E /* Sources */,
-				56A493002FE31E580079389E /* Frameworks */,
-				56A493012FE31E580079389E /* Resources */,
+				56EF9C352FE3316400074DD8 /* Sources */,
+				56EF9C362FE3316400074DD8 /* Frameworks */,
+				56EF9C372FE3316400074DD8 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				56A493052FE31E580079389E /* PBXTargetDependency */,
+				56EF9C3B2FE3316400074DD8 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				56A493062FE31E580079389E /* Leave Me Alone GamesUITests */,
+				56EF9C3C2FE3316400074DD8 /* Leave Me Alone GamesUITests */,
 			);
 			name = "Leave Me Alone GamesUITests";
 			packageProductDependencies = (
 			);
 			productName = "Leave Me Alone GamesUITests";
-			productReference = 56A493032FE31E580079389E /* Leave Me Alone GamesUITests.xctest */;
+			productReference = 56EF9C392FE3316400074DD8 /* Leave Me Alone GamesUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		56A492D82FE31E560079389E /* Project object */ = {
+		56EF9C0E2FE3316200074DD8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2650;
 				LastUpgradeCheck = 2650;
 				TargetAttributes = {
-					56A492DF2FE31E560079389E = {
+					56EF9C152FE3316200074DD8 = {
 						CreatedOnToolsVersion = 26.5;
 					};
-					56A492F82FE31E580079389E = {
+					56EF9C2E2FE3316400074DD8 = {
 						CreatedOnToolsVersion = 26.5;
-						TestTargetID = 56A492DF2FE31E560079389E;
+						TestTargetID = 56EF9C152FE3316200074DD8;
 					};
-					56A493022FE31E580079389E = {
+					56EF9C382FE3316400074DD8 = {
 						CreatedOnToolsVersion = 26.5;
-						TestTargetID = 56A492DF2FE31E560079389E;
+						TestTargetID = 56EF9C152FE3316200074DD8;
 					};
 				};
 			};
-			buildConfigurationList = 56A492DB2FE31E560079389E /* Build configuration list for PBXProject "Leave Me Alone Games" */;
+			buildConfigurationList = 56EF9C112FE3316200074DD8 /* Build configuration list for PBXProject "Leave Me Alone Games" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 56A492D72FE31E560079389E;
+			mainGroup = 56EF9C0D2FE3316200074DD8;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 56A492E12FE31E570079389E /* Products */;
+			productRefGroup = 56EF9C172FE3316200074DD8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				56A492DF2FE31E560079389E /* Leave Me Alone Games */,
-				56A492F82FE31E580079389E /* Leave Me Alone GamesTests */,
-				56A493022FE31E580079389E /* Leave Me Alone GamesUITests */,
+				56EF9C152FE3316200074DD8 /* Leave Me Alone Games */,
+				56EF9C2E2FE3316400074DD8 /* Leave Me Alone GamesTests */,
+				56EF9C382FE3316400074DD8 /* Leave Me Alone GamesUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		56A492DE2FE31E560079389E /* Resources */ = {
+		56EF9C142FE3316200074DD8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		56A492F72FE31E580079389E /* Resources */ = {
+		56EF9C2D2FE3316400074DD8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		56A493012FE31E580079389E /* Resources */ = {
+		56EF9C372FE3316400074DD8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -245,21 +245,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		56A492DC2FE31E560079389E /* Sources */ = {
+		56EF9C122FE3316200074DD8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		56A492F52FE31E580079389E /* Sources */ = {
+		56EF9C2B2FE3316400074DD8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		56A492FF2FE31E580079389E /* Sources */ = {
+		56EF9C352FE3316400074DD8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -269,20 +269,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		56A492FB2FE31E580079389E /* PBXTargetDependency */ = {
+		56EF9C312FE3316400074DD8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 56A492DF2FE31E560079389E /* Leave Me Alone Games */;
-			targetProxy = 56A492FA2FE31E580079389E /* PBXContainerItemProxy */;
+			target = 56EF9C152FE3316200074DD8 /* Leave Me Alone Games */;
+			targetProxy = 56EF9C302FE3316400074DD8 /* PBXContainerItemProxy */;
 		};
-		56A493052FE31E580079389E /* PBXTargetDependency */ = {
+		56EF9C3B2FE3316400074DD8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 56A492DF2FE31E560079389E /* Leave Me Alone Games */;
-			targetProxy = 56A493042FE31E580079389E /* PBXContainerItemProxy */;
+			target = 56EF9C152FE3316200074DD8 /* Leave Me Alone Games */;
+			targetProxy = 56EF9C3A2FE3316400074DD8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		56A4930D2FE31E580079389E /* Debug */ = {
+		56EF9C432FE3316400074DD8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -306,10 +306,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.redunantindustries.leave-me-alone-games.Leave-Me-Alone-Games";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -319,7 +315,7 @@
 			};
 			name = Debug;
 		};
-		56A4930E2FE31E580079389E /* Release */ = {
+		56EF9C442FE3316400074DD8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -343,10 +339,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.redunantindustries.leave-me-alone-games.Leave-Me-Alone-Games";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -356,7 +348,7 @@
 			};
 			name = Release;
 		};
-		56A4930F2FE31E580079389E /* Debug */ = {
+		56EF9C452FE3316400074DD8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -420,7 +412,7 @@
 			};
 			name = Debug;
 		};
-		56A493102FE31E580079389E /* Release */ = {
+		56EF9C462FE3316400074DD8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -477,7 +469,7 @@
 			};
 			name = Release;
 		};
-		56A493122FE31E580079389E /* Debug */ = {
+		56EF9C482FE3316400074DD8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -499,7 +491,7 @@
 			};
 			name = Debug;
 		};
-		56A493132FE31E580079389E /* Release */ = {
+		56EF9C492FE3316400074DD8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -521,7 +513,7 @@
 			};
 			name = Release;
 		};
-		56A493152FE31E580079389E /* Debug */ = {
+		56EF9C4B2FE3316400074DD8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -541,7 +533,7 @@
 			};
 			name = Debug;
 		};
-		56A493162FE31E580079389E /* Release */ = {
+		56EF9C4C2FE3316400074DD8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -564,43 +556,43 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		56A492DB2FE31E560079389E /* Build configuration list for PBXProject "Leave Me Alone Games" */ = {
+		56EF9C112FE3316200074DD8 /* Build configuration list for PBXProject "Leave Me Alone Games" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				56A4930F2FE31E580079389E /* Debug */,
-				56A493102FE31E580079389E /* Release */,
+				56EF9C452FE3316400074DD8 /* Debug */,
+				56EF9C462FE3316400074DD8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		56A4930C2FE31E580079389E /* Build configuration list for PBXNativeTarget "Leave Me Alone Games" */ = {
+		56EF9C422FE3316400074DD8 /* Build configuration list for PBXNativeTarget "Leave Me Alone Games" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				56A4930D2FE31E580079389E /* Debug */,
-				56A4930E2FE31E580079389E /* Release */,
+				56EF9C432FE3316400074DD8 /* Debug */,
+				56EF9C442FE3316400074DD8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		56A493112FE31E580079389E /* Build configuration list for PBXNativeTarget "Leave Me Alone GamesTests" */ = {
+		56EF9C472FE3316400074DD8 /* Build configuration list for PBXNativeTarget "Leave Me Alone GamesTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				56A493122FE31E580079389E /* Debug */,
-				56A493132FE31E580079389E /* Release */,
+				56EF9C482FE3316400074DD8 /* Debug */,
+				56EF9C492FE3316400074DD8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		56A493142FE31E580079389E /* Build configuration list for PBXNativeTarget "Leave Me Alone GamesUITests" */ = {
+		56EF9C4A2FE3316400074DD8 /* Build configuration list for PBXNativeTarget "Leave Me Alone GamesUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				56A493152FE31E580079389E /* Debug */,
-				56A493162FE31E580079389E /* Release */,
+				56EF9C4B2FE3316400074DD8 /* Debug */,
+				56EF9C4C2FE3316400074DD8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 56A492D82FE31E560079389E /* Project object */;
+	rootObject = 56EF9C0E2FE3316200074DD8 /* Project object */;
 }
