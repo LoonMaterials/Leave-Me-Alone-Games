@@ -362,7 +362,7 @@ p {
 
 @media (max-height: 540px) and (orientation: landscape) {
   :root {
-    --card-w: min(calc((100vw - 24px - (8 * var(--gap))) / 8), calc((100dvh - 38px) / 2.12));
+    --card-w: min(calc((100vw - max(6px, env(safe-area-inset-left)) - max(6px, env(safe-area-inset-right)) - 12px - (8 * var(--gap))) / 8), calc((100dvh - 38px) / 2.12));
     --gap: clamp(4px, 0.8vw, 10px);
     --stack-y: clamp(14px, 3.7vh, 22px);
   }

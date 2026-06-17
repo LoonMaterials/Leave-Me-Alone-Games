@@ -365,7 +365,7 @@ button.pile {
 
 @media (max-height: 540px) and (orientation: landscape) {
   :root {
-    --card-w: min(calc((100vw - 24px - (6 * var(--gap))) / 7), calc((100dvh - 48px) / 3.32));
+    --card-w: min(calc((100vw - max(6px, env(safe-area-inset-left)) - max(6px, env(safe-area-inset-right)) - 12px - (6 * var(--gap))) / 7), calc((100dvh - 48px) / 3.32));
     --stack-y: calc(var(--card-h) * 0.25);
     --gap: clamp(4px, 0.7vw, 8px);
   }

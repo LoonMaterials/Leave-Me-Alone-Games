@@ -360,7 +360,7 @@ p {
 
 @media (max-height: 540px) and (orientation: landscape) {
   :root {
-    --card-w: min(calc((100vw - 24px - (6 * var(--gap))) / 7), calc((100dvh - 42px) / 2.3));
+    --card-w: min(calc((100vw - max(6px, env(safe-area-inset-left)) - max(6px, env(safe-area-inset-right)) - 12px - (6 * var(--gap))) / 7), calc((100dvh - 42px) / 2.3));
     --gap: clamp(4px, 0.8vw, 10px);
     --face-up-stack: clamp(12px, 3.3vh, 18px);
     --face-down-stack: 5px;
