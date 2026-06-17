@@ -916,7 +916,7 @@
   }
 
   function isControlTarget(target) {
-    return Boolean(target.closest("button, input, select, option, label"));
+    return Boolean(target.closest("a, button, input, select, option, label"));
   }
 
   function registerServiceWorker() {

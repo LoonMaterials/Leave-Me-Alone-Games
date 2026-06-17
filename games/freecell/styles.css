@@ -320,7 +320,7 @@ p {
 
 @media (max-width: 700px) and (orientation: portrait) {
   :root {
-    --card-w: calc((100vw - 24px - (8 * var(--gap))) / 8);
+    --card-w: calc((100vw - 28px - (8 * var(--gap))) / 8);
     --gap: 3px;
     --stack-y: clamp(15px, 5.3vw, 24px);
   }
@@ -332,6 +332,15 @@ p {
 
   .topbar {
     min-height: 34px;
+  }
+
+  .upper-row {
+    grid-template-columns: repeat(8, var(--card-w));
+    justify-content: center;
+  }
+
+  .upper-row > .spacer {
+    display: none;
   }
 
   .title-block,
