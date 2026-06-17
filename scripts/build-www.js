@@ -15,10 +15,16 @@ const files = [
 
 const directories = ["games", "icons"];
 const textExtensions = new Set([".css", ".html", ".js", ".webmanifest"]);
+const ignoredFileNames = new Set([".DS_Store", "Thumbs.db"]);
+
+function shouldInclude(entryPath) {
+  return !ignoredFileNames.has(path.basename(entryPath));
+}
 
 function listFiles(directory) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const fullPath = path.join(directory, entry.name);
+    if (!shouldInclude(fullPath)) return [];
     return entry.isDirectory() ? listFiles(fullPath) : [fullPath];
   });
 }
@@ -70,7 +76,7 @@ function copyDirectory(relativePath) {
   fs.cpSync(source, target, {
     recursive: true,
     force: true,
-    filter: (entry) => !entry.endsWith(".DS_Store") && !entry.endsWith("Thumbs.db"),
+    filter: shouldInclude,
   });
 }
 
