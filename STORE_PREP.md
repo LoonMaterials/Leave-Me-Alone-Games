@@ -56,12 +56,14 @@ Fresh Mac clone:
 1. Install Node.js.
 2. Install Xcode from the Mac App Store.
 3. Clone the repository.
-4. Run `npm install`.
+4. Run `npm install`. This automatically rebuilds the complete `www/` bundle.
 5. Run `npm run open:ios`.
 6. In Xcode, choose a team/signing profile and test on a simulator or real device.
 
 The `open:ios` command always clears and rebuilds `www/` before Capacitor syncs,
 so stale or incomplete web files cannot silently carry into the iPhone build.
+Do not manually copy files into `www/` or `ios/App/App/public/`; both folders are
+generated from the root web app files.
 
 Apple requirement to account for:
 
