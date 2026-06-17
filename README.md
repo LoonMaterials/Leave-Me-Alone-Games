@@ -59,10 +59,14 @@ On a Mac after cloning:
 
 1. Install Node.js.
 2. Run `npm install`.
-3. Run `npm run ios:sync`.
-4. Open the generated Xcode workspace with `npm run ios:open`.
+3. Run `npm run open:ios`.
 
-After changing game files, run `npm run ios:sync` again before testing in Xcode.
+`npm run open:ios` clears and rebuilds `www/`, syncs the fresh files into the
+Capacitor iOS project, and opens Xcode. After changing any game or launcher file,
+run the same command again.
+
+To prepare and sync without opening Xcode, run `npm run sync:ios`. To rebuild
+and verify only the `www/` bundle, run `npm run prepare:ios`.
 
 ## Install As An App
 

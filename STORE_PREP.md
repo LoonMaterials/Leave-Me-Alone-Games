@@ -45,9 +45,9 @@ Native iOS App Store release requires macOS and Xcode.
 Current wrapper:
 
 - Capacitor iOS project in `ios/`
-- Source files are copied into the generated `www/` folder with `npm run build`
-- Xcode receives the current app files with `npm run ios:sync`
-- Open the Xcode workspace with `npm run ios:open`
+- Source files are copied into a clean generated `www/` folder with `npm run prepare:ios`
+- Xcode receives the current app files with `npm run sync:ios`
+- Rebuild, sync, and open the Xcode workspace with `npm run open:ios`
 - Test on real iPhone and iPad in portrait and landscape
 - Distribute through TestFlight before App Review
 
@@ -57,9 +57,11 @@ Fresh Mac clone:
 2. Install Xcode from the Mac App Store.
 3. Clone the repository.
 4. Run `npm install`.
-5. Run `npm run ios:sync`.
-6. Run `npm run ios:open`.
-7. In Xcode, choose a team/signing profile and test on a simulator or real device.
+5. Run `npm run open:ios`.
+6. In Xcode, choose a team/signing profile and test on a simulator or real device.
+
+The `open:ios` command always clears and rebuilds `www/` before Capacitor syncs,
+so stale or incomplete web files cannot silently carry into the iPhone build.
 
 Apple requirement to account for:
 
@@ -91,7 +93,7 @@ Those last two values come from the Android project/signing key and cannot be fi
 2. Use Lighthouse or Chrome DevTools to verify PWA installability.
 3. Create final app icon artwork.
 4. Capture phone screenshots.
-5. Keep the Capacitor iOS wrapper synced with `npm run ios:sync`.
+5. Keep the Capacitor iOS wrapper synced with `npm run sync:ios`.
 6. Decide Android packaging path:
    - Android: TWA or WebView wrapper
 7. Create store accounts:

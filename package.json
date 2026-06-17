@@ -4,10 +4,13 @@
   "description": "A quiet, offline game collection built with plain HTML, CSS, and JavaScript.",
   "main": "index.html",
   "scripts": {
-    "build": "node scripts/build-www.js",
-    "sync": "npm run build && npx cap sync",
-    "ios:sync": "npm run build && npx cap sync ios",
-    "ios:open": "npm run ios:sync && npx cap open ios"
+    "build": "npm run prepare:ios",
+    "prepare:ios": "node scripts/build-www.js",
+    "sync": "npm run prepare:ios && npx cap sync",
+    "sync:ios": "npm run prepare:ios && npx cap sync ios",
+    "open:ios": "npm run sync:ios && npx cap open ios",
+    "ios:sync": "npm run sync:ios",
+    "ios:open": "npm run open:ios"
   },
   "repository": {
     "type": "git",
