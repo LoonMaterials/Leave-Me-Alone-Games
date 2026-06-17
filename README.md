@@ -62,7 +62,7 @@ On a Mac after cloning:
 3. Run `npm run open:ios`.
 
 `npm install` automatically creates a complete `www/` bundle. `npm run open:ios`
-clears and rebuilds `www/` again, syncs the fresh files into the
+clears and rebuilds `www/`, removes Capacitor's previous iOS web copy, syncs the fresh files into the
 Capacitor iOS project, and opens Xcode. After changing any game or launcher file,
 run the same command again.
 

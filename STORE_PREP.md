@@ -61,7 +61,8 @@ Fresh Mac clone:
 6. In Xcode, choose a team/signing profile and test on a simulator or real device.
 
 The `open:ios` command always clears and rebuilds `www/` before Capacitor syncs,
-so stale or incomplete web files cannot silently carry into the iPhone build.
+then removes `ios/App/App/public/` before Capacitor copies the new bundle, so
+stale or incomplete web files cannot silently carry into the iPhone build.
 Do not manually copy files into `www/` or `ios/App/App/public/`; both folders are
 generated from the root web app files.
 

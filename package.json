@@ -7,8 +7,9 @@
     "postinstall": "npm run prepare:ios",
     "build": "npm run prepare:ios",
     "prepare:ios": "node scripts/build-www.js",
+    "clean:ios-web": "node scripts/clean-ios-public.js",
     "sync": "npm run prepare:ios && npx cap sync",
-    "sync:ios": "npm run prepare:ios && npx cap sync ios",
+    "sync:ios": "npm run prepare:ios && npm run clean:ios-web && npx cap sync ios",
     "open:ios": "npm run sync:ios && npx cap open ios",
     "ios:sync": "npm run sync:ios",
     "ios:open": "npm run open:ios"
