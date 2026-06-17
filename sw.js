@@ -1,4 +1,4 @@
-const CACHE_NAME = "leave-me-alone-games-v23";
+const CACHE_NAME = "leave-me-alone-games-v24";
 const APP_SHELL = [
   "./",
   "./index.html",
