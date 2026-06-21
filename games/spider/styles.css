@@ -353,8 +353,7 @@ button.pile {
 
   .title-block,
   .theme-control,
-  .language-control,
-  .mode-control {
+  .language-control {
     display: none;
   }
 
@@ -401,8 +400,7 @@ button.pile {
   }
 
   .theme-control,
-  .language-control,
-  .mode-control {
+  .language-control {
     display: none;
   }
 

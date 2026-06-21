@@ -10,7 +10,7 @@
     <title>Spider Solitaire</title>
     <link rel="manifest" href="../../manifest.webmanifest?v=20260607-app-1">
     <link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
-    <link rel="stylesheet" href="styles.css?v=20260617-landscape-1">
+    <link rel="stylesheet" href="styles.css?v=20260621-controls-1">
   </head>
   <body>
     <main class="game-shell">
@@ -18,7 +18,7 @@
         <div class="actions">
           <span id="status" class="status" aria-live="polite"></span>
           <a class="button-link" href="../../index.html" data-i18n="gameMenu">Game Menu</a>
-          <label class="theme-control" for="theme-select">
+          <label class="theme-control" for="theme-select" hidden style="display: none">
             <span data-i18n="background">Background</span>
             <select id="theme-select" aria-label="Game background" data-i18n-aria="gameBackground">
               <option value="green" data-i18n="green">Green</option>
@@ -35,7 +35,7 @@
               <option value="four" data-i18n="fourSuit">Four Suit</option>
             </select>
           </label>
-          <label class="language-control" for="language-select">
+          <label class="language-control" for="language-select" hidden style="display: none">
             <span data-i18n="language">Language</span>
             <select id="language-select" aria-label="Language" data-i18n-aria="selectLanguage">
               <option value="en">English</option>

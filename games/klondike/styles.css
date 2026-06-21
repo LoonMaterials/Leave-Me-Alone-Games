@@ -575,8 +575,7 @@ button.pile {
   }
 
   .theme-control > span,
-  .language-control > span,
-  .draw-control > span {
+  .language-control > span {
     display: none;
   }
 
@@ -689,7 +688,6 @@ button.pile {
 
   .theme-control > span,
   .language-control > span,
-  .draw-control > span,
   .status {
     display: none;
   }
