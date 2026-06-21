@@ -1,19 +1,19 @@
-const CACHE_NAME = "leave-me-alone-games-v30";
+const CACHE_NAME = "leave-me-alone-games-v31";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./launcher.css?v=20260621-settings-1",
-  "./launcher.js?v=20260621-settings-1",
+  "./launcher.css?v=20260621-settings-2",
+  "./launcher.js?v=20260621-settings-2",
   "./i18n.js?v=20260616-i18n-5",
   "./manifest.webmanifest?v=20260607-app-1",
   "./games/klondike/",
   "./games/klondike/index.html",
   "./games/klondike/styles.css?v=20260621-controls-1",
-  "./games/klondike/app.js?v=20260621-controls-1",
+  "./games/klondike/app.js?v=20260621-auto-finish-1",
   "./games/freecell/",
   "./games/freecell/index.html",
   "./games/freecell/styles.css?v=20260617-landscape-1",
-  "./games/freecell/app.js?v=20260614-freecell-10",
+  "./games/freecell/app.js?v=20260621-auto-finish-1",
   "./games/spider/",
   "./games/spider/index.html",
   "./games/spider/styles.css?v=20260621-controls-1",
@@ -33,7 +33,7 @@ const APP_SHELL = [
   "./games/yukon/",
   "./games/yukon/index.html",
   "./games/yukon/styles.css?v=20260617-landscape-1",
-  "./games/yukon/app.js?v=20260616-yukon-1",
+  "./games/yukon/app.js?v=20260621-auto-finish-1",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png"

@@ -6,6 +6,7 @@
   const RANK_LABELS = { 1: "A", 11: "J", 12: "Q", 13: "K" };
   const STORAGE_KEY = "leave-you-alone-freecell-current-game";
   const THEME_KEY = "leave-me-alone-games-theme";
+  const AUTO_FINISH_KEY = "leave-me-alone-games-auto-finish";
   const THEMES = new Set(["green", "blue", "grey", "orange"]);
 
   const els = {
@@ -33,6 +34,7 @@
   let drag = null;
   let undoSnapshot = null;
   let lastTapAt = 0;
+  let autoFinishTimer = null;
   let suppressNextClick = false;
 
   function rankLabel(rank) {
@@ -203,6 +205,7 @@
     els.status.textContent = state.won ? t("complete") : "";
     els.win.hidden = !state.won;
     saveState();
+    scheduleAutoFinish();
   }
 
   function sourceCards(source) {
@@ -254,6 +257,54 @@
     const foundation = state.foundations[suit];
     if (!foundation.length) return card.rank === 1;
     return foundation[foundation.length - 1].rank + 1 === card.rank;
+  }
+
+  function autoFinishEnabled() {
+    try {
+      return localStorage.getItem(AUTO_FINISH_KEY) !== "false";
+    } catch {
+      return true;
+    }
+  }
+
+  function drainToFoundations(game) {
+    let moved = true;
+    while (moved) {
+      moved = false;
+
+      for (let index = 0; index < game.freecells.length; index += 1) {
+        const card = game.freecells[index];
+        if (card && card.rank === game.foundations[card.suit].length + 1) {
+          game.freecells[index] = null;
+          game.foundations[card.suit].push(card);
+          moved = true;
+        }
+      }
+
+      for (const pile of game.tableau) {
+        const card = pile[pile.length - 1];
+        if (card && card.rank === game.foundations[card.suit].length + 1) {
+          game.foundations[card.suit].push(pile.pop());
+          moved = true;
+        }
+      }
+    }
+
+    game.won = SUITS.every((suit) => game.foundations[suit].length === 13);
+    return game.won;
+  }
+
+  function scheduleAutoFinish() {
+    if (autoFinishTimer) window.clearTimeout(autoFinishTimer);
+    autoFinishTimer = null;
+    if (!autoFinishEnabled() || state.won || !drainToFoundations(cloneState(state))) return;
+    autoFinishTimer = window.setTimeout(() => {
+      autoFinishTimer = null;
+      rememberUndo();
+      drainToFoundations(state);
+      selected = null;
+      render();
+    }, 250);
   }
 
   function removeFromSource(source, count) {

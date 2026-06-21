@@ -2,8 +2,10 @@
   "use strict";
 
   const THEME_KEY = "leave-me-alone-games-theme";
+  const AUTO_FINISH_KEY = "leave-me-alone-games-auto-finish";
   const THEMES = new Set(["green", "blue", "grey", "orange"]);
   const themeSelect = document.getElementById("theme-select");
+  const autoFinishToggle = document.getElementById("auto-finish-toggle");
 
   function storedTheme() {
     try {
@@ -25,8 +27,27 @@
     }
   }
 
+  function storedAutoFinish() {
+    try {
+      return localStorage.getItem(AUTO_FINISH_KEY) !== "false";
+    } catch (error) {
+      return true;
+    }
+  }
+
+  function applyAutoFinish(enabled) {
+    autoFinishToggle.checked = Boolean(enabled);
+    try {
+      localStorage.setItem(AUTO_FINISH_KEY, String(Boolean(enabled)));
+    } catch (error) {
+      // The selected setting still applies to this page.
+    }
+  }
+
   themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
+  autoFinishToggle.addEventListener("change", () => applyAutoFinish(autoFinishToggle.checked));
   applyTheme(storedTheme());
+  applyAutoFinish(storedAutoFinish());
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {

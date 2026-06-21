@@ -6,6 +6,7 @@
   const RANK_LABELS = { 1: "A", 11: "J", 12: "Q", 13: "K" };
   const STORAGE_KEY = "leave-you-alone-yukon-current-game";
   const THEME_KEY = "leave-me-alone-games-theme";
+  const AUTO_FINISH_KEY = "leave-me-alone-games-auto-finish";
   const THEMES = new Set(["green", "blue", "grey", "orange"]);
 
   const els = {
@@ -33,6 +34,7 @@
   let undoSnapshot = null;
   let suppressNextClick = false;
   let lastTapAt = 0;
+  let autoFinishTimer = null;
 
   function rankLabel(rank) {
     return RANK_LABELS[rank] || String(rank);
@@ -215,6 +217,7 @@
     els.status.textContent = state.won ? t("complete") : "";
     els.win.hidden = !state.won;
     saveState();
+    scheduleAutoFinish();
   }
 
   function stackOffset(card) {
@@ -237,6 +240,46 @@
     const foundation = state.foundations[suit];
     if (!foundation.length) return card.rank === 1;
     return foundation[foundation.length - 1].rank + 1 === card.rank;
+  }
+
+  function autoFinishEnabled() {
+    try {
+      return localStorage.getItem(AUTO_FINISH_KEY) !== "false";
+    } catch {
+      return true;
+    }
+  }
+
+  function drainToFoundations(game) {
+    if (!game.tableau.every((pile) => pile.every((card) => card.faceUp))) return false;
+
+    let moved = true;
+    while (moved) {
+      moved = false;
+      for (const pile of game.tableau) {
+        const card = pile[pile.length - 1];
+        if (card && card.rank === game.foundations[card.suit].length + 1) {
+          game.foundations[card.suit].push(pile.pop());
+          moved = true;
+        }
+      }
+    }
+
+    game.won = SUITS.every((suit) => game.foundations[suit].length === 13);
+    return game.won;
+  }
+
+  function scheduleAutoFinish() {
+    if (autoFinishTimer) window.clearTimeout(autoFinishTimer);
+    autoFinishTimer = null;
+    if (!autoFinishEnabled() || state.won || !drainToFoundations(cloneState(state))) return;
+    autoFinishTimer = window.setTimeout(() => {
+      autoFinishTimer = null;
+      rememberUndo();
+      drainToFoundations(state);
+      selected = null;
+      render();
+    }, 250);
   }
 
   function canMoveToTableau(cards, destinationIndex) {

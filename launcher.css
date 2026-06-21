@@ -77,13 +77,31 @@ body {
 }
 
 .theme-control,
-.language-control {
+.language-control,
+.auto-finish-control {
   width: fit-content;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   color: var(--text);
   font-size: 1rem;
+}
+
+.auto-finish-control {
+  min-height: 38px;
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 0.38rem 0.7rem;
+  background: rgba(10, 33, 26, 0.66);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+#auto-finish-toggle {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  accent-color: #f6efe0;
 }
 
 #theme-select,
@@ -162,10 +180,12 @@ body {
   }
 
   .theme-control,
-  .language-control {
+  .language-control,
+  .auto-finish-control {
     font-size: 0.9rem;
   }
 
+  .auto-finish-control,
   #theme-select,
   #language-select {
     min-height: 34px;

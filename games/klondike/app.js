@@ -4,6 +4,7 @@
   const RANK_LABELS = { 1: "A", 11: "J", 12: "Q", 13: "K" };
   const THEMES = ["green", "blue", "grey", "orange"];
   const THEME_STORAGE_KEY = "leave-me-alone-games-theme";
+  const AUTO_FINISH_STORAGE_KEY = "leave-me-alone-games-auto-finish";
   const DRAW_COUNT_STORAGE_KEY = "leave-you-alone-solitaire-draw-count";
   const GAME_STORAGE_KEY = "leave-you-alone-solitaire-current-game";
 
@@ -45,6 +46,7 @@
     status: document.getElementById("status"),
     winMessage: document.getElementById("win-message")
   };
+  let autoFinishTimer = null;
 
   function t(key, values) {
     return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key;
@@ -149,6 +151,7 @@
     renderWaste();
     renderFoundations();
     renderTableau();
+    scheduleAutoFinish();
   }
 
   function renderStock() {
@@ -482,6 +485,24 @@
     if (!allTableauCardsFaceUp()) return false;
     const test = cloneFinishState();
     return drainToFoundations(test).won;
+  }
+
+  function autoFinishEnabled() {
+    try {
+      return localStorage.getItem(AUTO_FINISH_STORAGE_KEY) !== "false";
+    } catch (_error) {
+      return true;
+    }
+  }
+
+  function scheduleAutoFinish() {
+    if (autoFinishTimer) window.clearTimeout(autoFinishTimer);
+    autoFinishTimer = null;
+    if (!autoFinishEnabled() || state.won || els.autoFinish.disabled) return;
+    autoFinishTimer = window.setTimeout(() => {
+      autoFinishTimer = null;
+      autoFinish();
+    }, 250);
   }
 
   function allTableauCardsFaceUp() {
