@@ -1,10 +1,10 @@
-const CACHE_NAME = "leave-me-alone-games-v36";
+const CACHE_NAME = "leave-me-alone-games-v37";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./launcher.css?v=20260627-game-sections-1",
   "./launcher.js?v=20260621-settings-2",
-  "./i18n.js?v=20260627-board-games-1",
+  "./i18n.js?v=20260627-more-board-games-1",
   "./manifest.webmanifest?v=20260607-app-1",
   "./games/klondike/",
   "./games/klondike/index.html",
@@ -50,6 +50,18 @@ const APP_SHELL = [
   "./games/dominoes/index.html",
   "./games/dominoes/styles.css?v=20260627-dominoes-1",
   "./games/dominoes/app.js?v=20260627-dominoes-1",
+  "./games/reversi/",
+  "./games/reversi/index.html",
+  "./games/reversi/styles.css?v=20260627-reversi-1",
+  "./games/reversi/app.js?v=20260627-reversi-2",
+  "./games/backgammon/",
+  "./games/backgammon/index.html",
+  "./games/backgammon/styles.css?v=20260627-backgammon-1",
+  "./games/backgammon/app.js?v=20260627-backgammon-1",
+  "./games/connect4/",
+  "./games/connect4/index.html",
+  "./games/connect4/styles.css?v=20260627-connect4-1",
+  "./games/connect4/app.js?v=20260627-connect4-1",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
