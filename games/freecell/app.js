@@ -110,7 +110,7 @@
   function setTheme(theme) {
     const nextTheme = THEMES.has(theme) ? theme : "green";
     document.body.dataset.theme = nextTheme;
-    els.themeSelect.value = nextTheme;
+    if (els.themeSelect) els.themeSelect.value = nextTheme;
     try {
       localStorage.setItem(THEME_KEY, nextTheme);
     } catch {
@@ -509,7 +509,7 @@
 
   els.newGame.addEventListener("click", startNewGame);
   els.undo.addEventListener("click", undo);
-  els.themeSelect.addEventListener("change", () => setTheme(els.themeSelect.value));
+  if (els.themeSelect) els.themeSelect.addEventListener("change", () => setTheme(els.themeSelect.value));
   document.addEventListener("contextmenu", (event) => event.preventDefault());
   document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true });
   document.addEventListener("dragstart", (event) => event.preventDefault());
