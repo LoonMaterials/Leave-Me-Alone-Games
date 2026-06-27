@@ -1,0 +1,28 @@
+:root {
+  --felt: #2f6f58; --felt-dark: #204b3d; --tile: #f8f1df; --edge: #d3bea0; --ink: #1d2926; --text: #f6efe0; --muted: rgba(246,239,224,.78); --shell-pad: clamp(6px,1.2vw,14px);
+}
+body[data-theme="blue"] { --felt: #2f5f7f; --felt-dark: #193d56; }
+body[data-theme="grey"] { --felt: #5f6867; --felt-dark: #343d3c; }
+body[data-theme="orange"] { --felt: #9a6330; --felt-dark: #5d351c; }
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; overscroll-behavior: none; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+body { min-height: 100dvh; color: var(--text); font-family: Arial, Helvetica, sans-serif; background: radial-gradient(circle at 28% 20%, rgba(255,255,255,.08), transparent 30%), linear-gradient(135deg, var(--felt), var(--felt-dark)); }
+button, a, .domino { -webkit-tap-highlight-color: transparent; }
+button, .button-link { border: 1px solid rgba(255,255,255,.26); border-radius: 6px; padding: .5rem .7rem; color: var(--text); background: rgba(12,34,27,.48); font: inherit; text-decoration: none; touch-action: manipulation; }
+button:disabled { opacity: .45; }
+.game-shell { width: 100%; height: 100dvh; padding: max(var(--shell-pad), env(safe-area-inset-top)) max(var(--shell-pad), env(safe-area-inset-right)) max(var(--shell-pad), env(safe-area-inset-bottom)) max(var(--shell-pad), env(safe-area-inset-left)); display: grid; grid-template-rows: auto minmax(0,1fr); gap: 8px; overflow: hidden; }
+.topbar { width: min(100%, 980px); margin: 0 auto; }
+.actions { display: flex; align-items: center; justify-content: flex-end; gap: 7px; flex-wrap: wrap; }
+.status { min-width: 8rem; margin-right: auto; color: var(--muted); font-size: .95rem; }
+.table { width: min(100%, 980px); height: 100%; margin: 0 auto; display: grid; grid-template-rows: auto minmax(0,1fr) auto; gap: 10px; overflow: hidden; }
+.opponent { color: var(--muted); text-align: center; min-height: 1.4rem; }
+.chain { min-height: 0; overflow: auto; border: 1px dashed rgba(255,255,255,.24); border-radius: 10px; padding: 12px; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: 8px; background: rgba(8,24,19,.18); touch-action: pan-y; }
+.hand-wrap { display: grid; grid-template-columns: auto minmax(0,1fr); align-items: center; gap: 8px; }
+.hand { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 8px; touch-action: pan-x; }
+.domino { flex: 0 0 auto; min-width: 66px; height: 36px; border: 1px solid var(--edge); border-radius: 8px; color: var(--ink); background: var(--tile); box-shadow: 0 4px 10px rgba(8,24,19,.32); display: grid; grid-template-columns: 1fr 1px 1fr; align-items: center; justify-items: center; font-weight: 900; }
+.domino::before { content: ""; width: 1px; height: 78%; background: var(--edge); grid-column: 2; }
+.domino span:first-child { grid-column: 1; }
+.domino span:last-child { grid-column: 3; }
+.domino.playable { outline: 3px solid rgba(255,228,147,.85); outline-offset: 2px; }
+.chain .domino { min-width: 56px; height: 32px; font-size: .9rem; }
+@media (max-width: 700px) and (orientation: portrait) { .game-shell { --shell-pad: 6px; gap: 6px; } button, .button-link { padding: .4rem .55rem; font-size: .86rem; } .status { min-width: 6rem; font-size: .84rem; } .hand-wrap { grid-template-columns: 1fr; } .draw-button { width: fit-content; } }

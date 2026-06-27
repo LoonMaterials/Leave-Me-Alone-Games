@@ -10,7 +10,7 @@
     <title>Leave Me Alone Games</title>
     <link rel="manifest" href="manifest.webmanifest?v=20260607-app-1">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <link rel="stylesheet" href="launcher.css?v=20260621-settings-2">
+    <link rel="stylesheet" href="launcher.css?v=20260627-game-sections-1">
   </head>
   <body>
     <main class="app-shell">
@@ -34,7 +34,7 @@
               <option value="es">Español</option>
               <option value="de">Deutsch</option>
               <option value="fr">Français</option>
-              <option value="zh">Mandarin</option>
+              <option value="zh">中文</option>
             </select>
           </label>
           <label class="auto-finish-control" for="auto-finish-toggle">
@@ -44,46 +44,89 @@
         </div>
       </header>
 
-      <section class="game-grid" aria-label="Games" data-i18n-aria="games">
-        <a class="game-card" href="games/klondike/index.html">
-          <span class="game-title" data-i18n="klondikeTitle">Klondike Solitaire</span>
-          <span class="game-meta" data-i18n="klondikeMeta">Draw 1 / Draw 3</span>
-        </a>
+      <section class="game-section" aria-labelledby="card-games-heading">
+        <div class="section-heading">
+          <h2 id="card-games-heading" data-i18n="cardGames">Card Games</h2>
+          <p data-i18n="cardGamesMeta">Solitaire favorites, ready to play.</p>
+        </div>
 
-        <a class="game-card" href="games/freecell/index.html">
-          <span class="game-title" data-i18n="freecellTitle">FreeCell</span>
-          <span class="game-meta" data-i18n="freecellMeta">Four free cells</span>
-        </a>
+        <div class="game-grid" aria-label="Card games" data-i18n-aria="cardGames">
+          <a class="game-card" href="games/klondike/index.html">
+            <span class="game-title" data-i18n="klondikeTitle">Klondike Solitaire</span>
+            <span class="game-meta" data-i18n="klondikeMeta">Draw 1 / Draw 3</span>
+          </a>
 
-        <a class="game-card" href="games/spider/index.html">
-          <span class="game-title" data-i18n="spiderTitle">Spider Solitaire</span>
-          <span class="game-meta" data-i18n="spiderMeta">One, two, or four suits</span>
-        </a>
+          <a class="game-card" href="games/freecell/index.html">
+            <span class="game-title" data-i18n="freecellTitle">FreeCell</span>
+            <span class="game-meta" data-i18n="freecellMeta">Four free cells</span>
+          </a>
 
-        <a class="game-card" href="games/pyramid/index.html">
-          <span class="game-title" data-i18n="pyramidTitle">Pyramid Solitaire</span>
-          <span class="game-meta" data-i18n="pyramidMeta">Pair cards to make 13</span>
-        </a>
+          <a class="game-card" href="games/spider/index.html">
+            <span class="game-title" data-i18n="spiderTitle">Spider Solitaire</span>
+            <span class="game-meta" data-i18n="spiderMeta">One, two, or four suits</span>
+          </a>
 
-        <a class="game-card" href="games/tripeaks/index.html">
-          <span class="game-title" data-i18n="tripeaksTitle">Tri-Peaks Solitaire</span>
-          <span class="game-meta" data-i18n="tripeaksMeta">Clear cards one rank up or down</span>
-        </a>
+          <a class="game-card" href="games/pyramid/index.html">
+            <span class="game-title" data-i18n="pyramidTitle">Pyramid Solitaire</span>
+            <span class="game-meta" data-i18n="pyramidMeta">Pair cards to make 13</span>
+          </a>
 
-        <a class="game-card" href="games/golf/index.html">
-          <span class="game-title" data-i18n="golfTitle">Golf Solitaire</span>
-          <span class="game-meta" data-i18n="golfMeta">Play the bottom card in each column</span>
-        </a>
+          <a class="game-card" href="games/tripeaks/index.html">
+            <span class="game-title" data-i18n="tripeaksTitle">Tri-Peaks Solitaire</span>
+            <span class="game-meta" data-i18n="tripeaksMeta">Clear cards one rank up or down</span>
+          </a>
 
-        <a class="game-card" href="games/yukon/index.html">
-          <span class="game-title" data-i18n="yukonTitle">Yukon Solitaire</span>
-          <span class="game-meta" data-i18n="yukonMeta">Move any face-up run</span>
-        </a>
+          <a class="game-card" href="games/golf/index.html">
+            <span class="game-title" data-i18n="golfTitle">Golf Solitaire</span>
+            <span class="game-meta" data-i18n="golfMeta">Play the bottom card in each column</span>
+          </a>
+
+          <a class="game-card" href="games/yukon/index.html">
+            <span class="game-title" data-i18n="yukonTitle">Yukon Solitaire</span>
+            <span class="game-meta" data-i18n="yukonMeta">Move any face-up run</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="game-section" aria-labelledby="board-games-heading">
+        <div class="section-heading">
+          <h2 id="board-games-heading" data-i18n="boardGames">Board Games</h2>
+          <p data-i18n="boardGamesMeta">Single player vs computer. No ads. No tracking. No accounts.</p>
+        </div>
+
+        <div class="game-grid" aria-label="Board games" data-i18n-aria="boardGames">
+          <a class="game-card" href="games/chess/index.html">
+            <span class="game-title" data-i18n="chessTitle">Chess</span>
+            <span class="game-meta" data-i18n="chessMeta">Play against the computer</span>
+          </a>
+
+          <a class="game-card" href="games/checkers/index.html">
+            <span class="game-title" data-i18n="checkersTitle">Checkers</span>
+            <span class="game-meta" data-i18n="checkersMeta">Play against the computer</span>
+          </a>
+
+          <a class="game-card" href="games/mahjong/index.html">
+            <span class="game-title" data-i18n="mahjongTitle">Mahjong</span>
+            <span class="game-meta" data-i18n="mahjongMeta">Solo tile matching</span>
+          </a>
+
+          <a class="game-card" href="games/dominoes/index.html">
+            <span class="game-title" data-i18n="dominoesTitle">Dominoes</span>
+            <span class="game-meta" data-i18n="dominoesMeta">Play against the computer</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="game-section future-section" aria-labelledby="future-games-heading">
+        <div class="section-heading">
+          <h2 id="future-games-heading" data-i18n="futureGames">Future Games</h2>
+          <p data-i18n="futureGamesMeta">A quiet spot for whatever comes next.</p>
+        </div>
       </section>
     </main>
 
     <span hidden data-i18n-title="appTitle"></span>
-    <script src="i18n.js?v=20260616-i18n-5"></script>
+    <script src="i18n.js?v=20260627-board-games-1"></script>
     <script src="launcher.js?v=20260621-settings-2"></script>
   </body>
 </html>

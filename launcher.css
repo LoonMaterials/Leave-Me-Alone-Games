@@ -121,6 +121,29 @@ body {
   gap: 14px;
 }
 
+.game-section {
+  display: grid;
+  gap: 12px;
+}
+
+.section-heading {
+  display: grid;
+  gap: 4px;
+}
+
+.section-heading h2,
+.section-heading p {
+  margin: 0;
+}
+
+.section-heading h2 {
+  font-size: clamp(1.35rem, 3vw, 2rem);
+}
+
+.section-heading p {
+  color: var(--muted);
+}
+
 .game-card {
   min-height: 120px;
   border: 1px solid var(--panel-border);
@@ -142,6 +165,18 @@ body {
   cursor: default;
 }
 
+.game-badge {
+  width: fit-content;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  padding: 0.16rem 0.48rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .game-card:focus-visible {
   outline: 3px solid rgba(255, 229, 147, 0.92);
   outline-offset: 3px;
@@ -154,6 +189,13 @@ body {
 
 .game-meta {
   color: var(--muted);
+}
+
+.future-section {
+  border: 1px dashed var(--panel-border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  background: rgba(10, 33, 26, 0.28);
 }
 
 @media (max-width: 560px) {
@@ -194,6 +236,18 @@ body {
   .game-grid {
     grid-template-columns: 1fr;
     gap: 9px;
+  }
+
+  .game-section {
+    gap: 8px;
+  }
+
+  .section-heading h2 {
+    font-size: 1.15rem;
+  }
+
+  .section-heading p {
+    font-size: 0.88rem;
   }
 
   .game-card {
