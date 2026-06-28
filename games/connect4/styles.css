@@ -17,3 +17,7 @@ button:disabled { opacity:.45; }
 .cell.red { background:radial-gradient(circle at 34% 28%, rgba(255,255,255,.38), transparent 28%), var(--red); box-shadow:inset 0 -7px 10px rgba(0,0,0,.24), 0 2px 4px rgba(0,0,0,.28); }
 .cell.yellow { background:radial-gradient(circle at 34% 28%, rgba(255,255,255,.5), transparent 28%), var(--yellow); box-shadow:inset 0 -7px 10px rgba(0,0,0,.2), 0 2px 4px rgba(0,0,0,.28); }
 @media (max-width:700px) and (orientation:portrait) { .game-shell{--shell-pad:6px; gap:6px;} button,.button-link{padding:.4rem .55rem; font-size:.86rem;} .status{min-width:5.8rem; font-size:.84rem;} }
+
+.difficulty-control { display:inline-flex; align-items:center; gap:.35rem; color:var(--muted); font-size:.9rem; }
+.difficulty-control select { border:1px solid rgba(255,255,255,.26); border-radius:6px; padding:.45rem .55rem; color:var(--text); background:rgba(12,34,27,.72); font:inherit; touch-action:manipulation; }
+@media (max-width:700px) and (orientation:portrait) { .difficulty-control{font-size:.78rem; gap:.25rem;} .difficulty-control select{padding:.4rem .55rem; font-size:.86rem;} }

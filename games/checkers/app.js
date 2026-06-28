@@ -1,11 +1,16 @@
 (function () {
   "use strict";
   const STORAGE_KEY = "leave-me-alone-checkers-current-game";
+  const DIFFICULTY_KEY = "leave-me-alone-checkers-difficulty";
   const THEME_KEY = "leave-me-alone-games-theme";
   const THEMES = new Set(["green", "blue", "grey", "orange"]);
-  const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game") };
+  const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
+  const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty") };
   let state = null, selected = null, legalTargets = [], undoSnapshot = null, lastTapAt = 0;
   function t(key, values) { return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key; }
+  function storedDifficulty() { try { const difficulty = localStorage.getItem(DIFFICULTY_KEY); return DIFFICULTIES.has(difficulty) ? difficulty : "easy"; } catch { return "easy"; } }
+  function applyDifficulty() { if (els.difficulty) els.difficulty.value = storedDifficulty(); }
+  function saveDifficulty() { if (!els.difficulty) return; try { localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy"); } catch {} }
   function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "green"; } catch { document.body.dataset.theme = "green"; } }
   function freshState() {
     const board = Array.from({ length: 8 }, () => Array(8).fill(null));
@@ -55,11 +60,27 @@
     if (state.winner) return;
     const moves = allMoves("b");
     if (!moves.length) { updateWinner(); render(); return; }
-    const captures = moves.filter((move) => move.jumped);
-    movePiece((captures.length ? captures : moves)[Math.floor(Math.random() * (captures.length ? captures.length : moves.length))]);
+    movePiece(chooseComputerMove(moves));
     state.turn = "r";
     updateWinner();
     render();
+  }
+  function chooseComputerMove(moves) {
+    const captures = moves.filter((move) => move.jumped);
+    if (storedDifficulty() !== "medium" && storedDifficulty() !== "hard") return (captures.length ? captures : moves)[Math.floor(Math.random() * (captures.length ? captures.length : moves.length))];
+    const scored = moves.map((move) => ({ move, score: checkersMoveScore(move) })).sort((a, b) => b.score - a.score);
+    const bestScore = scored[0].score;
+    const bestMoves = scored.filter((item) => item.score === bestScore).map((item) => item.move);
+    return bestMoves[Math.floor(Math.random() * bestMoves.length)];
+  }
+  function checkersMoveScore(move) {
+    const piece = state.board[move.from.row][move.from.col];
+    let score = move.jumped ? 30 : 0;
+    if (!piece.king) score += move.to.row * 2;
+    if (!piece.king && move.to.row === 7) score += 25;
+    if (move.to.col === 0 || move.to.col === 7) score += 4;
+    score += Math.random();
+    return score;
   }
   function rememberUndo() { undoSnapshot = clone(state); els.undo.disabled = false; }
   function render() {
@@ -94,7 +115,7 @@
   function preventGestureZoom(event) { event.preventDefault(); }
   function applyLanguage() { if (window.LMAG_I18N) window.LMAG_I18N.apply(document); render(); }
   function registerServiceWorker() { if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("../../sw.js").catch(() => {})); }
-  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo);
+  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty);
   document.addEventListener("contextmenu", (event) => event.preventDefault()); document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true }); document.addEventListener("dragstart", (event) => event.preventDefault()); document.addEventListener("touchmove", preventViewportMove, { passive: false }); document.addEventListener("gesturestart", preventGestureZoom); document.addEventListener("gesturechange", preventGestureZoom); document.addEventListener("gestureend", preventGestureZoom); document.addEventListener("lmag:languagechange", applyLanguage);
-  applyTheme(); state = loadState() || freshState(); updateWinner(); render(); registerServiceWorker();
+  applyTheme(); applyDifficulty(); state = loadState() || freshState(); updateWinner(); render(); registerServiceWorker();
 })();

@@ -1,38 +1,49 @@
 (function () {
   "use strict";
   const STORAGE_KEY = "leave-me-alone-dominoes-current-game";
+  const SAVE_VERSION = 2;
+  const DIFFICULTY_KEY = "leave-me-alone-dominoes-difficulty";
   const THEME_KEY = "leave-me-alone-games-theme";
   const THEMES = new Set(["green", "blue", "grey", "orange"]);
-  const els = { opponent: document.getElementById("opponent"), chain: document.getElementById("chain"), hand: document.getElementById("hand"), draw: document.getElementById("draw"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game") };
+  const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
+  const MAX_PIPS = 9;
+  const STARTING_HAND = 10;
+  const els = { opponent: document.getElementById("opponent"), chain: document.getElementById("chain"), hand: document.getElementById("hand"), draw: document.getElementById("draw"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty") };
   let state = null, undoSnapshot = null, lastTapAt = 0;
   function t(key, values) { return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key; }
+  function storedDifficulty() { try { const difficulty = localStorage.getItem(DIFFICULTY_KEY); return DIFFICULTIES.has(difficulty) ? difficulty : "easy"; } catch { return "easy"; } }
+  function applyDifficulty() { if (els.difficulty) els.difficulty.value = storedDifficulty(); }
+  function saveDifficulty() { if (!els.difficulty) return; try { localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy"); } catch {} }
   function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "green"; } catch { document.body.dataset.theme = "green"; } }
-  function makeSet() { const tiles = []; let id = 0; for (let a = 0; a <= 6; a += 1) for (let b = a; b <= 6; b += 1) tiles.push({ id: `d${id++}`, a, b }); return shuffle(tiles); }
+  function makeSet() { const tiles = []; let id = 0; for (let a = 0; a <= MAX_PIPS; a += 1) for (let b = a; b <= MAX_PIPS; b += 1) tiles.push({ id: `d${id++}`, a, b }); return shuffle(tiles); }
   function shuffle(items) { const copy = items.slice(); for (let i = copy.length - 1; i > 0; i -= 1) { const j = Math.floor(Math.random() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; } return copy; }
   function freshState() {
-    const boneyard = makeSet(), player = boneyard.splice(0, 7), computer = boneyard.splice(0, 7);
+    const boneyard = makeSet(), player = boneyard.splice(0, STARTING_HAND), computer = boneyard.splice(0, STARTING_HAND);
     const starter = boneyard.shift();
-    return { player, computer, boneyard, chain: [starter], left: starter.a, right: starter.b, turn: "p", winner: null, message: "" };
+    return { version: SAVE_VERSION, player, computer, boneyard, chain: [starter], left: starter.a, right: starter.b, turn: "p", winner: null, message: "" };
   }
   function clone(source) { return JSON.parse(JSON.stringify(source)); }
   function saveState() { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-  function loadState() { try { const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY)); return saved?.player && saved?.computer && saved?.chain ? saved : null; } catch { return null; } }
+  function loadState() { try { const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY)); return saved?.version === SAVE_VERSION && saved?.player && saved?.computer && saved?.chain ? saved : null; } catch { return null; } }
   function canPlay(tile) { return tile.a === state.left || tile.b === state.left || tile.a === state.right || tile.b === state.right; }
-  function playableSide(tile) {
-    if (tile.a === state.left || tile.b === state.left) return "left";
-    if (tile.a === state.right || tile.b === state.right) return "right";
-    return null;
+  function playableSides(tile) {
+    const sides = [];
+    if (tile.a === state.left || tile.b === state.left) sides.push("left");
+    if (tile.a === state.right || tile.b === state.right) sides.push("right");
+    return sides;
   }
+  function playableSide(tile) { return playableSides(tile)[0] || null; }
   function orient(tile, side) {
     if (side === "left") return tile.b === state.left ? { ...tile, a: tile.a, b: tile.b } : { ...tile, a: tile.b, b: tile.a };
     return tile.a === state.right ? { ...tile, a: tile.a, b: tile.b } : { ...tile, a: tile.b, b: tile.a };
   }
-  function playTile(owner, tileId) {
+  function playTile(owner, tileId, forcedSide) {
     const hand = owner === "p" ? state.player : state.computer;
     const index = hand.findIndex((tile) => tile.id === tileId);
     if (index < 0) return false;
     const tile = hand[index];
-    const side = playableSide(tile);
+    const sides = playableSides(tile);
+    const side = forcedSide && sides.includes(forcedSide) ? forcedSide : sides[0];
     if (!side) return false;
     const placed = orient(tile, side);
     hand.splice(index, 1);
@@ -47,11 +58,35 @@
     hand.push(state.boneyard.shift());
     return true;
   }
+  function computerCandidates() {
+    return state.computer.flatMap((tile) => playableSides(tile).map((side) => ({ tile, side })));
+  }
+  function sideAfter(candidate) {
+    const placed = orient(candidate.tile, candidate.side);
+    return candidate.side === "left" ? placed.a : placed.b;
+  }
+  function mediumDominoScore(candidate) {
+    const exposed = sideAfter(candidate);
+    const remainingHand = state.computer.filter((tile) => tile.id !== candidate.tile.id);
+    const futureMatches = remainingHand.filter((tile) => tile.a === exposed || tile.b === exposed).length;
+    const pipTotal = candidate.tile.a + candidate.tile.b;
+    const doubleBonus = candidate.tile.a === candidate.tile.b ? 5 : 0;
+    const endMatchBonus = candidate.tile.a === state.left && candidate.tile.b === state.right ? 2 : 0;
+    return pipTotal + futureMatches * 3 + doubleBonus + endMatchBonus;
+  }
+  function chooseComputerPlay() {
+    const candidates = computerCandidates();
+    if (!candidates.length) return null;
+    if (storedDifficulty() === "medium" || storedDifficulty() === "hard") {
+      return candidates.slice().sort((a, b) => mediumDominoScore(b) - mediumDominoScore(a))[0];
+    }
+    return candidates[0];
+  }
   function computerTurn() {
     if (state.winner) return;
-    let tile = state.computer.find(canPlay);
-    while (!tile && state.boneyard.length) { drawTile("c"); tile = state.computer.find(canPlay); }
-    if (tile) playTile("c", tile.id);
+    let play = chooseComputerPlay();
+    while (!play && state.boneyard.length) { drawTile("c"); play = chooseComputerPlay(); }
+    if (play) playTile("c", play.tile.id, play.side);
     state.turn = "p";
     if (!state.player.some(canPlay) && !state.computer.some(canPlay) && !state.boneyard.length) {
       const playerPips = state.player.reduce((sum, tile) => sum + tile.a + tile.b, 0);
@@ -65,10 +100,22 @@
     const button = document.createElement("button");
     button.type = "button"; button.className = `domino${playable ? " playable" : ""}`; button.dataset.id = tile.id;
     button.setAttribute("aria-label", t("dominoTile", { left: tile.a, right: tile.b }));
-    const left = document.createElement("span"); left.textContent = String(tile.a);
-    const right = document.createElement("span"); right.textContent = String(tile.b);
+    const left = pipSide(tile.a);
+    const right = pipSide(tile.b);
     button.append(left, right);
     return button;
+  }
+  function pipSide(count) {
+    const side = document.createElement("span");
+    side.className = `pips pips-${count}`;
+    side.setAttribute("aria-label", String(count));
+    for (let index = 1; index <= 9; index += 1) {
+      const pip = document.createElement("span");
+      pip.className = "pip";
+      pip.dataset.pos = String(index);
+      side.appendChild(pip);
+    }
+    return side;
   }
   function render() {
     els.chain.innerHTML = ""; els.hand.innerHTML = "";
@@ -96,7 +143,7 @@
   function preventGestureZoom(event) { event.preventDefault(); }
   function applyLanguage() { if (window.LMAG_I18N) window.LMAG_I18N.apply(document); render(); }
   function registerServiceWorker() { if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("../../sw.js").catch(() => {})); }
-  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); els.draw.addEventListener("click", drawForPlayer);
+  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); els.draw.addEventListener("click", drawForPlayer); if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty);
   document.addEventListener("contextmenu", (event) => event.preventDefault()); document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true }); document.addEventListener("dragstart", (event) => event.preventDefault()); document.addEventListener("touchmove", preventViewportMove, { passive: false }); document.addEventListener("gesturestart", preventGestureZoom); document.addEventListener("gesturechange", preventGestureZoom); document.addEventListener("gestureend", preventGestureZoom); document.addEventListener("lmag:languagechange", applyLanguage);
-  applyTheme(); state = loadState() || freshState(); render(); registerServiceWorker();
+  applyTheme(); applyDifficulty(); state = loadState() || freshState(); render(); registerServiceWorker();
 })();

@@ -1,12 +1,17 @@
 (function () {
   "use strict";
   const STORAGE_KEY = "leave-me-alone-reversi-current-game";
+  const DIFFICULTY_KEY = "leave-me-alone-reversi-difficulty";
   const THEME_KEY = "leave-me-alone-games-theme";
   const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
   const DIRS = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
-  const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game") };
+  const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty") };
   let state = null, undoSnapshot = null, lastTapAt = 0;
   function t(key, values) { return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key; }
+  function storedDifficulty() { try { const difficulty = localStorage.getItem(DIFFICULTY_KEY); return DIFFICULTIES.has(difficulty) ? difficulty : "easy"; } catch { return "easy"; } }
+  function applyDifficulty() { if (els.difficulty) els.difficulty.value = storedDifficulty(); }
+  function saveDifficulty() { if (!els.difficulty) return; try { localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy"); } catch {} }
   function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "green"; } catch { document.body.dataset.theme = "green"; } }
   function freshState() { const board = Array.from({ length: 8 }, () => Array(8).fill(null)); board[3][3] = "w"; board[3][4] = "b"; board[4][3] = "b"; board[4][4] = "w"; return { board, turn: "b", winner: null }; }
   function clone(source) { return JSON.parse(JSON.stringify(source)); }
@@ -51,9 +56,19 @@
     if (state.winner || state.turn !== "w") return;
     const moves = legalMoves("w");
     if (!moves.length) { state.turn = "b"; render(); return; }
-    const best = moves.slice().sort((a, b) => b.flips.length - a.flips.length)[0];
+    const best = chooseComputerMove(moves);
     playMove(best, "w");
     render();
+  }
+  function chooseComputerMove(moves) {
+    if (storedDifficulty() !== "medium" && storedDifficulty() !== "hard") return moves.slice().sort((a, b) => b.flips.length - a.flips.length)[0];
+    return moves.slice().sort((a, b) => reversiMoveScore(b) - reversiMoveScore(a))[0];
+  }
+  function reversiMoveScore(move) {
+    const corner = (move.row === 0 || move.row === 7) && (move.col === 0 || move.col === 7);
+    const edge = move.row === 0 || move.row === 7 || move.col === 0 || move.col === 7;
+    const nearCorner = (move.row <= 1 || move.row >= 6) && (move.col <= 1 || move.col >= 6) && !corner;
+    return move.flips.length + (corner ? 40 : 0) + (edge ? 8 : 0) - (nearCorner ? 12 : 0);
   }
   function rememberUndo() { undoSnapshot = clone(state); els.undo.disabled = false; }
   function render() {
@@ -87,7 +102,7 @@
   function preventGestureZoom(event) { event.preventDefault(); }
   function applyLanguage() { if (window.LMAG_I18N) window.LMAG_I18N.apply(document); render(); }
   function registerServiceWorker() { if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("../../sw.js").catch(() => {})); }
-  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo);
+  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty);
   document.addEventListener("contextmenu", e => e.preventDefault()); document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true }); document.addEventListener("dragstart", e => e.preventDefault()); document.addEventListener("touchmove", preventViewportMove, { passive: false }); document.addEventListener("gesturestart", preventGestureZoom); document.addEventListener("gesturechange", preventGestureZoom); document.addEventListener("gestureend", preventGestureZoom); document.addEventListener("lmag:languagechange", applyLanguage);
-  applyTheme(); state = loadState() || freshState(); updateWinner(); render(); registerServiceWorker();
+  applyTheme(); applyDifficulty(); state = loadState() || freshState(); updateWinner(); render(); registerServiceWorker();
 })();

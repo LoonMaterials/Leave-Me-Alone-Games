@@ -2,8 +2,10 @@
   "use strict";
 
   const STORAGE_KEY = "leave-me-alone-chess-current-game";
+  const DIFFICULTY_KEY = "leave-me-alone-chess-difficulty";
   const THEME_KEY = "leave-me-alone-games-theme";
   const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
   const SYMBOLS = {
     wK: "\u2654", wQ: "\u2655", wR: "\u2656", wB: "\u2657", wN: "\u2658", wP: "\u2659",
     bK: "\u265A", bQ: "\u265B", bR: "\u265C", bB: "\u265D", bN: "\u265E", bP: "\u265F"
@@ -14,7 +16,8 @@
     board: document.getElementById("board"),
     status: document.getElementById("status"),
     undo: document.getElementById("undo"),
-    newGame: document.getElementById("new-game")
+    newGame: document.getElementById("new-game"),
+    difficulty: document.getElementById("difficulty")
   };
   let state = null;
   let selected = null;
@@ -24,6 +27,26 @@
 
   function t(key, values) {
     return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key;
+  }
+
+  function storedDifficulty() {
+    try {
+      const difficulty = localStorage.getItem(DIFFICULTY_KEY);
+      return DIFFICULTIES.has(difficulty) ? difficulty : "easy";
+    } catch {
+      return "easy";
+    }
+  }
+
+  function applyDifficulty() {
+    if (els.difficulty) els.difficulty.value = storedDifficulty();
+  }
+
+  function saveDifficulty() {
+    if (!els.difficulty) return;
+    try {
+      localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy");
+    } catch {}
   }
 
   function applyTheme() {
@@ -165,12 +188,33 @@
     if (state.winner) return;
     const moves = allMoves("b");
     if (!moves.length) return;
-    const sorted = moves.slice().sort((a, b) => (VALUES[typeOf(b.capture)] || 0) - (VALUES[typeOf(a.capture)] || 0));
-    const bestValue = VALUES[typeOf(sorted[0].capture)] || 0;
-    const bestMoves = sorted.filter((move) => (VALUES[typeOf(move.capture)] || 0) === bestValue);
-    movePiece(bestMoves[Math.floor(Math.random() * bestMoves.length)]);
+    movePiece(chooseComputerMove(moves));
     state.turn = "w";
     render();
+  }
+
+  function chooseComputerMove(moves) {
+    if (storedDifficulty() !== "medium" && storedDifficulty() !== "hard") {
+      const sorted = moves.slice().sort((a, b) => (VALUES[typeOf(b.capture)] || 0) - (VALUES[typeOf(a.capture)] || 0));
+      const bestValue = VALUES[typeOf(sorted[0].capture)] || 0;
+      const bestMoves = sorted.filter((move) => (VALUES[typeOf(move.capture)] || 0) === bestValue);
+      return bestMoves[Math.floor(Math.random() * bestMoves.length)];
+    }
+    const scored = moves.map((move) => ({ move, score: chessMoveScore(move) })).sort((a, b) => b.score - a.score);
+    const bestScore = scored[0].score;
+    const bestMoves = scored.filter((item) => item.score === bestScore).map((item) => item.move);
+    return bestMoves[Math.floor(Math.random() * bestMoves.length)];
+  }
+
+  function chessMoveScore(move) {
+    const piece = state.board[move.from.row][move.from.col];
+    const type = typeOf(piece);
+    let score = (VALUES[typeOf(move.capture)] || 0) * 12;
+    if (type === "P" && move.to.row === 7) score += VALUES.Q * 7;
+    score += 4 - Math.abs(3.5 - move.to.col);
+    score += 4 - Math.abs(3.5 - move.to.row);
+    if (move.capture && (VALUES[typeOf(move.capture)] || 0) >= (VALUES[type] || 0)) score += 6;
+    return score;
   }
 
   function rememberUndo() {
@@ -264,6 +308,7 @@
 
   els.newGame.addEventListener("click", startNewGame);
   els.undo.addEventListener("click", undo);
+  if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty);
   document.addEventListener("contextmenu", (event) => event.preventDefault());
   document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true });
   document.addEventListener("dragstart", (event) => event.preventDefault());
@@ -274,6 +319,7 @@
   document.addEventListener("lmag:languagechange", applyLanguage);
 
   applyTheme();
+  applyDifficulty();
   state = loadState() || freshState();
   render();
   registerServiceWorker();
