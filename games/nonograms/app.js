@@ -1,7 +1,7 @@
 (function () {
   "use strict";
   const THEME_KEY = "leave-me-alone-games-theme";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const KEY = "leave-me-alone-nonograms-current-game";
   const SAVE_VERSION = 2;
   const board = document.getElementById("game-board");
@@ -18,7 +18,7 @@
   let state;
   let undoStack = [];
 
-  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.classList.remove("theme-blue", "theme-grey", "theme-orange"); if (THEMES.has(theme) && theme !== "green") document.body.classList.add(`theme-${theme}`); } catch {} }
+  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); const selectedTheme = THEMES.has(theme) ? theme : "colorblind"; document.body.classList.remove("theme-colorblind", "theme-blue", "theme-grey", "theme-orange"); if (selectedTheme !== "green") document.body.classList.add(`theme-${selectedTheme}`); } catch {} }
   function randomPuzzle(except) { const choices = PUZZLES.map((_, index) => index).filter((index) => index !== except); return choices[Math.floor(Math.random() * choices.length)] ?? 0; }
   function fresh(except) { return { version: SAVE_VERSION, puzzle: randomPuzzle(except), marks: Array.from({ length: 5 }, () => Array(5).fill(0)), solved: false }; }
   function solution() { return PUZZLES[state.puzzle] || PUZZLES[0]; }

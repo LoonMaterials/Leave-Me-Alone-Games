@@ -2,12 +2,12 @@
   "use strict";
   const STORAGE_KEY = "leave-me-alone-2048-current-game";
   const THEME_KEY = "leave-me-alone-games-theme";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const SIZE = 4;
   const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game") };
   let state = null, undoSnapshot = null, touchStart = null, lastTapAt = 0;
   function t(key, values) { return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key; }
-  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "green"; } catch { document.body.dataset.theme = "green"; } }
+  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "colorblind"; } catch { document.body.dataset.theme = "colorblind"; } }
   function emptyBoard() { return Array.from({ length: SIZE }, () => Array(SIZE).fill(0)); }
   function clone(value) { return JSON.parse(JSON.stringify(value)); }
   function saveState() { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }

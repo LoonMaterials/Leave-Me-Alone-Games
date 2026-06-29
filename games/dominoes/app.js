@@ -4,7 +4,7 @@
   const SAVE_VERSION = 2;
   const DIFFICULTY_KEY = "leave-me-alone-dominoes-difficulty";
   const THEME_KEY = "leave-me-alone-games-theme";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
   const MAX_PIPS = 9;
   const STARTING_HAND = 10;
@@ -14,7 +14,7 @@
   function storedDifficulty() { try { const difficulty = localStorage.getItem(DIFFICULTY_KEY); return DIFFICULTIES.has(difficulty) ? difficulty : "easy"; } catch { return "easy"; } }
   function applyDifficulty() { if (els.difficulty) els.difficulty.value = storedDifficulty(); }
   function saveDifficulty() { if (!els.difficulty) return; try { localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy"); } catch {} }
-  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "green"; } catch { document.body.dataset.theme = "green"; } }
+  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "colorblind"; } catch { document.body.dataset.theme = "colorblind"; } }
   function makeSet() { const tiles = []; let id = 0; for (let a = 0; a <= MAX_PIPS; a += 1) for (let b = a; b <= MAX_PIPS; b += 1) tiles.push({ id: `d${id++}`, a, b }); return shuffle(tiles); }
   function shuffle(items) { const copy = items.slice(); for (let i = copy.length - 1; i > 0; i -= 1) { const j = Math.floor(Math.random() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; } return copy; }
   function freshState() {

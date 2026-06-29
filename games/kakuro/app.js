@@ -1,7 +1,7 @@
 (function () {
   "use strict";
   const THEME_KEY = "leave-me-alone-games-theme";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const KEY = "leave-me-alone-kakuro-current-game";
   const board = document.getElementById("game-board");
   const status = document.getElementById("status");
@@ -10,7 +10,7 @@
   let undoStack = [];
   let state;
 
-  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.classList.remove("theme-blue", "theme-grey", "theme-orange"); if (THEMES.has(theme) && theme !== "green") document.body.classList.add(`theme-${theme}`); } catch {} }
+  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); const selectedTheme = THEMES.has(theme) ? theme : "colorblind"; document.body.classList.remove("theme-colorblind", "theme-blue", "theme-grey", "theme-orange"); if (selectedTheme !== "green") document.body.classList.add(`theme-${selectedTheme}`); } catch {} }
   function fresh() { return { values: { a: "", b: "", c: "", d: "" }, solution: { a: 1, b: 3, c: 3, d: 1 } }; }
   function clone(value) { return JSON.parse(JSON.stringify(value)); }
   function save() { try { sessionStorage.setItem(KEY, JSON.stringify(state)); } catch {} }

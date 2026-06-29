@@ -2,7 +2,7 @@
   const SUITS = ["S", "H", "D", "C"];
   const SUIT_LABELS = { S: "\u2660", H: "\u2665", D: "\u2666", C: "\u2663" };
   const RANK_LABELS = { 1: "A", 11: "J", 12: "Q", 13: "K" };
-  const THEMES = ["green", "blue", "grey", "orange"];
+  const THEMES = ["colorblind", "green", "blue", "grey", "orange"];
   const THEME_STORAGE_KEY = "leave-me-alone-games-theme";
   const AUTO_FINISH_STORAGE_KEY = "leave-me-alone-games-auto-finish";
   const DRAW_COUNT_STORAGE_KEY = "leave-you-alone-solitaire-draw-count";
@@ -784,7 +784,7 @@
   }
 
   function applyTheme(theme) {
-    const selectedTheme = THEMES.includes(theme) ? theme : "green";
+    const selectedTheme = THEMES.includes(theme) ? theme : "colorblind";
     document.body.dataset.theme = selectedTheme;
     if (els.themeSelect) els.themeSelect.value = selectedTheme;
     saveTheme(selectedTheme);

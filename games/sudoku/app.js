@@ -1,7 +1,7 @@
 (function () {
   "use strict";
   const THEME_KEY = "leave-me-alone-games-theme";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const KEY = "leave-me-alone-sudoku-current-game";
   const board = document.getElementById("game-board");
   const status = document.getElementById("status");
@@ -13,8 +13,9 @@
   function applyTheme() {
     try {
       const theme = localStorage.getItem(THEME_KEY);
-      document.body.classList.remove("theme-blue", "theme-grey", "theme-orange");
-      if (THEMES.has(theme) && theme !== "green") document.body.classList.add(`theme-${theme}`);
+      const selectedTheme = THEMES.has(theme) ? theme : "colorblind";
+      document.body.classList.remove("theme-colorblind", "theme-blue", "theme-grey", "theme-orange");
+      if (selectedTheme !== "green") document.body.classList.add(`theme-${selectedTheme}`);
     } catch {}
   }
   function fresh() {

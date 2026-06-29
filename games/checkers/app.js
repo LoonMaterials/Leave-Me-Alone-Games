@@ -3,7 +3,7 @@
   const STORAGE_KEY = "leave-me-alone-checkers-current-game";
   const DIFFICULTY_KEY = "leave-me-alone-checkers-difficulty";
   const THEME_KEY = "leave-me-alone-games-theme";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
   const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty") };
   let state = null, selected = null, legalTargets = [], undoSnapshot = null, lastTapAt = 0;
@@ -11,7 +11,7 @@
   function storedDifficulty() { try { const difficulty = localStorage.getItem(DIFFICULTY_KEY); return DIFFICULTIES.has(difficulty) ? difficulty : "easy"; } catch { return "easy"; } }
   function applyDifficulty() { if (els.difficulty) els.difficulty.value = storedDifficulty(); }
   function saveDifficulty() { if (!els.difficulty) return; try { localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy"); } catch {} }
-  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "green"; } catch { document.body.dataset.theme = "green"; } }
+  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "colorblind"; } catch { document.body.dataset.theme = "colorblind"; } }
   function freshState() {
     const board = Array.from({ length: 8 }, () => Array(8).fill(null));
     for (let row = 0; row < 3; row += 1) for (let col = 0; col < 8; col += 1) if ((row + col) % 2) board[row][col] = { color: "b", king: false };

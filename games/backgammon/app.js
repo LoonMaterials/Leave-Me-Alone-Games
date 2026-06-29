@@ -3,7 +3,7 @@
   const STORAGE_KEY = "leave-me-alone-backgammon-current-game";
   const DIFFICULTY_KEY = "leave-me-alone-backgammon-difficulty";
   const THEME_KEY = "leave-me-alone-games-theme";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
   const POINTS = 24;
   const els = { track: document.getElementById("track"), status: document.getElementById("status"), roll: document.getElementById("roll"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty"), playerOff: document.getElementById("player-off"), computerOff: document.getElementById("computer-off") };
@@ -12,7 +12,7 @@
   function storedDifficulty() { try { const difficulty = localStorage.getItem(DIFFICULTY_KEY); return DIFFICULTIES.has(difficulty) ? difficulty : "easy"; } catch { return "easy"; } }
   function applyDifficulty() { if (els.difficulty) els.difficulty.value = storedDifficulty(); }
   function saveDifficulty() { if (!els.difficulty) return; try { localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy"); } catch {} }
-  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "green"; } catch { document.body.dataset.theme = "green"; } }
+  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "colorblind"; } catch { document.body.dataset.theme = "colorblind"; } }
   function freshState() { const points = Array.from({ length: POINTS }, () => ({ p: 0, c: 0 })); points[0].p = 15; points[23].c = 15; return { points, playerOff: 0, computerOff: 0, turn: "p", dice: [], winner: null }; }
   function clone(source) { return JSON.parse(JSON.stringify(source)); }
   function saveState() { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }

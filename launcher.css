@@ -22,6 +22,15 @@ body[data-theme="blue"] {
   --felt-dark: #193d56;
 }
 
+body[data-theme="colorblind"] {
+  --felt: #234f68;
+  --felt-dark: #172b3a;
+  --panel: rgba(15, 31, 43, 0.72);
+  --panel-border: rgba(255, 255, 255, 0.28);
+  --text: #fff7df;
+  --muted: rgba(255, 247, 223, 0.82);
+}
+
 body[data-theme="grey"] {
   --felt: #5f6867;
   --felt-dark: #343d3c;

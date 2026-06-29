@@ -7,7 +7,7 @@
   const STORAGE_KEY = "leave-you-alone-freecell-current-game";
   const THEME_KEY = "leave-me-alone-games-theme";
   const AUTO_FINISH_KEY = "leave-me-alone-games-auto-finish";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
 
   const els = {
     freecells: document.getElementById("freecells"),
@@ -101,14 +101,14 @@
   function getStoredTheme() {
     try {
       const theme = localStorage.getItem(THEME_KEY);
-      return THEMES.has(theme) ? theme : "green";
+      return THEMES.has(theme) ? theme : "colorblind";
     } catch {
-      return "green";
+      return "colorblind";
     }
   }
 
   function setTheme(theme) {
-    const nextTheme = THEMES.has(theme) ? theme : "green";
+    const nextTheme = THEMES.has(theme) ? theme : "colorblind";
     document.body.dataset.theme = nextTheme;
     if (els.themeSelect) els.themeSelect.value = nextTheme;
     try {

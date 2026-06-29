@@ -3,7 +3,7 @@
   const STORAGE_KEY = "leave-me-alone-reversi-current-game";
   const DIFFICULTY_KEY = "leave-me-alone-reversi-difficulty";
   const THEME_KEY = "leave-me-alone-games-theme";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
   const DIRS = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
   const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty") };
@@ -12,7 +12,7 @@
   function storedDifficulty() { try { const difficulty = localStorage.getItem(DIFFICULTY_KEY); return DIFFICULTIES.has(difficulty) ? difficulty : "easy"; } catch { return "easy"; } }
   function applyDifficulty() { if (els.difficulty) els.difficulty.value = storedDifficulty(); }
   function saveDifficulty() { if (!els.difficulty) return; try { localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy"); } catch {} }
-  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "green"; } catch { document.body.dataset.theme = "green"; } }
+  function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "colorblind"; } catch { document.body.dataset.theme = "colorblind"; } }
   function freshState() { const board = Array.from({ length: 8 }, () => Array(8).fill(null)); board[3][3] = "w"; board[3][4] = "b"; board[4][3] = "b"; board[4][4] = "w"; return { board, turn: "b", winner: null }; }
   function clone(source) { return JSON.parse(JSON.stringify(source)); }
   function saveState() { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }

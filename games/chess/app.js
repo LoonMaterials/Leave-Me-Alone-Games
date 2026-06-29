@@ -4,7 +4,7 @@
   const STORAGE_KEY = "leave-me-alone-chess-current-game";
   const DIFFICULTY_KEY = "leave-me-alone-chess-difficulty";
   const THEME_KEY = "leave-me-alone-games-theme";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
   const SYMBOLS = {
     wK: "\u2654", wQ: "\u2655", wR: "\u2656", wB: "\u2657", wN: "\u2658", wP: "\u2659",
@@ -52,9 +52,9 @@
   function applyTheme() {
     try {
       const theme = localStorage.getItem(THEME_KEY);
-      document.body.dataset.theme = THEMES.has(theme) ? theme : "green";
+      document.body.dataset.theme = THEMES.has(theme) ? theme : "colorblind";
     } catch {
-      document.body.dataset.theme = "green";
+      document.body.dataset.theme = "colorblind";
     }
   }
 

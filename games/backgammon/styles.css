@@ -26,3 +26,39 @@ button:disabled { opacity:.45; }
 .difficulty-control { display:inline-flex; align-items:center; gap:.35rem; color:var(--muted); font-size:.9rem; }
 .difficulty-control select { border:1px solid rgba(255,255,255,.26); border-radius:6px; padding:.45rem .55rem; color:var(--text); background:rgba(12,34,27,.72); font:inherit; touch-action:manipulation; }
 @media (max-width:700px) and (orientation:portrait) { .difficulty-control{font-size:.78rem; gap:.25rem;} .difficulty-control select{padding:.4rem .55rem; font-size:.86rem;} }
+
+body[data-theme="colorblind"],
+body.theme-colorblind {
+  --felt: #234f68;
+  --felt-dark: #172b3a;
+  --panel: rgba(255, 247, 223, 0.94);
+  --paper: #fff7df;
+  --ink: #111820;
+  --muted: rgba(255, 247, 223, 0.84);
+  --line: rgba(17, 24, 32, 0.26);
+  --shadow: rgba(4, 12, 18, 0.34);
+  --card-back: #0072b2;
+  --red: #d55e00;
+  --black: #111820;
+  --yellow: #f0e442;
+  --blue: #0072b2;
+  --green: #009e73;
+  --purple: #cc79a7;
+  --light: #fff7df;
+  --dark: #6f7f8f;
+  --select: #f0e442;
+  --move: rgba(240, 228, 66, 0.7);
+  --frame: #0072b2;
+  --slot: #172b3a;
+  --point: #fff7df;
+  --point-alt: #2f6f90;
+  --tile: #fff7df;
+  --edge: #394b59;
+  --tile-front: #fff7df;
+  --tile-edge: #394b59;
+  --tile-side: #7d8b95;
+  --table-glow: rgba(240, 228, 66, 0.14);
+  --table-line: rgba(255, 247, 223, 0.34);
+  --lit: #f0e442;
+  --lit-edge: #fff6a5;
+}
