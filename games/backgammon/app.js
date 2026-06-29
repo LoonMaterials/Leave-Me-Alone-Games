@@ -37,10 +37,9 @@
     if (state.winner) return;
     if (!state.dice.length) rollDice();
     while (state.dice.length) {
-      const from = state.points.findLastIndex(point => point.c > 0);
-      if (from < 0) break;
-      const dieIndex = state.dice.findIndex(die => from - die >= -1);
-      if (dieIndex < 0) break;
+      const move = chooseComputerMove();
+      if (!move) break;
+      const { from, dieIndex } = move;
       const to = from - state.dice[dieIndex];
       state.points[from].c -= 1;
       if (to < 0) state.computerOff += 1; else state.points[to].c += 1;
@@ -48,6 +47,28 @@
       if (state.computerOff >= 15) { state.winner = "c"; break; }
     }
     state.turn = "p"; state.dice = []; render();
+  }
+  function legalComputerMoves() {
+    const moves = [];
+    state.points.forEach((point, from) => {
+      if (!point.c) return;
+      state.dice.forEach((die, dieIndex) => { if (from - die >= -1) moves.push({ from, dieIndex, die, to: from - die }); });
+    });
+    return moves;
+  }
+  function chooseComputerMove() {
+    const moves = legalComputerMoves();
+    if (!moves.length) return null;
+    if (storedDifficulty() === "easy") return moves[Math.floor(Math.random() * moves.length)];
+    const scored = moves.map((move) => ({ move, score: computerMoveScore(move) })).sort((a, b) => b.score - a.score);
+    return scored[0].move;
+  }
+  function computerMoveScore(move) {
+    const bearOff = move.to < 0 ? 40 : 0;
+    const advance = move.die * (storedDifficulty() === "hard" ? 4 : 2);
+    const stackBonus = move.to >= 0 ? Math.min(state.points[move.to].c, 3) * 3 : 0;
+    const farthestBonus = storedDifficulty() === "hard" ? move.from : 0;
+    return bearOff + advance + stackBonus + farthestBonus + Math.random();
   }
   function render() {
     els.track.innerHTML = "";

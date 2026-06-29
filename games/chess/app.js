@@ -214,7 +214,18 @@
     score += 4 - Math.abs(3.5 - move.to.col);
     score += 4 - Math.abs(3.5 - move.to.row);
     if (move.capture && (VALUES[typeOf(move.capture)] || 0) >= (VALUES[type] || 0)) score += 6;
+    if (storedDifficulty() === "hard") score -= whiteReplyPenalty(move);
     return score;
+  }
+
+  function whiteReplyPenalty(move) {
+    const saved = state;
+    state = clone(saved);
+    movePiece(clone(move));
+    const replies = allMoves("w");
+    const bestCapture = replies.reduce((best, reply) => Math.max(best, VALUES[typeOf(reply.capture)] || 0), 0);
+    state = saved;
+    return bestCapture * 9;
   }
 
   function rememberUndo() {

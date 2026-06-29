@@ -15,8 +15,9 @@ button:disabled { opacity: .45; }
 .topbar { width: min(100%, 980px); margin: 0 auto; }
 .actions { display: flex; align-items: center; justify-content: flex-end; gap: 7px; flex-wrap: wrap; }
 .status { min-width: 8rem; margin-right: auto; color: var(--muted); font-size: .95rem; }
-.table { width: min(100%, 980px); height: 100%; margin: 0 auto; display: grid; grid-template-rows: auto minmax(0,1fr) auto; gap: 10px; overflow: hidden; }
+.table { width: min(100%, 980px); height: 100%; margin: 0 auto; display: grid; grid-template-rows: auto auto minmax(0,1fr) auto; gap: 8px; overflow: hidden; }
 .opponent { color: var(--muted); text-align: center; min-height: 1.4rem; }
+.game-options { display: flex; justify-content: center; align-items: center; min-height: 2rem; }
 .chain { min-height: 0; overflow: auto; border: 1px dashed var(--table-line); border-radius: 10px; padding: 12px; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, rgba(8,24,19,.2), var(--table-glow)); touch-action: pan-y; }
 .hand-wrap { display: grid; grid-template-columns: auto minmax(0,1fr); align-items: center; gap: 8px; }
 .hand { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 8px; touch-action: pan-x; }
@@ -47,6 +48,6 @@ button:disabled { opacity: .45; }
 .pips-8 .pip[data-pos="1"], .pips-8 .pip[data-pos="2"], .pips-8 .pip[data-pos="3"], .pips-8 .pip[data-pos="4"], .pips-8 .pip[data-pos="6"], .pips-8 .pip[data-pos="7"], .pips-8 .pip[data-pos="8"], .pips-8 .pip[data-pos="9"] { opacity: 1; }
 @media (max-width: 700px) and (orientation: portrait) { .game-shell { --shell-pad: 6px; gap: 6px; } button, .button-link { padding: .4rem .55rem; font-size: .86rem; } .status { min-width: 6rem; font-size: .84rem; } .hand-wrap { grid-template-columns: 1fr; } .draw-button { width: fit-content; } }
 
-.difficulty-control { display: inline-flex; align-items: center; gap: .35rem; color: var(--muted); font-size: .9rem; }
+.difficulty-control { display: inline-flex; align-items: center; gap: .35rem; color: var(--text); font-size: .9rem; padding: .18rem .42rem; border: 1px solid var(--table-line); border-radius: 8px; background: rgba(8,24,19,.28); }
 .difficulty-control select { border: 1px solid rgba(255,255,255,.26); border-radius: 6px; padding: .45rem .55rem; color: var(--text); background: rgba(12,34,27,.72); font: inherit; touch-action: manipulation; }
 @media (max-width: 700px) and (orientation: portrait) { .difficulty-control { font-size: .78rem; gap: .25rem; } .difficulty-control select { padding: .4rem .55rem; font-size: .86rem; } }

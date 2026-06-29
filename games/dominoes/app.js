@@ -74,13 +74,28 @@
     const endMatchBonus = candidate.tile.a === state.left && candidate.tile.b === state.right ? 2 : 0;
     return pipTotal + futureMatches * 3 + doubleBonus + endMatchBonus;
   }
+  function hardDominoScore(candidate) {
+    const exposed = sideAfter(candidate);
+    const remainingHand = state.computer.filter((tile) => tile.id !== candidate.tile.id);
+    const futureMatches = remainingHand.filter((tile) => tile.a === exposed || tile.b === exposed).length;
+    const playerReplies = state.player.filter((tile) => tile.a === exposed || tile.b === exposed).length;
+    const blocksPlayer = playerReplies === 0 ? 10 : 0;
+    const keepsComputerOpen = futureMatches * 5;
+    const pipTotal = candidate.tile.a + candidate.tile.b;
+    const doubleBonus = candidate.tile.a === candidate.tile.b ? 4 : 0;
+    const emptyHandBonus = remainingHand.length <= 2 ? pipTotal : 0;
+    return pipTotal + keepsComputerOpen - playerReplies * 4 + blocksPlayer + doubleBonus + emptyHandBonus;
+  }
   function chooseComputerPlay() {
     const candidates = computerCandidates();
     if (!candidates.length) return null;
-    if (storedDifficulty() === "medium" || storedDifficulty() === "hard") {
+    if (storedDifficulty() === "hard") {
+      return candidates.slice().sort((a, b) => hardDominoScore(b) - hardDominoScore(a))[0];
+    }
+    if (storedDifficulty() === "medium") {
       return candidates.slice().sort((a, b) => mediumDominoScore(b) - mediumDominoScore(a))[0];
     }
-    return candidates[0];
+    return candidates[Math.floor(Math.random() * candidates.length)];
   }
   function computerTurn() {
     if (state.winner) return;

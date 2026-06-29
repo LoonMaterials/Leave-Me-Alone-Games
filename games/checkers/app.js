@@ -79,8 +79,18 @@
     if (!piece.king) score += move.to.row * 2;
     if (!piece.king && move.to.row === 7) score += 25;
     if (move.to.col === 0 || move.to.col === 7) score += 4;
+    if (storedDifficulty() === "hard") score -= redReplyPenalty(move);
     score += Math.random();
     return score;
+  }
+  function redReplyPenalty(move) {
+    const saved = state;
+    state = clone(saved);
+    movePiece(clone(move));
+    const replies = allMoves("r");
+    const penalty = replies.some((reply) => reply.jumped) ? 24 : 0;
+    state = saved;
+    return penalty;
   }
   function rememberUndo() { undoSnapshot = clone(state); els.undo.disabled = false; }
   function render() {

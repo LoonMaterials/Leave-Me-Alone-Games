@@ -17,8 +17,10 @@
   function clone(source) { return JSON.parse(JSON.stringify(source)); }
   function saveState() { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
   function loadState() { try { const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY)); return saved?.board?.length === ROWS ? saved : null; } catch { return null; } }
-  function openRow(col) { for (let row = ROWS - 1; row >= 0; row -= 1) if (!state.board[row][col]) return row; return -1; }
-  function legalCols() { return Array.from({ length: COLS }, (_, col) => col).filter(col => openRow(col) >= 0); }
+  function openRowFor(board, col) { for (let row = ROWS - 1; row >= 0; row -= 1) if (!board[row][col]) return row; return -1; }
+  function openRow(col) { return openRowFor(state.board, col); }
+  function legalColsFor(board) { return Array.from({ length: COLS }, (_, col) => col).filter(col => openRowFor(board, col) >= 0); }
+  function legalCols() { return legalColsFor(state.board); }
   function winnerFor(board) {
     const dirs = [[0,1],[1,0],[1,1],[1,-1]];
     for (let row = 0; row < ROWS; row += 1) for (let col = 0; col < COLS; col += 1) {
@@ -39,18 +41,81 @@
     state.turn = color === "r" ? "y" : "r";
     return true;
   }
+  function simulateDrop(board, col, color) {
+    const next = clone(board);
+    const row = openRowFor(next, col);
+    if (row >= 0) next[row][col] = color;
+    return next;
+  }
+  function firstWinningCol(board, color) {
+    return legalColsFor(board).find((col) => winnerFor(simulateDrop(board, col, color)) === color);
+  }
+  function scoreWindow(cells) {
+    const yellow = cells.filter((cell) => cell === "y").length;
+    const red = cells.filter((cell) => cell === "r").length;
+    const empty = cells.filter((cell) => !cell).length;
+    if (yellow && red) return 0;
+    if (yellow === 4) return 100000;
+    if (red === 4) return -100000;
+    if (yellow === 3 && empty === 1) return 85;
+    if (yellow === 2 && empty === 2) return 18;
+    if (red === 3 && empty === 1) return -95;
+    if (red === 2 && empty === 2) return -22;
+    return 0;
+  }
+  function evaluateBoard(board) {
+    let score = board.map((row) => row[3]).filter((cell) => cell === "y").length * 8;
+    const dirs = [[0,1], [1,0], [1,1], [1,-1]];
+    for (let row = 0; row < ROWS; row += 1) for (let col = 0; col < COLS; col += 1) for (const [dr, dc] of dirs) {
+      const cells = [];
+      for (let step = 0; step < 4; step += 1) cells.push(board[row + dr * step]?.[col + dc * step]);
+      if (cells.every((cell) => cell !== undefined)) score += scoreWindow(cells);
+    }
+    return score;
+  }
+  function mediumCol(cols) {
+    const scored = cols.map((col) => ({ col, score: evaluateBoard(simulateDrop(state.board, col, "y")) + (Math.random() * 4) }));
+    scored.sort((a, b) => b.score - a.score);
+    return scored[0].col;
+  }
+  function minimax(board, depth, maximizing, alpha, beta) {
+    const winner = winnerFor(board);
+    if (winner === "y") return 100000 + depth;
+    if (winner === "r") return -100000 - depth;
+    if (winner === "draw" || depth === 0) return evaluateBoard(board);
+    const cols = legalColsFor(board);
+    if (maximizing) {
+      let value = -Infinity;
+      for (const col of cols) {
+        value = Math.max(value, minimax(simulateDrop(board, col, "y"), depth - 1, false, alpha, beta));
+        alpha = Math.max(alpha, value);
+        if (alpha >= beta) break;
+      }
+      return value;
+    }
+    let value = Infinity;
+    for (const col of cols) {
+      value = Math.min(value, minimax(simulateDrop(board, col, "r"), depth - 1, true, alpha, beta));
+      beta = Math.min(beta, value);
+      if (alpha >= beta) break;
+    }
+    return value;
+  }
+  function hardCol(cols) {
+    const scored = cols.map((col) => ({ col, score: minimax(simulateDrop(state.board, col, "y"), 4, false, -Infinity, Infinity) + (Math.random() * 2) }));
+    scored.sort((a, b) => b.score - a.score);
+    return scored[0].col;
+  }
   function bestComputerCol() {
     const cols = legalCols();
-    for (const color of ["y", "r"]) for (const col of cols) {
-      const test = clone(state.board);
-      for (let row = ROWS - 1; row >= 0; row -= 1) if (!test[row][col]) { test[row][col] = color; break; }
-      if (winnerFor(test) === color) return col;
-    }
-    if (storedDifficulty() === "medium" || storedDifficulty() === "hard") {
-      const order = [3, 2, 4, 1, 5, 0, 6].filter((col) => cols.includes(col));
-      return order[0];
-    }
-    return cols.includes(3) ? 3 : cols[Math.floor(Math.random() * cols.length)];
+    if (!cols.length) return -1;
+    const winning = firstWinningCol(state.board, "y");
+    if (winning !== undefined) return winning;
+    const blocking = firstWinningCol(state.board, "r");
+    if (blocking !== undefined && storedDifficulty() !== "easy") return blocking;
+    if (storedDifficulty() === "hard") return hardCol(cols);
+    if (storedDifficulty() === "medium") return mediumCol(cols);
+    return cols[Math.floor(Math.random() * cols.length)];
   }
   function computerMove() { if (state.winner || state.turn !== "y") return; drop(bestComputerCol(), "y"); render(); }
   function rememberUndo() { undoSnapshot = clone(state); els.undo.disabled = false; }

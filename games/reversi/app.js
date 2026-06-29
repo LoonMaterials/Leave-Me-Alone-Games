@@ -61,14 +61,25 @@
     render();
   }
   function chooseComputerMove(moves) {
-    if (storedDifficulty() !== "medium" && storedDifficulty() !== "hard") return moves.slice().sort((a, b) => b.flips.length - a.flips.length)[0];
-    return moves.slice().sort((a, b) => reversiMoveScore(b) - reversiMoveScore(a))[0];
+    if (storedDifficulty() === "easy") return moves[Math.floor(Math.random() * moves.length)];
+    const scorer = storedDifficulty() === "hard" ? hardReversiMoveScore : reversiMoveScore;
+    return moves.slice().sort((a, b) => scorer(b) - scorer(a))[0];
   }
   function reversiMoveScore(move) {
     const corner = (move.row === 0 || move.row === 7) && (move.col === 0 || move.col === 7);
     const edge = move.row === 0 || move.row === 7 || move.col === 0 || move.col === 7;
     const nearCorner = (move.row <= 1 || move.row >= 6) && (move.col <= 1 || move.col >= 6) && !corner;
     return move.flips.length + (corner ? 40 : 0) + (edge ? 8 : 0) - (nearCorner ? 12 : 0);
+  }
+  function hardReversiMoveScore(move) {
+    const saved = state;
+    state = clone(saved);
+    playMove(clone(move), "w");
+    const replies = legalMoves("b");
+    const replyScore = replies.length ? Math.max(...replies.map(reversiMoveScore)) : -10;
+    const mobility = legalMoves("w").length - replies.length;
+    state = saved;
+    return reversiMoveScore(move) + mobility * 2 - replyScore * .8;
   }
   function rememberUndo() { undoSnapshot = clone(state); els.undo.disabled = false; }
   function render() {
