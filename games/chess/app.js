@@ -7,10 +7,6 @@
   const SAVE_VERSION = 2;
   const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
-  const SYMBOLS = {
-    wK: "\u2654", wQ: "\u2655", wR: "\u2656", wB: "\u2657", wN: "\u2658", wP: "\u2659",
-    bK: "\u265A", bQ: "\u265B", bR: "\u265C", bB: "\u265D", bN: "\u265E", bP: "\u265F"
-  };
   const VALUES = { P: 100, N: 320, B: 330, R: 500, Q: 900, K: 20000 };
   const PIECE_SQUARES = {
     P: [
@@ -524,7 +520,7 @@
         if (piece) {
           const span = document.createElement("span");
           span.className = `piece ${piece[0] === "w" ? "white" : "black"}`;
-          span.textContent = SYMBOLS[piece];
+          span.textContent = typeOf(piece);
           square.appendChild(span);
         }
         square.addEventListener("click", onSquareClick);
