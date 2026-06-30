@@ -1,12 +1,18 @@
 (function () {
   "use strict";
   const STORAGE_KEY = "leave-me-alone-tic-tac-toe-current-game";
+  const MODE_KEY = "leave-me-alone-tic-tac-toe-mode";
   const THEME_KEY = "leave-me-alone-games-theme";
   const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const WIN_LINES = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
-  const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game") };
+  const MODES = new Set(["computer", "two-player"]);
+  const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), mode: document.getElementById("game-mode") };
   let state = null, undoSnapshot = null, lastTapAt = 0;
   function t(key, values) { return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key; }
+  function storedMode() { try { const mode = localStorage.getItem(MODE_KEY); return MODES.has(mode) ? mode : "computer"; } catch { return "computer"; } }
+  function isTwoPlayer() { return storedMode() === "two-player"; }
+  function applyMode() { if (els.mode) els.mode.value = storedMode(); }
+  function saveMode() { if (!els.mode) return; try { localStorage.setItem(MODE_KEY, MODES.has(els.mode.value) ? els.mode.value : "computer"); } catch {} applyMode(); startNewGame(); }
   function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "colorblind"; } catch { document.body.dataset.theme = "colorblind"; } }
   function freshState() { return { board: Array(9).fill(""), turn: "x", winner: null, winningLine: [] }; }
   function clone(value) { return JSON.parse(JSON.stringify(value)); }
@@ -42,7 +48,7 @@
     state.winningLine = result.line;
   }
   function computerMove() {
-    if (state.winner || state.turn !== "o") return;
+    if (isTwoPlayer() || state.winner || state.turn !== "o") return;
     const index = mediumComputerMove();
     if (index >= 0) state.board[index] = "o";
     updateWinner();
@@ -51,19 +57,19 @@
   }
   function onCellClick(event) {
     const index = Number(event.currentTarget.dataset.index);
-    if (state.winner || state.turn !== "x" || state.board[index]) return;
+    if (state.winner || (!isTwoPlayer() && state.turn !== "x") || state.board[index]) return;
     undoSnapshot = clone(state);
     els.undo.disabled = false;
-    state.board[index] = "x";
+    state.board[index] = state.turn;
     updateWinner();
-    if (!state.winner) { state.turn = "o"; render(); window.setTimeout(computerMove, 240); return; }
+    if (!state.winner) { state.turn = state.turn === "x" ? "o" : "x"; render(); if (!isTwoPlayer()) window.setTimeout(computerMove, 240); return; }
     render();
   }
   function statusText() {
-    if (state.winner === "x") return t("youWon");
-    if (state.winner === "o") return t("computerWon");
+    if (state.winner === "x") return isTwoPlayer() ? t("xWon") : t("youWon");
+    if (state.winner === "o") return isTwoPlayer() ? t("oWon") : t("computerWon");
     if (state.winner === "draw") return t("draw");
-    return t("ticTacToePrompt");
+    return isTwoPlayer() ? t(state.turn === "x" ? "xTurn" : "oTurn") : t("ticTacToePrompt");
   }
   function render() {
     els.board.innerHTML = "";
@@ -74,7 +80,7 @@
       button.className = `cell ${mark}${winSet.has(index) ? " win" : ""}`;
       button.dataset.index = String(index);
       button.textContent = mark.toUpperCase();
-      button.disabled = Boolean(mark) || state.turn !== "x" || Boolean(state.winner);
+      button.disabled = Boolean(mark) || (!isTwoPlayer() && state.turn !== "x") || Boolean(state.winner);
       button.setAttribute("aria-label", t("ticTacToeCell", { cell: index + 1 }));
       button.addEventListener("click", onCellClick);
       els.board.appendChild(button);
@@ -89,7 +95,7 @@
   function preventGestureZoom(event) { event.preventDefault(); }
   function applyLanguage() { if (window.LMAG_I18N) window.LMAG_I18N.apply(document); render(); }
   function registerServiceWorker() { if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("../../sw.js").catch(() => {})); }
-  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo);
+  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); if (els.mode) els.mode.addEventListener("change", saveMode);
   document.addEventListener("contextmenu", (event) => event.preventDefault()); document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true }); document.addEventListener("dragstart", (event) => event.preventDefault()); document.addEventListener("touchmove", preventViewportMove, { passive: false }); document.addEventListener("gesturestart", preventGestureZoom); document.addEventListener("gesturechange", preventGestureZoom); document.addEventListener("gestureend", preventGestureZoom); document.addEventListener("lmag:languagechange", applyLanguage);
-  applyTheme(); state = loadState() || freshState(); render(); registerServiceWorker();
+  applyTheme(); applyMode(); state = loadState() || freshState(); render(); registerServiceWorker();
 })();

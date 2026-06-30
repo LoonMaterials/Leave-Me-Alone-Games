@@ -2,16 +2,22 @@
   "use strict";
   const STORAGE_KEY = "leave-me-alone-backgammon-classic-current-game";
   const DIFFICULTY_KEY = "leave-me-alone-backgammon-classic-difficulty";
+  const MODE_KEY = "leave-me-alone-backgammon-classic-mode";
   const THEME_KEY = "leave-me-alone-games-theme";
   const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
+  const MODES = new Set(["computer", "two-player"]);
   const POINTS = 24, TOTAL = 15;
-  const els = { track: document.getElementById("track"), status: document.getElementById("status"), roll: document.getElementById("roll"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty"), playerBar: document.getElementById("player-bar"), computerBar: document.getElementById("computer-bar"), playerOff: document.getElementById("player-off"), computerOff: document.getElementById("computer-off") };
+  const els = { track: document.getElementById("track"), status: document.getElementById("status"), roll: document.getElementById("roll"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty"), mode: document.getElementById("game-mode"), playerBar: document.getElementById("player-bar"), computerBar: document.getElementById("computer-bar"), playerOff: document.getElementById("player-off"), computerOff: document.getElementById("computer-off") };
   let state = null, undoSnapshot = null, selected = null, lastTapAt = 0;
   function t(key, values) { return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key; }
   function storedDifficulty() { try { const difficulty = localStorage.getItem(DIFFICULTY_KEY); return DIFFICULTIES.has(difficulty) ? difficulty : "easy"; } catch { return "easy"; } }
+  function storedMode() { try { const mode = localStorage.getItem(MODE_KEY); return MODES.has(mode) ? mode : "computer"; } catch { return "computer"; } }
+  function isTwoPlayer() { return storedMode() === "two-player"; }
   function applyDifficulty() { if (els.difficulty) els.difficulty.value = storedDifficulty(); }
   function saveDifficulty() { if (!els.difficulty) return; try { localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy"); } catch {} }
+  function applyMode() { if (els.mode) els.mode.value = storedMode(); if (els.difficulty) els.difficulty.disabled = isTwoPlayer(); }
+  function saveMode() { if (!els.mode) return; try { localStorage.setItem(MODE_KEY, MODES.has(els.mode.value) ? els.mode.value : "computer"); } catch {} applyMode(); startNewGame(); }
   function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "colorblind"; } catch { document.body.dataset.theme = "colorblind"; } }
   function freshState() {
     const points = Array.from({ length: POINTS }, () => ({ p: 0, c: 0 }));
@@ -84,16 +90,23 @@
   function rememberUndo() { undoSnapshot = clone(state); els.undo.disabled = false; }
   function finishPlayerIfNeeded() {
     if (state.winner) return;
-    if (!state.dice.length || !canMove("p")) { state.turn = "c"; state.dice = []; selected = null; render(); window.setTimeout(computerTurn, 360); }
+    const owner = state.turn;
+    if (!state.dice.length || !canMove(owner)) {
+      state.turn = owner === "p" ? "c" : "p";
+      state.dice = [];
+      selected = null;
+      render();
+      if (!isTwoPlayer() && state.turn === "c") window.setTimeout(computerTurn, 360);
+    }
   }
-  function movePlayer(move) { state = applyMove(state, "p", move); selected = null; render(); finishPlayerIfNeeded(); }
+  function movePlayer(move) { state = applyMove(state, state.turn, move); selected = null; render(); finishPlayerIfNeeded(); }
   function legalComputerSequences(s) {
     const moves = legalMovesFor("c", s);
     if (!moves.length || !s.dice.length || s.winner) return [{ state: clone(s), moves: [] }];
     return moves.flatMap((move) => legalComputerSequences(applyMove(s, "c", move)).map((seq) => ({ state: seq.state, moves: [move].concat(seq.moves) })));
   }
   function computerTurn() {
-    if (state.winner) return;
+    if (isTwoPlayer() || state.winner) return;
     if (!state.dice.length) rollDice();
     while (state.dice.length && !state.winner) {
       const moves = legalMovesFor("c");
@@ -151,7 +164,7 @@
   }
   function render() {
     els.track.innerHTML = "";
-    const legal = selected == null ? [] : legalMovesFor("p").filter((move) => move.from === selected);
+    const legal = selected == null ? [] : legalMovesFor(state.turn).filter((move) => move.from === selected);
     const legalPointSet = new Set(legal.filter((move) => move.to !== "off").map((move) => String(move.to)));
     const legalOff = legal.some((move) => move.to === "off");
     for (let index = POINTS - 1; index >= 0; index -= 1) {
@@ -165,32 +178,32 @@
       point.addEventListener("click", onPointClick);
       els.track.appendChild(point);
     }
-    renderSideButton(els.playerBar, t("backgammonBar", { count: state.playerBar }), "p", state.playerBar, selected === "bar");
-    renderSideButton(els.computerBar, t("backgammonComputerBar", { count: state.computerBar }), "c", state.computerBar, false);
-    renderSideButton(els.playerOff, t("backgammonPlayerOff", { count: state.playerOff }), "p", state.playerOff, legalOff);
-    renderSideButton(els.computerOff, t("backgammonComputerOff", { count: state.computerOff }), "c", state.computerOff, false);
-    els.roll.disabled = state.turn !== "p" || state.winner || state.dice.length > 0;
-    els.status.textContent = state.winner ? t(state.winner === "p" ? "youWon" : "computerWon") : state.dice.length ? t("diceShowing", { dice: state.dice.join(", ") }) : t("rollDicePrompt");
+    renderSideButton(els.playerBar, t("backgammonBar", { count: state.playerBar }), "p", state.playerBar, state.turn === "p" && selected === "bar");
+    renderSideButton(els.computerBar, t("backgammonComputerBar", { count: state.computerBar }), "c", state.computerBar, state.turn === "c" && selected === "bar");
+    renderSideButton(els.playerOff, t("backgammonPlayerOff", { count: state.playerOff }), "p", state.playerOff, state.turn === "p" && legalOff);
+    renderSideButton(els.computerOff, t("backgammonComputerOff", { count: state.computerOff }), "c", state.computerOff, state.turn === "c" && legalOff);
+    els.roll.disabled = (!isTwoPlayer() && state.turn !== "p") || state.winner || state.dice.length > 0;
+    els.status.textContent = state.winner ? isTwoPlayer() ? t(state.winner === "p" ? "player1Won" : "player2Won") : t(state.winner === "p" ? "youWon" : "computerWon") : state.dice.length ? t("diceShowing", { dice: state.dice.join(", ") }) : isTwoPlayer() ? t(state.turn === "p" ? "player1RollPrompt" : "player2RollPrompt") : t("rollDicePrompt");
     saveState();
   }
   function onPointClick(event) {
-    if (state.turn !== "p" || state.winner || !state.dice.length) return;
+    if ((!isTwoPlayer() && state.turn !== "p") || state.winner || !state.dice.length) return;
     const index = Number(event.currentTarget.dataset.index);
     if (selected != null) {
-      const move = legalMovesFor("p").find((item) => item.from === selected && item.to === index);
+      const move = legalMovesFor(state.turn).find((item) => item.from === selected && item.to === index);
       if (move) { rememberUndo(); movePlayer(move); return; }
     }
-    if (state.playerBar > 0) { selected = "bar"; render(); return; }
-    selected = state.points[index].p ? index : null;
+    if (state[barKey(state.turn)] > 0) { selected = "bar"; render(); return; }
+    selected = ownerCount(state.points[index], state.turn) ? index : null;
     render();
   }
   function onOffClick() {
     if (selected == null) return;
-    const move = legalMovesFor("p").find((item) => item.from === selected && item.to === "off");
+    const move = legalMovesFor(state.turn).find((item) => item.from === selected && item.to === "off");
     if (move) { rememberUndo(); movePlayer(move); }
   }
-  function onBarClick() { if (state.turn === "p" && state.playerBar > 0 && state.dice.length) { selected = "bar"; render(); } }
-  function roll() { if (state.turn !== "p" || state.winner || state.dice.length) return; rememberUndo(); rollDice(); if (!canMove("p")) { state.turn = "c"; state.dice = []; window.setTimeout(computerTurn, 360); } render(); }
+  function onBarClick(owner) { if (state.turn === owner && state[barKey(owner)] > 0 && state.dice.length) { selected = "bar"; render(); } }
+  function roll() { if ((!isTwoPlayer() && state.turn !== "p") || state.winner || state.dice.length) return; rememberUndo(); rollDice(); if (!canMove(state.turn)) { state.turn = state.turn === "p" ? "c" : "p"; state.dice = []; if (!isTwoPlayer() && state.turn === "c") window.setTimeout(computerTurn, 360); } render(); }
   function startNewGame() { state = freshState(); selected = null; undoSnapshot = null; els.undo.disabled = true; render(); }
   function undo() { if (!undoSnapshot) return; state = clone(undoSnapshot); selected = null; undoSnapshot = null; els.undo.disabled = true; render(); }
   function preventBrowserDoubleClick(event) { const now = Date.now(); if (now - lastTapAt < 420) event.preventDefault(); lastTapAt = now; }
@@ -198,7 +211,7 @@
   function preventGestureZoom(event) { event.preventDefault(); }
   function applyLanguage() { if (window.LMAG_I18N) window.LMAG_I18N.apply(document); render(); }
   function registerServiceWorker() { if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("../../sw.js").catch(() => {})); }
-  els.roll.addEventListener("click", roll); els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); els.playerOff.addEventListener("click", onOffClick); els.playerBar.addEventListener("click", onBarClick); if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty);
+  els.roll.addEventListener("click", roll); els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); els.playerOff.addEventListener("click", onOffClick); els.computerOff.addEventListener("click", onOffClick); els.playerBar.addEventListener("click", () => onBarClick("p")); els.computerBar.addEventListener("click", () => onBarClick("c")); if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty); if (els.mode) els.mode.addEventListener("change", saveMode);
   document.addEventListener("contextmenu", e => e.preventDefault()); document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true }); document.addEventListener("dragstart", e => e.preventDefault()); document.addEventListener("touchmove", preventViewportMove, { passive: false }); document.addEventListener("gesturestart", preventGestureZoom); document.addEventListener("gesturechange", preventGestureZoom); document.addEventListener("gestureend", preventGestureZoom); document.addEventListener("lmag:languagechange", applyLanguage);
-  applyTheme(); applyDifficulty(); state = loadState() || freshState(); render(); registerServiceWorker();
+  applyTheme(); applyDifficulty(); applyMode(); state = loadState() || freshState(); render(); registerServiceWorker();
 })();

@@ -4,74 +4,30 @@
   const THEME_KEY = "leave-me-alone-games-theme";
   const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const KEY = "leave-me-alone-kakuro-current-game";
-  const SAVE_VERSION = 2;
+  const SAVE_VERSION = 3;
   const board = document.getElementById("game-board");
   const status = document.getElementById("status");
   const undoButton = document.getElementById("undo-button");
   const t = (key, values) => window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key;
-  const PUZZLES = [
-    {
-      id: "starter",
-      size: 7,
-      blocks: [
-        [1,1,1,1,1,1,1],
-        [1,1,1,0,0,1,1],
-        [1,1,0,0,0,1,1],
-        [1,0,0,1,0,0,1],
-        [1,0,0,0,1,0,1],
-        [1,1,0,0,0,0,1],
-        [1,1,1,1,1,1,1],
-      ],
-      solution: {
-        "1,3": 4, "1,4": 7,
-        "2,2": 6, "2,3": 1, "2,4": 8,
-        "3,1": 8, "3,2": 7, "3,4": 5, "3,5": 9,
-        "4,1": 9, "4,2": 4, "4,3": 3, "4,5": 1,
-        "5,2": 2, "5,3": 9, "5,4": 6, "5,5": 3,
-      },
-    },
-    {
-      id: "cross",
-      size: 7,
-      blocks: [
-        [1,1,1,1,1,1,1],
-        [1,1,0,0,1,0,0],
-        [1,0,0,0,0,0,0],
-        [1,0,0,1,0,0,1],
-        [1,1,0,0,0,0,1],
-        [1,0,0,1,0,0,1],
-        [1,1,1,1,1,1,1],
-      ],
-      solution: {
-        "1,2": 3, "1,3": 6, "1,5": 4, "1,6": 8,
-        "2,1": 2, "2,2": 9, "2,3": 1, "2,4": 7, "2,5": 6, "2,6": 5,
-        "3,1": 7, "3,2": 8, "3,4": 3, "3,5": 9,
-        "4,2": 5, "4,3": 4, "4,4": 8, "4,5": 1,
-        "5,1": 6, "5,2": 1, "5,4": 5, "5,5": 2,
-      },
-    },
-    {
-      id: "wide",
-      size: 8,
-      blocks: [
-        [1,1,1,1,1,1,1,1],
-        [1,1,0,0,1,0,0,1],
-        [1,0,0,0,0,0,0,1],
-        [1,0,0,1,0,0,0,1],
-        [1,1,0,0,0,1,0,1],
-        [1,0,0,0,1,0,0,1],
-        [1,0,0,1,0,0,1,1],
-        [1,1,1,1,1,1,1,1],
-      ],
-      solution: {
-        "1,2": 8, "1,3": 3, "1,5": 9, "1,6": 7,
-        "2,1": 4, "2,2": 6, "2,3": 2, "2,4": 8, "2,5": 1, "2,6": 5,
-        "3,1": 9, "3,2": 1, "3,4": 6, "3,5": 2, "3,6": 4,
-        "4,2": 7, "4,3": 9, "4,4": 5, "4,6": 3,
-        "5,1": 3, "5,2": 8, "5,3": 6, "5,5": 4, "5,6": 1,
-        "6,1": 5, "6,2": 4, "6,4": 7, "6,5": 8,
-      },
-    },
+  const TEMPLATES = [
+    { id: "kakuro-01", blocks: [[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,0,0,1,1,1,1],[1,1,1,0,0,0,1,1,1,1],[1,1,1,0,0,1,1,1,1,1],[1,0,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,1],[1,0,0,0,1,0,0,0,1,1],[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-02", blocks: [[1,1,1,1,1,1,1,1],[1,1,0,0,0,0,1,1],[1,1,0,0,0,0,1,1],[1,1,0,0,0,0,1,1],[1,0,0,0,0,0,0,1],[1,0,0,0,1,0,0,1],[1,1,1,1,1,0,0,1],[1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-03", blocks: [[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1],[1,0,0,0,0,0,1,1],[1,0,0,0,0,0,0,1],[1,1,0,0,0,0,0,1],[1,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-04", blocks: [[1,1,1,1,1,1,1,1,1],[1,1,1,0,0,1,0,0,1],[1,0,0,0,0,1,0,0,1],[1,0,0,0,0,0,0,0,1],[1,0,0,0,1,0,0,0,1],[1,0,0,1,1,1,1,1,1],[1,0,0,1,0,0,0,0,1],[1,1,1,1,0,0,0,0,1],[1,1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-05", blocks: [[1,1,1,1,1,1,1,1],[1,1,1,1,1,0,0,1],[1,1,0,0,1,0,0,1],[1,1,0,0,1,0,0,1],[1,1,1,1,0,0,0,1],[1,0,0,0,0,0,1,1],[1,0,0,0,1,1,1,1],[1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-06", blocks: [[1,1,1,1,1,1,1,1],[1,1,1,0,0,0,0,1],[1,1,1,0,0,0,0,1],[1,0,0,0,0,1,1,1],[1,0,0,0,1,0,0,1],[1,1,1,1,1,0,0,1],[1,1,1,1,1,0,0,1],[1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-07", blocks: [[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1],[1,0,0,0,0,1,1,1],[1,0,0,0,0,1,1,1],[1,0,0,0,1,0,0,1],[1,1,0,0,0,0,0,1],[1,1,1,1,0,0,0,1],[1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-08", blocks: [[1,1,1,1,1,1,1,1,1],[1,0,0,0,1,1,1,1,1],[1,0,0,0,0,0,0,1,1],[1,0,0,1,0,0,0,1,1],[1,0,0,1,0,0,1,1,1],[1,0,0,1,1,1,1,1,1],[1,0,0,0,0,1,0,0,1],[1,0,0,0,0,1,0,0,1],[1,1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-09", blocks: [[1,1,1,1,1,1,1,1],[1,0,0,0,0,1,1,1],[1,0,0,0,0,1,1,1],[1,1,1,1,0,0,1,1],[1,1,1,0,0,0,0,1],[1,1,1,0,0,0,0,1],[1,1,1,0,0,0,0,1],[1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-10", blocks: [[1,1,1,1,1,1,1,1,1],[1,1,1,0,0,1,1,1,1],[1,1,1,0,0,1,1,1,1],[1,1,1,0,0,0,0,0,1],[1,1,1,0,0,0,0,0,1],[1,1,1,0,0,0,0,0,1],[1,1,1,0,0,0,0,1,1],[1,1,1,0,0,0,1,1,1],[1,1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-11", blocks: [[1,1,1,1,1,1,1,1],[1,1,1,0,0,1,1,1],[1,0,0,0,0,1,1,1],[1,0,0,0,0,1,1,1],[1,0,0,0,0,1,1,1],[1,1,0,0,0,1,1,1],[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-12", blocks: [[1,1,1,1,1,1,1,1,1,1],[1,0,0,1,1,1,1,1,1,1],[1,0,0,0,0,0,0,1,1,1],[1,0,0,0,0,0,0,0,1,1],[1,0,0,1,0,0,0,0,1,1],[1,1,0,0,0,0,1,0,0,1],[1,1,0,0,0,0,0,0,0,1],[1,1,0,0,0,0,0,1,1,1],[1,1,1,1,1,0,0,1,1,1],[1,1,1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-13", blocks: [[1,1,1,1,1,1,1,1],[1,1,0,0,1,0,0,1],[1,0,0,0,1,0,0,1],[1,0,0,0,1,1,1,1],[1,1,1,0,0,0,1,1],[1,1,0,0,0,0,1,1],[1,1,0,0,1,1,1,1],[1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-14", blocks: [[1,1,1,1,1,1,1,1,1],[1,0,0,1,1,1,1,1,1],[1,0,0,1,1,1,0,0,1],[1,0,0,1,0,0,0,0,1],[1,1,1,1,0,0,0,0,1],[1,1,1,1,0,0,0,0,1],[1,1,1,0,0,0,0,0,1],[1,1,1,0,0,0,0,0,1],[1,1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-15", blocks: [[1,1,1,1,1,1,1,1,1],[1,0,0,0,0,1,0,0,1],[1,0,0,0,0,1,0,0,1],[1,1,0,0,1,0,0,0,1],[1,0,0,0,0,0,0,0,1],[1,0,0,1,0,0,0,0,1],[1,1,1,0,0,0,1,1,1],[1,1,1,0,0,0,1,1,1],[1,1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-16", blocks: [[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1],[1,1,1,0,0,0,1,1,1,1],[1,1,1,0,0,0,1,1,1,1],[1,1,1,0,0,0,1,0,0,1],[1,1,1,1,1,0,0,0,0,1],[1,1,1,1,1,0,0,1,1,1],[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1]] },
+    { id: "kakuro-17", blocks: [[1,1,1,1,1,1,1],[1,0,0,0,0,0,1],[1,0,0,0,0,0,1],[1,0,0,1,0,0,1],[1,1,1,1,0,0,1],[1,1,1,1,0,0,1],[1,1,1,1,1,1,1]] },
+    { id: "kakuro-18", blocks: [[1,1,1,1,1,1,1],[1,0,0,1,0,0,1],[1,0,0,0,0,0,1],[1,0,0,0,0,0,1],[1,1,1,0,0,0,1],[1,1,1,1,0,0,1],[1,1,1,1,1,1,1]] },
   ];
   let undoStack = [];
   let state;
@@ -95,6 +51,15 @@
 
   function key(row, col) {
     return `${row},${col}`;
+  }
+
+  function shuffledDigits() {
+    const digits = [1,2,3,4,5,6,7,8,9];
+    for (let index = digits.length - 1; index > 0; index -= 1) {
+      const swap = Math.floor(Math.random() * (index + 1));
+      [digits[index], digits[swap]] = [digits[swap], digits[index]];
+    }
+    return digits;
   }
 
   function isOpen(puzzle, row, col) {
@@ -151,15 +116,101 @@
     return runs;
   }
 
-  function fresh() {
-    const puzzle = randomItem(PUZZLES);
+  function allRuns(puzzle) {
+    const runs = [];
+    for (let row = 0; row < puzzle.size; row += 1) {
+      for (let col = 0; col < puzzle.size; col += 1) {
+        if (isOpen(puzzle, row, col) && !isOpen(puzzle, row, col - 1)) {
+          const cells = [];
+          let scan = col;
+          while (isOpen(puzzle, row, scan)) {
+            cells.push(key(row, scan));
+            scan += 1;
+          }
+          if (cells.length > 1) runs.push(cells);
+        }
+        if (isOpen(puzzle, row, col) && !isOpen(puzzle, row - 1, col)) {
+          const cells = [];
+          let scan = row;
+          while (isOpen(puzzle, scan, col)) {
+            cells.push(key(scan, col));
+            scan += 1;
+          }
+          if (cells.length > 1) runs.push(cells);
+        }
+      }
+    }
+    return runs;
+  }
+
+  function generateSolution(blocks) {
+    const puzzle = { size: blocks.length, blocks, solution: {} };
+    const runs = allRuns(puzzle);
+    const runIdsByCell = new Map();
+    runs.forEach((cells, index) => {
+      cells.forEach((cell) => {
+        if (!runIdsByCell.has(cell)) runIdsByCell.set(cell, []);
+        runIdsByCell.get(cell).push(index);
+      });
+    });
+    const cells = [];
+    for (let row = 0; row < puzzle.size; row += 1) {
+      for (let col = 0; col < puzzle.size; col += 1) {
+        if (isOpen(puzzle, row, col)) cells.push(key(row, col));
+      }
+    }
+    cells.sort((a, b) => (runIdsByCell.get(b)?.length || 0) - (runIdsByCell.get(a)?.length || 0));
+    const usedByRun = runs.map(() => new Set());
+    const solution = {};
+
+    function place(index) {
+      if (index >= cells.length) return true;
+      const cell = cells[index];
+      const runIds = runIdsByCell.get(cell) || [];
+      for (const digit of shuffledDigits()) {
+        if (runIds.some((runId) => usedByRun[runId].has(digit))) continue;
+        solution[cell] = digit;
+        runIds.forEach((runId) => usedByRun[runId].add(digit));
+        if (place(index + 1)) return true;
+        runIds.forEach((runId) => usedByRun[runId].delete(digit));
+        delete solution[cell];
+      }
+      return false;
+    }
+
+    return place(0) ? solution : null;
+  }
+
+  function makePuzzle() {
+    const templates = TEMPLATES.slice();
+    for (let index = templates.length - 1; index > 0; index -= 1) {
+      const swap = Math.floor(Math.random() * (index + 1));
+      [templates[index], templates[swap]] = [templates[swap], templates[index]];
+    }
+    for (const template of templates) {
+      const blocks = clone(template.blocks);
+      for (let attempt = 0; attempt < 20; attempt += 1) {
+        const solution = generateSolution(blocks);
+        if (solution) return { id: `${template.id}-${Date.now()}-${attempt}`, size: blocks.length, blocks, solution };
+      }
+    }
+    const fallback = clone(TEMPLATES[0].blocks);
+    return { id: "kakuro-fallback", size: fallback.length, blocks: fallback, solution: generateSolution(fallback) || {} };
+  }
+
+  function emptyValues(puzzle) {
     const values = {};
     Object.keys(puzzle.solution).forEach((cell) => { values[cell] = ""; });
-    return { version: SAVE_VERSION, puzzleId: puzzle.id, values };
+    return values;
+  }
+
+  function fresh() {
+    const puzzle = makePuzzle();
+    return { version: SAVE_VERSION, puzzle, values: emptyValues(puzzle) };
   }
 
   function currentPuzzle() {
-    return PUZZLES.find((puzzle) => puzzle.id === state?.puzzleId) || PUZZLES[0];
+    return state?.puzzle || fresh().puzzle;
   }
 
   function save() {
@@ -169,7 +220,7 @@
   function load() {
     try {
       const saved = JSON.parse(sessionStorage.getItem(KEY));
-      if (saved?.version !== SAVE_VERSION || !PUZZLES.some((puzzle) => puzzle.id === saved.puzzleId) || !saved.values) return fresh();
+      if (saved?.version !== SAVE_VERSION || !saved.puzzle?.solution || !saved.values) return fresh();
       return saved;
     } catch {
       return fresh();
@@ -184,6 +235,15 @@
   function runHasConflict(puzzle, cells) {
     const values = cells.map((cell) => Number(state.values[cell]) || 0).filter(Boolean);
     return values.length !== new Set(values).size;
+  }
+
+  function runIsSolved(puzzle, cells) {
+    const values = cells.map((cell) => Number(state.values[cell]) || 0);
+    if (values.some((value) => value < 1 || value > 9)) return false;
+    if (values.length !== new Set(values).size) return false;
+    const target = cells.reduce((sum, cell) => sum + puzzle.solution[cell], 0);
+    const actual = values.reduce((sum, value) => sum + value, 0);
+    return actual === target;
   }
 
   function isConflict(puzzle, row, col) {
@@ -246,7 +306,7 @@
 
   function check() {
     const puzzle = currentPuzzle();
-    const solved = Object.keys(puzzle.solution).every((cell) => Number(state.values[cell]) === puzzle.solution[cell]);
+    const solved = allRuns(puzzle).every((cells) => runIsSolved(puzzle, cells));
     status.textContent = t(solved ? "puzzleSolved" : "puzzleTryAgain");
   }
 

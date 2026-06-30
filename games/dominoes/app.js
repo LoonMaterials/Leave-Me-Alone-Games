@@ -3,17 +3,23 @@
   const STORAGE_KEY = "leave-me-alone-dominoes-current-game";
   const SAVE_VERSION = 2;
   const DIFFICULTY_KEY = "leave-me-alone-dominoes-difficulty";
+  const MODE_KEY = "leave-me-alone-dominoes-mode";
   const THEME_KEY = "leave-me-alone-games-theme";
   const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
+  const MODES = new Set(["computer", "two-player"]);
   const MAX_PIPS = 9;
   const STARTING_HAND = 10;
-  const els = { opponent: document.getElementById("opponent"), chain: document.getElementById("chain"), hand: document.getElementById("hand"), handCount: document.getElementById("hand-count"), draw: document.getElementById("draw"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty") };
+  const els = { opponent: document.getElementById("opponent"), chain: document.getElementById("chain"), hand: document.getElementById("hand"), handCount: document.getElementById("hand-count"), draw: document.getElementById("draw"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty"), mode: document.getElementById("game-mode") };
   let state = null, undoSnapshot = null, lastTapAt = 0;
   function t(key, values) { return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key; }
   function storedDifficulty() { try { const difficulty = localStorage.getItem(DIFFICULTY_KEY); return DIFFICULTIES.has(difficulty) ? difficulty : "easy"; } catch { return "easy"; } }
+  function storedMode() { try { const mode = localStorage.getItem(MODE_KEY); return MODES.has(mode) ? mode : "computer"; } catch { return "computer"; } }
+  function isTwoPlayer() { return storedMode() === "two-player"; }
   function applyDifficulty() { if (els.difficulty) els.difficulty.value = storedDifficulty(); }
   function saveDifficulty() { if (!els.difficulty) return; try { localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy"); } catch {} }
+  function applyMode() { if (els.mode) els.mode.value = storedMode(); if (els.difficulty) els.difficulty.disabled = isTwoPlayer(); }
+  function saveMode() { if (!els.mode) return; try { localStorage.setItem(MODE_KEY, MODES.has(els.mode.value) ? els.mode.value : "computer"); } catch {} applyMode(); startNewGame(); }
   function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "colorblind"; } catch { document.body.dataset.theme = "colorblind"; } }
   function makeSet() { const tiles = []; let id = 0; for (let a = 0; a <= MAX_PIPS; a += 1) for (let b = a; b <= MAX_PIPS; b += 1) tiles.push({ id: `d${id++}`, a, b }); return shuffle(tiles); }
   function shuffle(items) { const copy = items.slice(); for (let i = copy.length - 1; i > 0; i -= 1) { const j = Math.floor(Math.random() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; } return copy; }
@@ -58,6 +64,20 @@
     hand.push(state.boneyard.shift());
     return true;
   }
+  function handFor(owner) { return owner === "p" ? state.player : state.computer; }
+  function noOneCanPlay() { return !state.player.some(canPlay) && !state.computer.some(canPlay) && !state.boneyard.length; }
+  function settleBlockedGame() {
+    if (!noOneCanPlay()) return false;
+    const playerPips = state.player.reduce((sum, tile) => sum + tile.a + tile.b, 0);
+    const computerPips = state.computer.reduce((sum, tile) => sum + tile.a + tile.b, 0);
+    state.winner = playerPips <= computerPips ? "p" : "c";
+    return true;
+  }
+  function finishTurn(owner) {
+    if (state.winner || settleBlockedGame()) return;
+    state.turn = owner === "p" ? "c" : "p";
+    if (!isTwoPlayer() && state.turn === "c") window.setTimeout(computerTurn, 340);
+  }
   function computerCandidates() {
     return state.computer.flatMap((tile) => playableSides(tile).map((side) => ({ tile, side })));
   }
@@ -98,16 +118,12 @@
     return candidates[Math.floor(Math.random() * candidates.length)];
   }
   function computerTurn() {
-    if (state.winner) return;
+    if (isTwoPlayer() || state.winner) return;
     let play = chooseComputerPlay();
     while (!play && state.boneyard.length) { drawTile("c"); play = chooseComputerPlay(); }
     if (play) playTile("c", play.tile.id, play.side);
     state.turn = "p";
-    if (!state.player.some(canPlay) && !state.computer.some(canPlay) && !state.boneyard.length) {
-      const playerPips = state.player.reduce((sum, tile) => sum + tile.a + tile.b, 0);
-      const computerPips = state.computer.reduce((sum, tile) => sum + tile.a + tile.b, 0);
-      state.winner = playerPips <= computerPips ? "p" : "c";
-    }
+    settleBlockedGame();
     render();
   }
   function rememberUndo() { undoSnapshot = clone(state); els.undo.disabled = false; }
@@ -134,23 +150,32 @@
   }
   function render() {
     els.chain.innerHTML = ""; els.hand.innerHTML = "";
+    const activeOwner = isTwoPlayer() ? state.turn : "p";
+    const activeHand = handFor(activeOwner);
     state.chain.forEach((tile) => els.chain.appendChild(dominoEl(tile, false)));
-    state.player.forEach((tile) => { const el = dominoEl(tile, canPlay(tile)); el.disabled = state.turn !== "p" || !canPlay(tile) || Boolean(state.winner); el.addEventListener("click", onTileClick); els.hand.appendChild(el); });
-    els.draw.disabled = state.turn !== "p" || Boolean(state.winner) || state.player.some(canPlay) || !state.boneyard.length;
-    els.opponent.textContent = t("dominoesOpponent", { count: state.computer.length, boneyard: state.boneyard.length });
-    if (els.handCount) els.handCount.textContent = t("dominoesYourTiles", { count: state.player.length });
-    els.status.textContent = state.winner ? t(state.winner === "p" ? "youWon" : "computerWon") : state.player.some(canPlay) ? t("yourTurn") : state.boneyard.length ? t("dominoesDrawPrompt") : t("dominoesBlocked");
+    activeHand.forEach((tile) => { const el = dominoEl(tile, canPlay(tile)); el.disabled = (!isTwoPlayer() && state.turn !== "p") || !canPlay(tile) || Boolean(state.winner); el.addEventListener("click", onTileClick); els.hand.appendChild(el); });
+    els.draw.disabled = (!isTwoPlayer() && state.turn !== "p") || Boolean(state.winner) || activeHand.some(canPlay) || (!state.boneyard.length && noOneCanPlay());
+    els.opponent.textContent = isTwoPlayer() ? t("dominoesLocalCounts", { player1: state.player.length, player2: state.computer.length, boneyard: state.boneyard.length }) : t("dominoesOpponent", { count: state.computer.length, boneyard: state.boneyard.length });
+    if (els.handCount) els.handCount.textContent = isTwoPlayer() ? t(activeOwner === "p" ? "player1Tiles" : "player2Tiles", { count: activeHand.length }) : t("dominoesYourTiles", { count: state.player.length });
+    els.status.textContent = state.winner ? isTwoPlayer() ? t(state.winner === "p" ? "player1Won" : "player2Won") : t(state.winner === "p" ? "youWon" : "computerWon") : activeHand.some(canPlay) ? (isTwoPlayer() ? t(activeOwner === "p" ? "player1Turn" : "player2Turn") : t("yourTurn")) : state.boneyard.length ? t("dominoesDrawPrompt") : t("dominoesPassPrompt");
     saveState();
   }
   function onTileClick(event) {
-    if (state.turn !== "p" || state.winner) return;
+    if ((!isTwoPlayer() && state.turn !== "p") || state.winner) return;
     rememberUndo();
-    if (playTile("p", event.currentTarget.dataset.id)) { state.turn = "c"; render(); window.setTimeout(computerTurn, 340); }
+    const owner = isTwoPlayer() ? state.turn : "p";
+    if (playTile(owner, event.currentTarget.dataset.id)) { finishTurn(owner); render(); }
     else render();
   }
   function drawForPlayer() {
-    if (state.turn !== "p" || state.winner || state.player.some(canPlay)) return;
-    rememberUndo(); drawTile("p"); render();
+    if ((!isTwoPlayer() && state.turn !== "p") || state.winner) return;
+    const owner = isTwoPlayer() ? state.turn : "p";
+    const hand = handFor(owner);
+    if (hand.some(canPlay)) return;
+    rememberUndo();
+    if (state.boneyard.length) drawTile(owner);
+    else finishTurn(owner);
+    render();
   }
   function startNewGame() { state = freshState(); undoSnapshot = null; els.undo.disabled = true; render(); }
   function undo() { if (!undoSnapshot) return; state = clone(undoSnapshot); undoSnapshot = null; els.undo.disabled = true; render(); }
@@ -159,7 +184,7 @@
   function preventGestureZoom(event) { event.preventDefault(); }
   function applyLanguage() { if (window.LMAG_I18N) window.LMAG_I18N.apply(document); render(); }
   function registerServiceWorker() { if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("../../sw.js").catch(() => {})); }
-  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); els.draw.addEventListener("click", drawForPlayer); if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty);
+  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); els.draw.addEventListener("click", drawForPlayer); if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty); if (els.mode) els.mode.addEventListener("change", saveMode);
   document.addEventListener("contextmenu", (event) => event.preventDefault()); document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true }); document.addEventListener("dragstart", (event) => event.preventDefault()); document.addEventListener("touchmove", preventViewportMove, { passive: false }); document.addEventListener("gesturestart", preventGestureZoom); document.addEventListener("gesturechange", preventGestureZoom); document.addEventListener("gestureend", preventGestureZoom); document.addEventListener("lmag:languagechange", applyLanguage);
-  applyTheme(); applyDifficulty(); state = loadState() || freshState(); render(); registerServiceWorker();
+  applyTheme(); applyDifficulty(); applyMode(); state = loadState() || freshState(); render(); registerServiceWorker();
 })();

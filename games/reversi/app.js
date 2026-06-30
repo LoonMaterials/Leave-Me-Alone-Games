@@ -2,16 +2,22 @@
   "use strict";
   const STORAGE_KEY = "leave-me-alone-reversi-current-game";
   const DIFFICULTY_KEY = "leave-me-alone-reversi-difficulty";
+  const MODE_KEY = "leave-me-alone-reversi-mode";
   const THEME_KEY = "leave-me-alone-games-theme";
   const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
+  const MODES = new Set(["computer", "two-player"]);
   const DIRS = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
-  const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty") };
+  const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty"), mode: document.getElementById("game-mode") };
   let state = null, undoSnapshot = null, lastTapAt = 0;
   function t(key, values) { return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key; }
   function storedDifficulty() { try { const difficulty = localStorage.getItem(DIFFICULTY_KEY); return DIFFICULTIES.has(difficulty) ? difficulty : "easy"; } catch { return "easy"; } }
+  function storedMode() { try { const mode = localStorage.getItem(MODE_KEY); return MODES.has(mode) ? mode : "computer"; } catch { return "computer"; } }
+  function isTwoPlayer() { return storedMode() === "two-player"; }
   function applyDifficulty() { if (els.difficulty) els.difficulty.value = storedDifficulty(); }
   function saveDifficulty() { if (!els.difficulty) return; try { localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy"); } catch {} }
+  function applyMode() { if (els.mode) els.mode.value = storedMode(); if (els.difficulty) els.difficulty.disabled = isTwoPlayer(); }
+  function saveMode() { if (!els.mode) return; try { localStorage.setItem(MODE_KEY, MODES.has(els.mode.value) ? els.mode.value : "computer"); } catch {} applyMode(); startNewGame(); }
   function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "colorblind"; } catch { document.body.dataset.theme = "colorblind"; } }
   function freshState() { const board = Array.from({ length: 8 }, () => Array(8).fill(null)); board[3][3] = "w"; board[3][4] = "b"; board[4][3] = "b"; board[4][4] = "w"; return { board, turn: "b", winner: null }; }
   function clone(source) { return JSON.parse(JSON.stringify(source)); }
@@ -53,7 +59,7 @@
     updateWinner();
   }
   function computerMove() {
-    if (state.winner || state.turn !== "w") return;
+    if (isTwoPlayer() || state.winner || state.turn !== "w") return;
     const moves = legalMoves("w");
     if (!moves.length) { state.turn = "b"; render(); return; }
     const best = chooseComputerMove(moves);
@@ -84,7 +90,7 @@
   function rememberUndo() { undoSnapshot = clone(state); els.undo.disabled = false; }
   function render() {
     els.board.innerHTML = "";
-    const moves = state.turn === "b" ? legalMoves("b") : [];
+    const moves = isTwoPlayer() ? legalMoves(state.turn) : state.turn === "b" ? legalMoves("b") : [];
     const legal = new Map(moves.map(move => [`${move.row},${move.col}`, move]));
     for (let row = 0; row < 8; row += 1) for (let col = 0; col < 8; col += 1) {
       const square = document.createElement("button");
@@ -96,15 +102,16 @@
       square.addEventListener("click", onSquareClick); els.board.appendChild(square);
     }
     const s = score();
-    els.status.textContent = state.winner ? (state.winner === "draw" ? t("draw") : t(state.winner === "b" ? "youWon" : "computerWon")) : t("reversiScore", { player: s.black, computer: s.white });
+    els.status.textContent = state.winner ? (state.winner === "draw" ? t("draw") : isTwoPlayer() ? t(state.winner === "b" ? "blackWon" : "whiteWon") : t(state.winner === "b" ? "youWon" : "computerWon")) : isTwoPlayer() ? `${t("reversiScoreLocal", { black: s.black, white: s.white })} · ${t(state.turn === "b" ? "blackTurn" : "whiteTurn")}` : t("reversiScore", { player: s.black, computer: s.white });
     saveState();
   }
   function onSquareClick(event) {
-    if (state.turn !== "b" || state.winner) return;
+    if ((!isTwoPlayer() && state.turn !== "b") || state.winner) return;
     const row = Number(event.currentTarget.dataset.row), col = Number(event.currentTarget.dataset.col);
-    const move = legalMoves("b").find(item => item.row === row && item.col === col);
+    const color = isTwoPlayer() ? state.turn : "b";
+    const move = legalMoves(color).find(item => item.row === row && item.col === col);
     if (!move) return;
-    rememberUndo(); playMove(move, "b"); render(); window.setTimeout(computerMove, 300);
+    rememberUndo(); playMove(move, color); render(); if (!isTwoPlayer()) window.setTimeout(computerMove, 300);
   }
   function startNewGame() { state = freshState(); undoSnapshot = null; els.undo.disabled = true; render(); }
   function undo() { if (!undoSnapshot) return; state = clone(undoSnapshot); undoSnapshot = null; els.undo.disabled = true; render(); }
@@ -113,7 +120,7 @@
   function preventGestureZoom(event) { event.preventDefault(); }
   function applyLanguage() { if (window.LMAG_I18N) window.LMAG_I18N.apply(document); render(); }
   function registerServiceWorker() { if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("../../sw.js").catch(() => {})); }
-  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty);
+  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty); if (els.mode) els.mode.addEventListener("change", saveMode);
   document.addEventListener("contextmenu", e => e.preventDefault()); document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true }); document.addEventListener("dragstart", e => e.preventDefault()); document.addEventListener("touchmove", preventViewportMove, { passive: false }); document.addEventListener("gesturestart", preventGestureZoom); document.addEventListener("gesturechange", preventGestureZoom); document.addEventListener("gestureend", preventGestureZoom); document.addEventListener("lmag:languagechange", applyLanguage);
-  applyTheme(); applyDifficulty(); state = loadState() || freshState(); updateWinner(); render(); registerServiceWorker();
+  applyTheme(); applyDifficulty(); applyMode(); state = loadState() || freshState(); updateWinner(); render(); registerServiceWorker();
 })();

@@ -162,8 +162,10 @@ body {
   background: var(--panel);
   text-decoration: none;
   display: grid;
-  align-content: end;
+  align-content: center;
+  justify-items: center;
   gap: 7px;
+  text-align: center;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
@@ -176,6 +178,7 @@ body {
 
 .game-badge {
   width: fit-content;
+  justify-self: center;
   border: 1px solid var(--panel-border);
   border-radius: 999px;
   padding: 0.16rem 0.48rem;

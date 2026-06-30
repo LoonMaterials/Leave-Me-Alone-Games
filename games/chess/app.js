@@ -3,10 +3,12 @@
 
   const STORAGE_KEY = "leave-me-alone-chess-current-game";
   const DIFFICULTY_KEY = "leave-me-alone-chess-difficulty";
+  const MODE_KEY = "leave-me-alone-chess-mode";
   const THEME_KEY = "leave-me-alone-games-theme";
   const SAVE_VERSION = 2;
   const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
+  const MODES = new Set(["computer", "two-player"]);
   const VALUES = { P: 100, N: 320, B: 330, R: 500, Q: 900, K: 20000 };
   const PIECE_SQUARES = {
     P: [
@@ -76,7 +78,8 @@
     status: document.getElementById("status"),
     undo: document.getElementById("undo"),
     newGame: document.getElementById("new-game"),
-    difficulty: document.getElementById("difficulty")
+    difficulty: document.getElementById("difficulty"),
+    mode: document.getElementById("game-mode")
   };
   let state = null;
   let selected = null;
@@ -97,6 +100,19 @@
     }
   }
 
+  function storedMode() {
+    try {
+      const mode = localStorage.getItem(MODE_KEY);
+      return MODES.has(mode) ? mode : "computer";
+    } catch {
+      return "computer";
+    }
+  }
+
+  function isTwoPlayer() {
+    return storedMode() === "two-player";
+  }
+
   function applyDifficulty() {
     if (els.difficulty) els.difficulty.value = storedDifficulty();
   }
@@ -106,6 +122,20 @@
     try {
       localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy");
     } catch {}
+  }
+
+  function applyMode() {
+    if (els.mode) els.mode.value = storedMode();
+    if (els.difficulty) els.difficulty.disabled = isTwoPlayer();
+  }
+
+  function saveMode() {
+    if (!els.mode) return;
+    try {
+      localStorage.setItem(MODE_KEY, MODES.has(els.mode.value) ? els.mode.value : "computer");
+    } catch {}
+    applyMode();
+    startNewGame();
   }
 
   function applyTheme() {
@@ -477,7 +507,7 @@
   }
 
   function computerMove() {
-    if (state.winner || state.draw || state.turn !== "b") return;
+    if (isTwoPlayer() || state.winner || state.draw || state.turn !== "b") return;
     const moves = allLegalMoves(state, "b");
     if (!moves.length) {
       updateGameStatus(state);
@@ -496,9 +526,9 @@
 
   function statusText() {
     if (state.draw) return t("chessStalemate");
-    if (state.winner) return t("chessCheckmate", { winner: state.winner === "w" ? t("youWon") : t("computerWon") });
+    if (state.winner) return t("chessCheckmate", { winner: isTwoPlayer() ? t(state.winner === "w" ? "whiteWon" : "blackWon") : state.winner === "w" ? t("youWon") : t("computerWon") });
     if (isInCheck(state, state.turn)) return t("chessCheck");
-    return state.turn === "w" ? t("yourTurn") : t("chessThinking");
+    return isTwoPlayer() ? t(state.turn === "w" ? "whiteTurn" : "blackTurn") : state.turn === "w" ? t("yourTurn") : t("chessThinking");
   }
 
   function render() {
@@ -532,7 +562,7 @@
   }
 
   function onSquareClick(event) {
-    if (state.turn !== "w" || state.winner || state.draw) return;
+    if ((!isTwoPlayer() && state.turn !== "w") || state.winner || state.draw) return;
     const row = Number(event.currentTarget.dataset.row);
     const col = Number(event.currentTarget.dataset.col);
     const chosenMove = legalTargets.find((move) => move.to.row === row && move.to.col === col);
@@ -542,10 +572,10 @@
       selected = null;
       legalTargets = [];
       render();
-      if (!state.winner && !state.draw) window.setTimeout(computerMove, storedDifficulty() === "hard" ? 180 : 120);
+      if (!isTwoPlayer() && !state.winner && !state.draw) window.setTimeout(computerMove, storedDifficulty() === "hard" ? 180 : 120);
       return;
     }
-    if (colorOf(state.board[row][col]) === "w") {
+    if (colorOf(state.board[row][col]) === state.turn) {
       selected = { row, col };
       legalTargets = legalMovesFor(state, row, col);
     } else {
@@ -590,6 +620,7 @@
   els.newGame.addEventListener("click", startNewGame);
   els.undo.addEventListener("click", undo);
   if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty);
+  if (els.mode) els.mode.addEventListener("change", saveMode);
   document.addEventListener("contextmenu", (event) => event.preventDefault());
   document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true });
   document.addEventListener("dragstart", (event) => event.preventDefault());
@@ -601,6 +632,7 @@
 
   applyTheme();
   applyDifficulty();
+  applyMode();
   state = loadState() || freshState();
   updateGameStatus(state);
   render();

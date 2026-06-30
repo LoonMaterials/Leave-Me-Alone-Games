@@ -26,6 +26,13 @@
         <div id="opponent" class="opponent"></div>
         <div class="game-options">
           <label class="difficulty-control">
+            <span data-i18n="gameMode">Mode</span>
+            <select id="game-mode" aria-label="Mode" data-i18n-aria="gameMode">
+              <option value="computer" data-i18n="modeComputer">Vs Computer</option>
+              <option value="two-player" data-i18n="modeTwoPlayers">Two Players</option>
+            </select>
+          </label>
+          <label class="difficulty-control">
             <span data-i18n="difficulty">Difficulty</span>
             <select id="difficulty" aria-label="Difficulty" data-i18n-aria="difficulty">
               <option value="easy" data-i18n="difficultyEasy">Easy</option>
@@ -43,7 +50,7 @@
       </section>
     </main>
     <span hidden data-i18n-title="dominoesTitle"></span>
-    <script src="../../i18n.js?v=20260630-game-fixes-1"></script>
-    <script src="app.js?v=20260630-game-fixes-1"></script>
+    <script src="../../i18n.js?v=20260630-two-player-1"></script>
+    <script src="app.js?v=20260630-two-player-1"></script>
   </body>
 </html>

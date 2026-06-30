@@ -2,16 +2,22 @@
   "use strict";
   const STORAGE_KEY = "leave-me-alone-connect4-current-game";
   const DIFFICULTY_KEY = "leave-me-alone-connect4-difficulty";
+  const MODE_KEY = "leave-me-alone-connect4-mode";
   const THEME_KEY = "leave-me-alone-games-theme";
   const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
+  const MODES = new Set(["computer", "two-player"]);
   const ROWS = 6, COLS = 7;
-  const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty") };
+  const els = { board: document.getElementById("board"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty"), mode: document.getElementById("game-mode") };
   let state = null, undoSnapshot = null, lastTapAt = 0;
   function t(key, values) { return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key; }
   function storedDifficulty() { try { const difficulty = localStorage.getItem(DIFFICULTY_KEY); return DIFFICULTIES.has(difficulty) ? difficulty : "easy"; } catch { return "easy"; } }
+  function storedMode() { try { const mode = localStorage.getItem(MODE_KEY); return MODES.has(mode) ? mode : "computer"; } catch { return "computer"; } }
+  function isTwoPlayer() { return storedMode() === "two-player"; }
   function applyDifficulty() { if (els.difficulty) els.difficulty.value = storedDifficulty(); }
   function saveDifficulty() { if (!els.difficulty) return; try { localStorage.setItem(DIFFICULTY_KEY, DIFFICULTIES.has(els.difficulty.value) ? els.difficulty.value : "easy"); } catch {} }
+  function applyMode() { if (els.mode) els.mode.value = storedMode(); if (els.difficulty) els.difficulty.disabled = isTwoPlayer(); }
+  function saveMode() { if (!els.mode) return; try { localStorage.setItem(MODE_KEY, MODES.has(els.mode.value) ? els.mode.value : "computer"); } catch {} applyMode(); startNewGame(); }
   function applyTheme() { try { const theme = localStorage.getItem(THEME_KEY); document.body.dataset.theme = THEMES.has(theme) ? theme : "colorblind"; } catch { document.body.dataset.theme = "colorblind"; } }
   function freshState() { return { board: Array.from({ length: ROWS }, () => Array(COLS).fill(null)), turn: "r", winner: null }; }
   function clone(source) { return JSON.parse(JSON.stringify(source)); }
@@ -117,7 +123,7 @@
     if (storedDifficulty() === "medium") return mediumCol(cols);
     return cols[Math.floor(Math.random() * cols.length)];
   }
-  function computerMove() { if (state.winner || state.turn !== "y") return; drop(bestComputerCol(), "y"); render(); }
+  function computerMove() { if (isTwoPlayer() || state.winner || state.turn !== "y") return; drop(bestComputerCol(), "y"); render(); }
   function rememberUndo() { undoSnapshot = clone(state); els.undo.disabled = false; }
   function render() {
     els.board.innerHTML = "";
@@ -125,14 +131,14 @@
       const button = document.createElement("button");
       button.type = "button"; button.className = `cell ${state.board[row][col] === "r" ? "red" : state.board[row][col] === "y" ? "yellow" : ""}`;
       button.dataset.col = String(col); button.setAttribute("aria-label", t("connect4Column", { col: col + 1 }));
-      button.disabled = state.turn !== "r" || state.winner || openRow(col) < 0;
+      button.disabled = (!isTwoPlayer() && state.turn !== "r") || state.winner || openRow(col) < 0;
       button.addEventListener("click", onColumnClick);
       els.board.appendChild(button);
     }
-    els.status.textContent = state.winner ? (state.winner === "draw" ? t("draw") : t(state.winner === "r" ? "youWon" : "computerWon")) : t("yourTurn");
+    els.status.textContent = state.winner ? (state.winner === "draw" ? t("draw") : isTwoPlayer() ? t(state.winner === "r" ? "redWon" : "yellowWon") : t(state.winner === "r" ? "youWon" : "computerWon")) : isTwoPlayer() ? t(state.turn === "r" ? "redTurn" : "yellowTurn") : t("yourTurn");
     saveState();
   }
-  function onColumnClick(event) { if (state.turn !== "r" || state.winner) return; rememberUndo(); if (drop(Number(event.currentTarget.dataset.col), "r")) { render(); window.setTimeout(computerMove, 300); } }
+  function onColumnClick(event) { if ((!isTwoPlayer() && state.turn !== "r") || state.winner) return; rememberUndo(); if (drop(Number(event.currentTarget.dataset.col), state.turn)) { render(); if (!isTwoPlayer()) window.setTimeout(computerMove, 300); } }
   function startNewGame() { state = freshState(); undoSnapshot = null; els.undo.disabled = true; render(); }
   function undo() { if (!undoSnapshot) return; state = clone(undoSnapshot); undoSnapshot = null; els.undo.disabled = true; render(); }
   function preventBrowserDoubleClick(event) { const now = Date.now(); if (now - lastTapAt < 420) event.preventDefault(); lastTapAt = now; }
@@ -140,7 +146,7 @@
   function preventGestureZoom(event) { event.preventDefault(); }
   function applyLanguage() { if (window.LMAG_I18N) window.LMAG_I18N.apply(document); render(); }
   function registerServiceWorker() { if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("../../sw.js").catch(() => {})); }
-  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty);
+  els.newGame.addEventListener("click", startNewGame); els.undo.addEventListener("click", undo); if (els.difficulty) els.difficulty.addEventListener("change", saveDifficulty); if (els.mode) els.mode.addEventListener("change", saveMode);
   document.addEventListener("contextmenu", e => e.preventDefault()); document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true }); document.addEventListener("dragstart", e => e.preventDefault()); document.addEventListener("touchmove", preventViewportMove, { passive: false }); document.addEventListener("gesturestart", preventGestureZoom); document.addEventListener("gesturechange", preventGestureZoom); document.addEventListener("gestureend", preventGestureZoom); document.addEventListener("lmag:languagechange", applyLanguage);
-  applyTheme(); applyDifficulty(); state = loadState() || freshState(); render(); registerServiceWorker();
+  applyTheme(); applyDifficulty(); applyMode(); state = loadState() || freshState(); render(); registerServiceWorker();
 })();
