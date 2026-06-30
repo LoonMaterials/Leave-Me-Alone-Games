@@ -273,3 +273,60 @@ body {
     font-size: 0.88rem;
   }
 }
+/* App touch-target pass: keep header controls comfortably tappable on phones. */
+.topbar button,
+.topbar .button-link,
+.topbar .control-button,
+.topbar select,
+.controls button,
+.controls .control-button,
+.actions button,
+.actions .button-link,
+.actions select,
+.difficulty-control select {
+  min-height: 40px;
+  min-width: 40px;
+}
+
+.draw-control {
+  min-height: 40px;
+}
+/* Final iPhone control sizing: explicit app-like tap boxes. */
+.topbar button,
+.topbar .button-link,
+.topbar .control-button,
+.topbar select,
+.controls button,
+.controls .control-button,
+.actions button,
+.actions .button-link,
+.actions select,
+.difficulty-control select,
+.settings select,
+.setting-row {
+  box-sizing: border-box;
+  min-height: 40px;
+}
+/* Final app-store tap override for dense mobile headers. */
+.topbar button,
+.topbar .button-link,
+.topbar .control-button,
+.topbar select,
+.controls button,
+.controls .control-button,
+.actions button,
+.actions .button-link,
+.actions select,
+.difficulty-control select,
+.settings select,
+.setting-row {
+  box-sizing: border-box !important;
+  min-height: 40px !important;
+}
+/* Launcher selects are native controls, so pin them directly. */
+#theme-select,
+#language-select {
+  box-sizing: border-box !important;
+  min-height: 40px !important;
+  height: 40px !important;
+}

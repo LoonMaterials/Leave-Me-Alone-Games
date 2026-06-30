@@ -66,3 +66,37 @@ body.theme-colorblind {
   --lit: #f0e442;
   --lit-edge: #fff6a5;
 }
+/* App touch-target pass: keep header controls comfortably tappable on phones. */
+.topbar button,
+.topbar .button-link,
+.topbar .control-button,
+.topbar select,
+.controls button,
+.controls .control-button,
+.actions button,
+.actions .button-link,
+.actions select,
+.difficulty-control select {
+  min-height: 40px;
+  min-width: 40px;
+}
+
+.draw-control {
+  min-height: 40px;
+}
+/* Final iPhone control sizing: explicit app-like tap boxes. */
+.topbar button,
+.topbar .button-link,
+.topbar .control-button,
+.topbar select,
+.controls button,
+.controls .control-button,
+.actions button,
+.actions .button-link,
+.actions select,
+.difficulty-control select,
+.settings select,
+.setting-row {
+  box-sizing: border-box;
+  min-height: 40px;
+}
