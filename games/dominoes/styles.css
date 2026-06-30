@@ -19,8 +19,10 @@ button:disabled { opacity: .45; }
 .opponent { color: var(--muted); text-align: center; min-height: 1.4rem; }
 .game-options { display: flex; justify-content: center; align-items: center; min-height: 2rem; }
 .chain { min-height: 0; overflow: auto; border: 1px dashed var(--table-line); border-radius: 10px; padding: 12px; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, rgba(8,24,19,.2), var(--table-glow)); touch-action: pan-y; }
-.hand-wrap { display: grid; grid-template-columns: auto minmax(0,1fr); align-items: center; gap: 8px; }
-.hand { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 8px; touch-action: pan-x; }
+.hand-wrap { position: relative; display: grid; grid-template-columns: auto auto minmax(0,1fr); align-items: center; gap: 8px; }
+.hand-wrap::after { content: "›"; position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 2.1rem; height: calc(100% - 4px); display: grid; place-items: center; pointer-events: none; color: var(--text); font-size: 2rem; font-weight: 900; border-radius: 999px 0 0 999px; background: linear-gradient(90deg, transparent, rgba(8,24,19,.72)); text-shadow: 0 2px 8px rgba(0,0,0,.8); }
+.hand-count { color: var(--muted); font-size: .88rem; font-weight: 900; white-space: nowrap; }
+.hand { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2.4rem 8px 0; touch-action: pan-x; scroll-padding-right: 2.4rem; }
 .domino { flex: 0 0 auto; min-width: 74px; height: 42px; border: 1px solid var(--edge); border-radius: 8px; color: var(--ink); background: linear-gradient(180deg, rgba(255,255,255,.42), transparent 42%), var(--tile); box-shadow: 0 4px 10px rgba(8,24,19,.32), inset 0 0 0 1px rgba(255,255,255,.55); display: grid; grid-template-columns: 1fr 2px 1fr; grid-template-rows: 1fr; align-items: center; justify-items: center; font-weight: 900; padding: 3px 6px; }
 .domino::before { content: ""; width: 2px; height: 82%; background: linear-gradient(180deg, transparent, var(--edge) 16% 84%, transparent); border-radius: 999px; grid-column: 2; grid-row: 1; align-self: center; justify-self: center; }
 .domino > span:first-child { grid-column: 1; grid-row: 1; }
@@ -46,7 +48,7 @@ button:disabled { opacity: .45; }
 .pips-6 .pip[data-pos="1"], .pips-6 .pip[data-pos="3"], .pips-6 .pip[data-pos="4"], .pips-6 .pip[data-pos="6"], .pips-6 .pip[data-pos="7"], .pips-6 .pip[data-pos="9"],
 .pips-7 .pip[data-pos="1"], .pips-7 .pip[data-pos="3"], .pips-7 .pip[data-pos="4"], .pips-7 .pip[data-pos="5"], .pips-7 .pip[data-pos="6"], .pips-7 .pip[data-pos="7"], .pips-7 .pip[data-pos="9"],
 .pips-8 .pip[data-pos="1"], .pips-8 .pip[data-pos="2"], .pips-8 .pip[data-pos="3"], .pips-8 .pip[data-pos="4"], .pips-8 .pip[data-pos="6"], .pips-8 .pip[data-pos="7"], .pips-8 .pip[data-pos="8"], .pips-8 .pip[data-pos="9"] { opacity: 1; }
-@media (max-width: 700px) and (orientation: portrait) { .game-shell { --shell-pad: 6px; gap: 6px; } button, .button-link { padding: .4rem .55rem; font-size: .86rem; } .status { min-width: 6rem; font-size: .84rem; } .hand-wrap { grid-template-columns: 1fr; } .draw-button { width: fit-content; } }
+@media (max-width: 700px) and (orientation: portrait) { .game-shell { --shell-pad: 6px; gap: 6px; } button, .button-link { padding: .4rem .55rem; font-size: .86rem; } .status { min-width: 6rem; font-size: .84rem; } .hand-wrap { grid-template-columns: auto 1fr; } .hand-count { justify-self: end; } .hand { grid-column: 1 / -1; } .draw-button { width: fit-content; } }
 
 .difficulty-control { display: inline-flex; align-items: center; gap: .35rem; color: var(--text); font-size: .9rem; padding: .18rem .42rem; border: 1px solid var(--table-line); border-radius: 8px; background: rgba(8,24,19,.28); }
 .difficulty-control select { border: 1px solid rgba(255,255,255,.26); border-radius: 6px; padding: .45rem .55rem; color: var(--text); background: rgba(12,34,27,.72); font: inherit; touch-action: manipulation; }

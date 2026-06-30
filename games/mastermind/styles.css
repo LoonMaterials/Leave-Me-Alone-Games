@@ -329,6 +329,24 @@ button:disabled {
   font-weight: 900;
 }
 
+body[data-theme="colorblind"] .mm-feedback,
+body.theme-colorblind .mm-feedback,
+body[data-theme="colorblind"] .clue-label,
+body.theme-colorblind .clue-label,
+body[data-theme="colorblind"] .hint,
+body.theme-colorblind .hint {
+  color: #111820;
+  text-shadow: none;
+}
+
+body[data-theme="colorblind"] .mm-feedback,
+body.theme-colorblind .mm-feedback {
+  padding: 0.22rem 0.45rem;
+  border: 1px solid rgba(17, 24, 32, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 247, 223, 0.86);
+}
+
 .red { background: #d94343; }
 .blue { background: #3478f6; }
 .green { background: #30a46c; }

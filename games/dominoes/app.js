@@ -8,7 +8,7 @@
   const DIFFICULTIES = new Set(["easy", "medium", "hard"]);
   const MAX_PIPS = 9;
   const STARTING_HAND = 10;
-  const els = { opponent: document.getElementById("opponent"), chain: document.getElementById("chain"), hand: document.getElementById("hand"), draw: document.getElementById("draw"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty") };
+  const els = { opponent: document.getElementById("opponent"), chain: document.getElementById("chain"), hand: document.getElementById("hand"), handCount: document.getElementById("hand-count"), draw: document.getElementById("draw"), status: document.getElementById("status"), undo: document.getElementById("undo"), newGame: document.getElementById("new-game"), difficulty: document.getElementById("difficulty") };
   let state = null, undoSnapshot = null, lastTapAt = 0;
   function t(key, values) { return window.LMAG_I18N ? window.LMAG_I18N.t(key, values) : key; }
   function storedDifficulty() { try { const difficulty = localStorage.getItem(DIFFICULTY_KEY); return DIFFICULTIES.has(difficulty) ? difficulty : "easy"; } catch { return "easy"; } }
@@ -138,6 +138,7 @@
     state.player.forEach((tile) => { const el = dominoEl(tile, canPlay(tile)); el.disabled = state.turn !== "p" || !canPlay(tile) || Boolean(state.winner); el.addEventListener("click", onTileClick); els.hand.appendChild(el); });
     els.draw.disabled = state.turn !== "p" || Boolean(state.winner) || state.player.some(canPlay) || !state.boneyard.length;
     els.opponent.textContent = t("dominoesOpponent", { count: state.computer.length, boneyard: state.boneyard.length });
+    if (els.handCount) els.handCount.textContent = t("dominoesYourTiles", { count: state.player.length });
     els.status.textContent = state.winner ? t(state.winner === "p" ? "youWon" : "computerWon") : state.player.some(canPlay) ? t("yourTurn") : state.boneyard.length ? t("dominoesDrawPrompt") : t("dominoesBlocked");
     saveState();
   }
