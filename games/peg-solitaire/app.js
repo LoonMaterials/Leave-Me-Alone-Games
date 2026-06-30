@@ -4,15 +4,73 @@
   const THEME_KEY = "leave-me-alone-games-theme";
   const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const KEY = "leave-me-alone-peg-solitaire-current-game";
-  const SAVE_VERSION = 2;
-  const VALID = [
-    [0, 0, 1, 1, 1, 0, 0],
-    [0, 0, 1, 1, 1, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1],
-    [0, 0, 1, 1, 1, 0, 0],
-    [0, 0, 1, 1, 1, 0, 0],
+  const SAVE_VERSION = 3;
+  const LAYOUTS = [
+    {
+      id: "classic",
+      mask: [
+        [0, 0, 1, 1, 1, 0, 0],
+        [0, 0, 1, 1, 1, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 1, 1, 1, 0, 0],
+        [0, 0, 1, 1, 1, 0, 0],
+      ],
+      goals: [{ row: 3, col: 3 }],
+    },
+    {
+      id: "diamond",
+      mask: [
+        [0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1],
+        [0, 1, 1, 1, 1, 1, 0],
+        [0, 0, 1, 1, 1, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0],
+      ],
+      goals: [{ row: 3, col: 3 }],
+    },
+    {
+      id: "wide",
+      mask: [
+        [0, 1, 1, 1, 1, 1, 0],
+        [0, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1],
+        [0, 1, 1, 1, 1, 1, 0],
+        [0, 1, 1, 1, 1, 1, 0],
+      ],
+      goals: [{ row: 3, col: 3 }, { row: 2, col: 3 }, { row: 4, col: 3 }],
+    },
+    {
+      id: "hourglass",
+      mask: [
+        [1, 1, 1, 1, 1, 1, 1],
+        [0, 1, 1, 1, 1, 1, 0],
+        [0, 0, 1, 1, 1, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1],
+      ],
+      goals: [{ row: 3, col: 3 }, { row: 0, col: 3 }, { row: 6, col: 3 }],
+    },
+    {
+      id: "plus",
+      mask: [
+        [0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1],
+        [0, 1, 1, 1, 1, 1, 0],
+        [0, 0, 1, 1, 1, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0],
+      ],
+      goals: [{ row: 3, col: 3 }, { row: 1, col: 3 }, { row: 5, col: 3 }],
+    },
   ];
   const DIRECTIONS = [
     [-1, 0],
@@ -37,9 +95,63 @@
     } catch {}
   }
 
+  function randomItem(items) {
+    return items[Math.floor(Math.random() * items.length)];
+  }
+
+  function layoutById(id) {
+    return LAYOUTS.find((layout) => layout.id === id) || LAYOUTS[0];
+  }
+
+  function emptyGrid() {
+    return Array.from({ length: 7 }, () => Array(7).fill(0));
+  }
+
+  function maskCount(mask) {
+    return mask.flat().filter(Boolean).length;
+  }
+
+  function reverseMoves(pegs, mask) {
+    const moves = [];
+    for (let row = 0; row < 7; row += 1) {
+      for (let col = 0; col < 7; col += 1) {
+        if (!pegs[row][col]) continue;
+        DIRECTIONS.forEach(([dr, dc]) => {
+          const midRow = row - dr;
+          const midCol = col - dc;
+          const toRow = row - dr * 2;
+          const toCol = col - dc * 2;
+          if (isMaskValid(mask, midRow, midCol) && isMaskValid(mask, toRow, toCol) && !pegs[midRow][midCol] && !pegs[toRow][toCol]) {
+            moves.push({ from: { row, col }, mid: { row: midRow, col: midCol }, to: { row: toRow, col: toCol } });
+          }
+        });
+      }
+    }
+    return moves;
+  }
+
+  function buildPlayableBoard(layout) {
+    const targetCount = maskCount(layout.mask);
+    for (let attempt = 0; attempt < 80; attempt += 1) {
+      const pegs = emptyGrid();
+      const goal = randomItem(layout.goals);
+      pegs[goal.row][goal.col] = 1;
+      while (pegs.flat().filter(Boolean).length < targetCount) {
+        const choices = reverseMoves(pegs, layout.mask);
+        if (!choices.length) break;
+        const move = randomItem(choices);
+        pegs[move.from.row][move.from.col] = 0;
+        pegs[move.mid.row][move.mid.col] = 1;
+        pegs[move.to.row][move.to.col] = 1;
+      }
+      if (pegs.flat().filter(Boolean).length >= Math.min(18, targetCount - 1) && forwardMoves(pegs, layout.mask).length) return pegs;
+    }
+    return layout.mask.map((row, rowIndex) => row.map((valid, colIndex) => valid && !(rowIndex === 3 && colIndex === 3) ? 1 : 0));
+  }
+
   function fresh() {
-    const pegs = VALID.map((row, rowIndex) => row.map((valid, colIndex) => valid && !(rowIndex === 3 && colIndex === 3) ? 1 : 0));
-    return { version: SAVE_VERSION, pegs };
+    const layout = randomItem(LAYOUTS);
+    return { version: SAVE_VERSION, layout: layout.id, pegs: buildPlayableBoard(layout) };
   }
 
   function clone(value) {
@@ -55,7 +167,7 @@
   function load() {
     try {
       const saved = JSON.parse(sessionStorage.getItem(KEY));
-      if (saved?.version !== SAVE_VERSION || !Array.isArray(saved.pegs) || saved.pegs.length !== 7) return fresh();
+      if (saved?.version !== SAVE_VERSION || !Array.isArray(saved.pegs) || saved.pegs.length !== 7 || !layoutById(saved.layout)) return fresh();
       return saved;
     } catch {
       return fresh();
@@ -67,8 +179,16 @@
     undoStack = undoStack.slice(-40);
   }
 
+  function currentLayout() {
+    return layoutById(state?.layout);
+  }
+
+  function isMaskValid(mask, row, col) {
+    return Boolean(mask[row]?.[col]);
+  }
+
   function isValid(row, col) {
-    return Boolean(VALID[row]?.[col]);
+    return isMaskValid(currentLayout().mask, row, col);
   }
 
   function pegCount() {
@@ -87,6 +207,25 @@
       }
       return [];
     });
+  }
+
+  function forwardMoves(pegs, mask) {
+    const moves = [];
+    for (let row = 0; row < 7; row += 1) {
+      for (let col = 0; col < 7; col += 1) {
+        if (!pegs[row][col]) continue;
+        DIRECTIONS.forEach(([dr, dc]) => {
+          const midRow = row + dr;
+          const midCol = col + dc;
+          const toRow = row + dr * 2;
+          const toCol = col + dc * 2;
+          if (isMaskValid(mask, toRow, toCol) && pegs[midRow]?.[midCol] && !pegs[toRow][toCol]) {
+            moves.push({ from: { row, col }, mid: { row: midRow, col: midCol }, to: { row: toRow, col: toCol } });
+          }
+        });
+      }
+    }
+    return moves;
   }
 
   function allLegalMoves() {

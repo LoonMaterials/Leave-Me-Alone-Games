@@ -120,6 +120,23 @@ button:disabled {
   justify-content: center;
 }
 
+.sudoku-grid {
+  --sudoku-cell: min(9.4vw, 2.75rem);
+  display: grid;
+  grid-template-columns: repeat(9, var(--sudoku-cell));
+  grid-template-rows: repeat(9, var(--sudoku-cell));
+  gap: 0;
+  justify-content: center;
+  align-content: center;
+  width: fit-content;
+  min-height: 0;
+  margin: 0 auto;
+  padding: clamp(0.45rem, 2vw, 0.85rem);
+  border: 3px solid rgba(23, 32, 24, 0.72);
+  border-radius: 0.9rem;
+  overflow: hidden;
+}
+
 .number-cell,
 .tile-cell,
 .peg-cell,
@@ -145,6 +162,31 @@ button:disabled {
   font-size: 1.35rem;
 }
 
+.sudoku-cell {
+  width: var(--sudoku-cell);
+  height: var(--sudoku-cell);
+  min-width: 0;
+  min-height: 0;
+  border-radius: 0;
+  border-color: rgba(23, 32, 24, 0.26);
+  font-size: clamp(1rem, 4.4vw, 1.42rem);
+}
+
+.sudoku-cell.box-right {
+  border-right-width: 3px;
+  border-right-color: rgba(23, 32, 24, 0.72);
+}
+
+.sudoku-cell.box-bottom {
+  border-bottom-width: 3px;
+  border-bottom-color: rgba(23, 32, 24, 0.72);
+}
+
+.sudoku-cell.conflict {
+  background: #ffe4dc;
+  color: #771f13;
+}
+
 .number-cell.fixed {
   background: #f4eedb;
 }
@@ -158,6 +200,27 @@ button:disabled {
   font: inherit;
   text-align: center;
   outline: 0;
+}
+
+.sudoku-cell input {
+  font-size: inherit;
+  font-weight: 900;
+}
+
+@media (max-width: 430px) {
+  .game-shell {
+    width: min(100%, calc(100% - 0.7rem));
+    gap: 0.5rem;
+  }
+
+  .board.sudoku-grid {
+    --sudoku-cell: min(9.6vw, 2.35rem);
+    padding: 0.36rem;
+  }
+
+  .status {
+    font-size: 0.92rem;
+  }
 }
 
 .clue {

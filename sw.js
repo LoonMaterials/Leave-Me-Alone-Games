@@ -1,10 +1,10 @@
-const CACHE_NAME = "leave-me-alone-games-v58";
+const CACHE_NAME = "leave-me-alone-games-v60";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./launcher.css?v=20260629-colorblind-1",
   "./launcher.js?v=20260629-colorblind-1",
-  "./i18n.js?v=20260630-chess-real-1",
+  "./i18n.js?v=20260630-sudoku-9x9-1",
   "./manifest.webmanifest?v=20260607-app-1",
   "./games/klondike/",
   "./games/klondike/index.html",
@@ -72,8 +72,8 @@ const APP_SHELL = [
   "./games/tic-tac-toe/app.js?v=20260629-tic-tac-toe-1",
   "./games/sudoku/",
   "./games/sudoku/index.html",
-  "./games/sudoku/styles.css?v=20260629-colorblind-1",
-  "./games/sudoku/app.js?v=20260629-colorblind-1",
+  "./games/sudoku/styles.css?v=20260630-sudoku-9x9-1",
+  "./games/sudoku/app.js?v=20260630-sudoku-9x9-1",
   "./games/kakuro/",
   "./games/kakuro/index.html",
   "./games/kakuro/styles.css?v=20260629-colorblind-1",
@@ -81,7 +81,7 @@ const APP_SHELL = [
   "./games/peg-solitaire/",
   "./games/peg-solitaire/index.html",
   "./games/peg-solitaire/styles.css?v=20260630-game-fixes-1",
-  "./games/peg-solitaire/app.js?v=20260630-game-fixes-1",
+  "./games/peg-solitaire/app.js?v=20260630-peg-variety-1",
   "./games/mastermind/",
   "./games/mastermind/index.html",
   "./games/mastermind/styles.css?v=20260630-game-fixes-1",
