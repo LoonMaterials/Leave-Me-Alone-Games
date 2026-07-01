@@ -1,0 +1,406 @@
+:root {
+  color-scheme: light;
+  --felt: #195f3a;
+  --felt-dark: #0f3b25;
+  --panel: rgba(255, 255, 255, 0.92);
+  --ink: #172018;
+  --muted: #526257;
+  --line: rgba(12, 36, 22, 0.22);
+  --accent: #f5d36b;
+  --button: #ffffff;
+  --button-border: rgba(13, 34, 20, 0.22);
+  --shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+}
+
+html, body {
+  min-height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+body {
+  min-height: 100svh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.24), transparent 34rem),
+    linear-gradient(135deg, var(--felt), var(--felt-dark));
+}
+
+body.theme-blue { --felt: #1d5d7a; --felt-dark: #12384e; }
+body.theme-grey { --felt: #626b6b; --felt-dark: #343b3d; }
+body.theme-orange { --felt: #a65420; --felt-dark: #5a2c15; }
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.topbar {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.7rem;
+  align-items: center;
+  width: min(1100px, calc(100% - 1.5rem));
+  margin: 0 auto;
+  padding: max(0.75rem, env(safe-area-inset-top)) 0 0.65rem;
+}
+
+h1 {
+  margin: 0;
+  color: white;
+  font-size: clamp(1.3rem, 5vw, 2.2rem);
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.32);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: flex-end;
+}
+
+button,
+.control-button {
+  border: 1px solid var(--button-border);
+  border-radius: 999px;
+  background: var(--button);
+  color: var(--ink);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  padding: 0.55rem 0.78rem;
+  text-decoration: none;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.game-shell {
+  box-sizing: border-box;
+  display: grid;
+  gap: 0.8rem;
+  width: min(760px, calc(100% - 1.5rem));
+  margin: 0 auto;
+  padding: 0.4rem 0 max(1rem, env(safe-area-inset-bottom));
+}
+
+.status {
+  min-height: 1.3rem;
+  margin: 0;
+  color: white;
+  font-size: 1rem;
+  font-weight: 800;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.34);
+}
+
+.board {
+  box-sizing: border-box;
+  min-height: 18rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 1.4rem;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  padding: clamp(0.7rem, 3vw, 1.2rem);
+}
+
+.grid {
+  display: grid;
+  gap: 0.35rem;
+  justify-content: center;
+}
+
+.peg-board {
+  display: grid;
+  grid-template-columns: repeat(7, clamp(2.15rem, 11vw, 3.55rem));
+  grid-template-rows: repeat(7, clamp(2.15rem, 11vw, 3.55rem));
+  gap: clamp(0.18rem, 1vw, 0.36rem);
+  justify-content: center;
+  align-content: center;
+}
+
+.number-cell,
+.tile-cell,
+.peg-cell,
+.nonogram-cell,
+.mm-slot,
+.mm-choice {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 900;
+  min-height: 3rem;
+  min-width: 3rem;
+}
+
+.number-cell {
+  width: clamp(3rem, 17vw, 4.25rem);
+  height: clamp(3rem, 17vw, 4.25rem);
+  font-size: 1.35rem;
+}
+
+.number-cell.fixed {
+  background: #f4eedb;
+}
+
+.number-cell input {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  outline: 0;
+}
+
+.clue {
+  background: #1f2a25;
+  color: white;
+  font-size: 0.78rem;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.empty {
+  visibility: hidden;
+}
+
+.peg-cell {
+  width: clamp(2.15rem, 11vw, 3.55rem);
+  height: clamp(2.15rem, 11vw, 3.55rem);
+  min-width: 0;
+  min-height: 0;
+}
+
+.peg-cell.invalid {
+  visibility: hidden;
+}
+
+.peg {
+  width: 62%;
+  height: 62%;
+  border-radius: 999px;
+  background: radial-gradient(circle at 34% 28%, #fff7b3, #e1a42f 54%, #8c5519);
+  box-shadow: inset 0 -0.22rem 0 rgba(0, 0, 0, 0.17), 0 0.2rem 0.45rem rgba(0, 0, 0, 0.24);
+}
+
+.peg-cell.selected {
+  outline: 4px solid var(--accent);
+}
+
+.peg-cell.legal {
+  outline: 3px dashed var(--accent);
+  outline-offset: -6px;
+}
+
+.nonogram-wrap {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  gap: 0.35rem;
+  justify-content: center;
+  align-items: end;
+}
+
+.top-clues {
+  display: grid;
+  grid-template-columns: repeat(5, clamp(2.25rem, 13vw, 3.2rem));
+  gap: 0.25rem;
+  grid-column: 2;
+}
+
+.side-clues {
+  display: grid;
+  grid-template-rows: repeat(5, clamp(2.25rem, 13vw, 3.2rem));
+  gap: 0.25rem;
+  grid-row: 2;
+}
+
+.clue-label {
+  display: grid;
+  place-items: center;
+  min-width: 2.4rem;
+  min-height: 2.2rem;
+  color: var(--muted);
+  font-weight: 900;
+  text-align: center;
+}
+
+.nonogram-grid {
+  grid-column: 2;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(5, clamp(2.25rem, 13vw, 3.2rem));
+  gap: 0.25rem;
+}
+
+.nonogram-cell {
+  min-width: 0;
+  min-height: clamp(2.25rem, 13vw, 3.2rem);
+}
+
+.nonogram-cell.filled {
+  background: #1f2a25;
+  color: white;
+}
+
+
+.bridge-h::before {
+  left: -0.25rem;
+  right: -0.25rem;
+  top: 50%;
+  height: 0.28rem;
+  transform: translateY(-50%);
+}
+
+.bridge-v::after {
+  top: -0.25rem;
+  bottom: -0.25rem;
+  left: 50%;
+  width: 0.28rem;
+  transform: translateX(-50%);
+}
+
+.mastermind {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.mm-row,
+.mm-choices {
+  display: flex;
+  gap: 0.45rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mm-slot,
+.mm-choice {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+}
+
+.mm-choice {
+  cursor: pointer;
+}
+
+.mm-feedback {
+  min-width: 7rem;
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.red { background: #d94343; }
+.blue { background: #3478f6; }
+.green { background: #30a46c; }
+.yellow { background: #ffd24a; }
+.purple { background: #8e5bd8; }
+.blank { background: #fff; }
+
+.hint {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    justify-content: center;
+  }
+
+  .control-button {
+    justify-self: center;
+  }
+}
+
+body[data-theme="colorblind"],
+body.theme-colorblind {
+  --felt: #234f68;
+  --felt-dark: #172b3a;
+  --panel: rgba(255, 247, 223, 0.94);
+  --paper: #fff7df;
+  --ink: #111820;
+  --muted: rgba(255, 247, 223, 0.84);
+  --line: rgba(17, 24, 32, 0.26);
+  --shadow: rgba(4, 12, 18, 0.34);
+  --card-back: #0072b2;
+  --red: #d55e00;
+  --black: #111820;
+  --yellow: #f0e442;
+  --blue: #0072b2;
+  --green: #009e73;
+  --purple: #cc79a7;
+  --light: #fff7df;
+  --dark: #6f7f8f;
+  --select: #f0e442;
+  --move: rgba(240, 228, 66, 0.7);
+  --frame: #0072b2;
+  --slot: #172b3a;
+  --point: #fff7df;
+  --point-alt: #2f6f90;
+  --tile: #fff7df;
+  --edge: #394b59;
+  --tile-front: #fff7df;
+  --tile-edge: #394b59;
+  --tile-side: #7d8b95;
+  --table-glow: rgba(240, 228, 66, 0.14);
+  --table-line: rgba(255, 247, 223, 0.34);
+  --lit: #f0e442;
+  --lit-edge: #fff6a5;
+}
+/* App touch-target pass: keep header controls comfortably tappable on phones. */
+.topbar button,
+.topbar .button-link,
+.topbar .control-button,
+.topbar select,
+.controls button,
+.controls .control-button,
+.actions button,
+.actions .button-link,
+.actions select,
+.difficulty-control select {
+  min-height: 40px;
+  min-width: 40px;
+}
+
+.draw-control {
+  min-height: 40px;
+}
+/* Final iPhone control sizing: explicit app-like tap boxes. */
+.topbar button,
+.topbar .button-link,
+.topbar .control-button,
+.topbar select,
+.controls button,
+.controls .control-button,
+.actions button,
+.actions .button-link,
+.actions select,
+.difficulty-control select,
+.settings select,
+.setting-row {
+  box-sizing: border-box;
+  min-height: 40px;
+}

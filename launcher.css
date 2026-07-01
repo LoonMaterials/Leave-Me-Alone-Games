@@ -22,6 +22,15 @@ body[data-theme="blue"] {
   --felt-dark: #193d56;
 }
 
+body[data-theme="colorblind"] {
+  --felt: #234f68;
+  --felt-dark: #172b3a;
+  --panel: rgba(15, 31, 43, 0.72);
+  --panel-border: rgba(255, 255, 255, 0.28);
+  --text: #fff7df;
+  --muted: rgba(255, 247, 223, 0.82);
+}
+
 body[data-theme="grey"] {
   --felt: #5f6867;
   --felt-dark: #343d3c;
@@ -121,6 +130,29 @@ body {
   gap: 14px;
 }
 
+.game-section {
+  display: grid;
+  gap: 12px;
+}
+
+.section-heading {
+  display: grid;
+  gap: 4px;
+}
+
+.section-heading h2,
+.section-heading p {
+  margin: 0;
+}
+
+.section-heading h2 {
+  font-size: clamp(1.35rem, 3vw, 2rem);
+}
+
+.section-heading p {
+  color: var(--muted);
+}
+
 .game-card {
   min-height: 120px;
   border: 1px solid var(--panel-border);
@@ -130,8 +162,10 @@ body {
   background: var(--panel);
   text-decoration: none;
   display: grid;
-  align-content: end;
+  align-content: center;
+  justify-items: center;
   gap: 7px;
+  text-align: center;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
@@ -140,6 +174,19 @@ body {
   opacity: 0.52;
   border-style: dashed;
   cursor: default;
+}
+
+.game-badge {
+  width: fit-content;
+  justify-self: center;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  padding: 0.16rem 0.48rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .game-card:focus-visible {
@@ -154,6 +201,13 @@ body {
 
 .game-meta {
   color: var(--muted);
+}
+
+.future-section {
+  border: 1px dashed var(--panel-border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  background: rgba(10, 33, 26, 0.28);
 }
 
 @media (max-width: 560px) {
@@ -196,6 +250,18 @@ body {
     gap: 9px;
   }
 
+  .game-section {
+    gap: 8px;
+  }
+
+  .section-heading h2 {
+    font-size: 1.15rem;
+  }
+
+  .section-heading p {
+    font-size: 0.88rem;
+  }
+
   .game-card {
     min-height: 88px;
     padding: 12px 14px;
@@ -209,4 +275,61 @@ body {
   .game-meta {
     font-size: 0.88rem;
   }
+}
+/* App touch-target pass: keep header controls comfortably tappable on phones. */
+.topbar button,
+.topbar .button-link,
+.topbar .control-button,
+.topbar select,
+.controls button,
+.controls .control-button,
+.actions button,
+.actions .button-link,
+.actions select,
+.difficulty-control select {
+  min-height: 40px;
+  min-width: 40px;
+}
+
+.draw-control {
+  min-height: 40px;
+}
+/* Final iPhone control sizing: explicit app-like tap boxes. */
+.topbar button,
+.topbar .button-link,
+.topbar .control-button,
+.topbar select,
+.controls button,
+.controls .control-button,
+.actions button,
+.actions .button-link,
+.actions select,
+.difficulty-control select,
+.settings select,
+.setting-row {
+  box-sizing: border-box;
+  min-height: 40px;
+}
+/* Final app-store tap override for dense mobile headers. */
+.topbar button,
+.topbar .button-link,
+.topbar .control-button,
+.topbar select,
+.controls button,
+.controls .control-button,
+.actions button,
+.actions .button-link,
+.actions select,
+.difficulty-control select,
+.settings select,
+.setting-row {
+  box-sizing: border-box !important;
+  min-height: 40px !important;
+}
+/* Launcher selects are native controls, so pin them directly. */
+#theme-select,
+#language-select {
+  box-sizing: border-box !important;
+  min-height: 40px !important;
+  height: 40px !important;
 }

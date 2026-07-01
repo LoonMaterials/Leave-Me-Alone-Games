@@ -3,21 +3,21 @@
 
   const THEME_KEY = "leave-me-alone-games-theme";
   const AUTO_FINISH_KEY = "leave-me-alone-games-auto-finish";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const themeSelect = document.getElementById("theme-select");
   const autoFinishToggle = document.getElementById("auto-finish-toggle");
 
   function storedTheme() {
     try {
       const theme = localStorage.getItem(THEME_KEY);
-      return THEMES.has(theme) ? theme : "green";
+      return THEMES.has(theme) ? theme : "colorblind";
     } catch (error) {
-      return "green";
+      return "colorblind";
     }
   }
 
   function applyTheme(theme) {
-    const nextTheme = THEMES.has(theme) ? theme : "green";
+    const nextTheme = THEMES.has(theme) ? theme : "colorblind";
     document.body.dataset.theme = nextTheme;
     themeSelect.value = nextTheme;
     try {

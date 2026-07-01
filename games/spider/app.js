@@ -7,7 +7,7 @@
   const STORAGE_KEY = "leave-you-alone-spider-current-game";
   const THEME_KEY = "leave-me-alone-games-theme";
   const MODE_KEY = "leave-me-alone-spider-suit-mode";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
   const MODES = new Set(["one", "two", "four"]);
 
   const els = {
@@ -130,16 +130,16 @@
   function getStoredTheme() {
     try {
       const theme = localStorage.getItem(THEME_KEY);
-      return THEMES.has(theme) ? theme : "green";
+      return THEMES.has(theme) ? theme : "colorblind";
     } catch {
-      return "green";
+      return "colorblind";
     }
   }
 
   function setTheme(theme) {
-    const nextTheme = THEMES.has(theme) ? theme : "green";
+    const nextTheme = THEMES.has(theme) ? theme : "colorblind";
     document.body.dataset.theme = nextTheme;
-    els.themeSelect.value = nextTheme;
+    if (els.themeSelect) els.themeSelect.value = nextTheme;
     try {
       localStorage.setItem(THEME_KEY, nextTheme);
     } catch {
@@ -502,7 +502,7 @@
   els.stock.addEventListener("click", dealStock);
   els.newGame.addEventListener("click", startNewGame);
   els.undo.addEventListener("click", undo);
-  els.themeSelect.addEventListener("change", () => setTheme(els.themeSelect.value));
+  if (els.themeSelect) els.themeSelect.addEventListener("change", () => setTheme(els.themeSelect.value));
   els.modeSelect.addEventListener("change", () => setMode(els.modeSelect.value, { newGame: true }));
   document.addEventListener("contextmenu", (event) => event.preventDefault());
   document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true });

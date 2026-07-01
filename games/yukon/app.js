@@ -7,7 +7,7 @@
   const STORAGE_KEY = "leave-you-alone-yukon-current-game";
   const THEME_KEY = "leave-me-alone-games-theme";
   const AUTO_FINISH_KEY = "leave-me-alone-games-auto-finish";
-  const THEMES = new Set(["green", "blue", "grey", "orange"]);
+  const THEMES = new Set(["colorblind", "green", "blue", "grey", "orange"]);
 
   const els = {
     foundations: document.getElementById("foundations"),
@@ -115,16 +115,16 @@
   function getStoredTheme() {
     try {
       const theme = localStorage.getItem(THEME_KEY);
-      return THEMES.has(theme) ? theme : "green";
+      return THEMES.has(theme) ? theme : "colorblind";
     } catch {
-      return "green";
+      return "colorblind";
     }
   }
 
   function setTheme(theme) {
-    const nextTheme = THEMES.has(theme) ? theme : "green";
+    const nextTheme = THEMES.has(theme) ? theme : "colorblind";
     document.body.dataset.theme = nextTheme;
-    els.themeSelect.value = nextTheme;
+    if (els.themeSelect) els.themeSelect.value = nextTheme;
     try {
       localStorage.setItem(THEME_KEY, nextTheme);
     } catch {
@@ -489,7 +489,7 @@
 
   els.newGame.addEventListener("click", startNewGame);
   els.undo.addEventListener("click", undo);
-  els.themeSelect.addEventListener("change", () => setTheme(els.themeSelect.value));
+  if (els.themeSelect) els.themeSelect.addEventListener("change", () => setTheme(els.themeSelect.value));
   document.addEventListener("contextmenu", (event) => event.preventDefault());
   document.addEventListener("dblclick", preventBrowserDoubleClick, { capture: true });
   document.addEventListener("dragstart", (event) => event.preventDefault());
